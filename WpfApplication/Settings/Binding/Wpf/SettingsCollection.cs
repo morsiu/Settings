@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using WpfApplication.Settings.Binding.Wpf.Markup;
 
 namespace WpfApplication.Settings.Binding.Wpf
 {
     public class SettingBindingCollection : IList
     {
-        private DependencyObject _owner;
+        private readonly DependencyObject _owner;
         private readonly List<ISettingBindingsProvider> _providersToInitialize = new List<ISettingBindingsProvider>();
+        private readonly List<ISettingBinding> _bindings = new List<ISettingBinding>();
+        public static readonly SettingBindingCollection Empty = new SettingBindingCollection(null);
 
         public SettingBindingCollection(DependencyObject owner)
         {
             _owner = owner;
         }
-
-        private readonly List<ISettingBinding> _bindings = new List<ISettingBinding>();
-
-        public static readonly SettingBindingCollection Empty = new SettingBindingCollection(null);
 
         public void Add(ISettingBinding binding)
         {

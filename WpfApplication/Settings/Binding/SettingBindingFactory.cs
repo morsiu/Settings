@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using WpfApplication.Settings.Binding.ValueAdapters;
 
@@ -49,7 +45,7 @@ namespace WpfApplication.Settings.Binding
             var descriptor = propertyInfo as PropertyDescriptor;
             if (descriptor != null)
             {
-                return new DescriptorAdaptor(target, descriptor);
+                return new DescriptorAdapter(target, descriptor);
             }
             return null;
         }

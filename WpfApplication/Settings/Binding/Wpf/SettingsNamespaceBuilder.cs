@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using WpfApplication.Settings.Binding.Wpf.Markup;
+﻿using System.Windows;
 
 namespace WpfApplication.Settings.Binding.Wpf
 {
     internal class SettingsNamespaceBuilder
     {
-        private DependencyObject _node;
-        private NamespaceCreationInfo _creationInfo;
+        private readonly DependencyObject _node;
+        private readonly NamespaceCreationInfo _creationInfo;
 
         public SettingsNamespaceBuilder(DependencyObject node, NamespaceCreationInfo creationInfo)
         {

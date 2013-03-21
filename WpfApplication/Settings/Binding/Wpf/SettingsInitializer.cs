@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using WpfApplication.Settings.Binding.Wpf.Markup;
 
 namespace WpfApplication.Settings.Binding.Wpf
 {
@@ -16,6 +15,8 @@ namespace WpfApplication.Settings.Binding.Wpf
         {
             _root = root;
         }
+
+        public FrameworkElement Root { get { return _root; } }
 
         public static SettingsInitializer GetInstance(FrameworkElement root)
         {
@@ -37,7 +38,20 @@ namespace WpfApplication.Settings.Binding.Wpf
             return initializer;
         }
 
-        public FrameworkElement Root { get { return _root; } }
+        public void QueueNamespaceBuild(SettingsNamespaceBuilder builder)
+        {
+            _namespaceBuilders.Add(builder);
+        }
+
+        public void QueueSettingBindingBuild(SettingBindingBuilder builder)
+        {
+            _settingBindingsBuilders.Add(builder);
+        }
+
+        public void QueueSettingBindingsUpdate(SettingBindingCollection settingsCollection)
+        {
+            _bindingsCollectionsToInitialize.Add(settingsCollection);
+        }
 
         private void RootLoadedCallback(object sender, RoutedEventArgs e)
         {
@@ -78,21 +92,6 @@ namespace WpfApplication.Settings.Binding.Wpf
             // so when building Namespace for one, successors will have that Namespace inherited,
             // as each is a child of one of predecessors.
             _namespaceBuilders.ForEach(builder => builder.Build());
-        }
-
-        public void QueueNamespaceBuild(SettingsNamespaceBuilder builder)
-        {
-            _namespaceBuilders.Add(builder);
-        }
-
-        public void QueueSettingBindingsUpdate(SettingBindingCollection settingsCollection)
-        {
-            _bindingsCollectionsToInitialize.Add(settingsCollection);
-        }
-
-        public void QueueSettingBindingBuild(SettingBindingBuilder builder)
-        {
-            _settingBindingsBuilders.Add(builder);
         }
     }
 }

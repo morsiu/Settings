@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WpfApplication.Settings
+﻿namespace WpfApplication.Settings
 {
     public class SettingsNamespace
     {

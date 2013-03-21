@@ -32,7 +32,7 @@ namespace WpfApplication.Settings.Binding.Wpf.Markup
             var root = rootProvider.RootObject as DependencyObject;
             if (root == null)
             {
-                throw new InvalidOperationException("Root object is required that is a DependencyObject.");
+                throw new InvalidOperationException("Root object is required and must be a DependencyObject.");
             }
             var target = targetProvider.TargetObject as DependencyObject;
             if (target == null)

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WpfApplication.Settings.Binding
+﻿namespace WpfApplication.Settings.Binding
 {
     public class SettingBinding : ISettingBinding
     {
-        private IValueAdapter _targetAdapter;
-        private IValueAdapter _settingAdapter;
+        private readonly IValueAdapter _targetAdapter;
+        private readonly IValueAdapter _settingAdapter;
 
         public SettingBinding(IValueAdapter targetAdapter, IValueAdapter settingAdapter)
         {

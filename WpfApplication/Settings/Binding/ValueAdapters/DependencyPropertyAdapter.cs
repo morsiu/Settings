@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace WpfApplication.Settings.Binding.ValueAdapters
@@ -20,6 +16,7 @@ namespace WpfApplication.Settings.Binding.ValueAdapters
             _target = target;
             _property = property;
             _descriptor = DependencyPropertyDescriptor.FromProperty(property, property.OwnerType);
+            // TODO: Use weak event pattern here
             _descriptor.AddValueChanged(target, PropertyChangedHandler);
         }
 

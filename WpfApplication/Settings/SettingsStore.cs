@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApplication.Settings
 {
@@ -53,7 +50,7 @@ namespace WpfApplication.Settings
 
         private readonly IDictionary<SettingsNamespace, SettingsContainer> _settingsByNamespace;
         private readonly IReadOnlyDictionary<SettingsNamespace, SettingsContainer> _settingsByNamespaceAccessor;
-        private IEqualityComparer<SettingsNamespace> _namespaceComparer;
+        private readonly IEqualityComparer<SettingsNamespace> _namespaceComparer;
 
         public SettingsStore()
         {

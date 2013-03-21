@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 
 namespace WpfApplication.Settings.Binding.Wpf
 {
@@ -11,14 +7,12 @@ namespace WpfApplication.Settings.Binding.Wpf
         private readonly DependencyObject _target;
         private readonly object _property;
         private readonly string _name;
-        private readonly ISettingsStore _store;
 
         public SettingBindingBuilder(DependencyObject target, object property, string name)
         {
             _target = target;
             _property = property;
             _name = name;
-            _store = SettingsStore.Instance;
         }
 
         public void Build()

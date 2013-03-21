@@ -67,7 +67,7 @@ namespace WpfApplication.Settings.Binding.Wpf.Markup
             element.SetValue(NamespaceProperty, value);
         }
 
-        public static void DebugValue(string name, DependencyObject element, ValueSource source, object value)
+        internal static void DebugValue(string name, DependencyObject element, ValueSource source, object value)
         {
             Debug.Print("{2}, {3}, \"{1}\", {0}", element.GetType(), value, source.BaseValueSource, name);
         }
