@@ -48,18 +48,18 @@ namespace WpfApplication.Settings
             }
         }
 
-        private readonly IDictionary<SettingsNamespace, SettingsContainer> _settingsByNamespace;
-        private readonly IReadOnlyDictionary<SettingsNamespace, SettingsContainer> _settingsByNamespaceAccessor;
+        private readonly IDictionary<SettingsNamespace, SettingsContainer> _namespaceContainers;
+        private readonly IReadOnlyDictionary<SettingsNamespace, SettingsContainer> _namespaceContainersAccessor;
         private readonly IEqualityComparer<SettingsNamespace> _namespaceComparer;
 
         public SettingsStore()
         {
             _namespaceComparer = new NamespaceComparer();
-            _settingsByNamespace = new Dictionary<SettingsNamespace, SettingsContainer>(_namespaceComparer);
-            _settingsByNamespaceAccessor = new ReadOnlyDictionary<SettingsNamespace, SettingsContainer>(_settingsByNamespace);
+            _namespaceContainers = new Dictionary<SettingsNamespace, SettingsContainer>(_namespaceComparer);
+            _namespaceContainersAccessor = new ReadOnlyDictionary<SettingsNamespace, SettingsContainer>(_namespaceContainers);
         }
 
-        public IReadOnlyDictionary<SettingsNamespace, SettingsContainer> SettingsByNamespace { get { return _settingsByNamespaceAccessor; } }
+        public IReadOnlyDictionary<SettingsNamespace, SettingsContainer> SettingsByNamespace { get { return _namespaceContainersAccessor; } }
 
         public object GetSetting(SettingsNamespace @namespace, string name)
         {
@@ -80,12 +80,12 @@ namespace WpfApplication.Settings
         private SettingsContainer GetContainer(SettingsNamespace @namespace)
         {
             SettingsContainer container;
-            if (_settingsByNamespace.TryGetValue(@namespace, out container))
+            if (_namespaceContainers.TryGetValue(@namespace, out container))
             {
                 return container;
             }
             container = new SettingsContainer();
-            _settingsByNamespace[@namespace] = container;
+            _namespaceContainers[@namespace] = container;
             return container;
         }
 

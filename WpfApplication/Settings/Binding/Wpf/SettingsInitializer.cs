@@ -30,7 +30,7 @@ namespace WpfApplication.Settings.Binding.Wpf
             // so Loaded event should not have fired yet.
             if (root.IsLoaded)
             {
-                throw new InvalidOperationException("Cannot return instance as the root is already initialized.");
+                throw new InvalidOperationException("Cannot return initializer instance as the root is already initialized.");
             }
             var initializer = new SettingsInitializer(root);
             Markup.Settings.SetInitializer(root, initializer);
@@ -48,7 +48,7 @@ namespace WpfApplication.Settings.Binding.Wpf
             _settingBindingsBuilders.Add(builder);
         }
 
-        public void QueueSettingBindingsUpdate(SettingBindingCollection settingsCollection)
+        public void QueueSettingsCollectionUpdate(SettingBindingCollection settingsCollection)
         {
             _bindingsCollectionsToInitialize.Add(settingsCollection);
         }
@@ -57,7 +57,7 @@ namespace WpfApplication.Settings.Binding.Wpf
         {
             SetupNamespaces();
             SetupBindings();
-            UpdateBindings();
+            InitializeBindingCollections();
             Cleanup();
         }
 
@@ -69,11 +69,11 @@ namespace WpfApplication.Settings.Binding.Wpf
             }
         }
 
-        private void UpdateBindings()
+        private void InitializeBindingCollections()
         {
             foreach (var collection in _bindingsCollectionsToInitialize)
             {
-                collection.UpdateBindings();
+                collection.Initialize();
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace WpfApplication.Settings.Binding.Wpf
 {
-    public class SettingBindingBuilder
+    internal class SettingBindingBuilder
     {
         private readonly DependencyObject _target;
         private readonly object _property;

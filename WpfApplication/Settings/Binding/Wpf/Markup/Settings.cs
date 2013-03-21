@@ -22,7 +22,7 @@ namespace WpfApplication.Settings.Binding.Wpf.Markup
                 "SettingsInternal", // Name is not Settings to force XAML reader to use GetSettings method to obtain value.
                 typeof (SettingBindingCollection),
                 typeof (Settings),
-                new FrameworkPropertyMetadata(SettingBindingCollection.Empty));
+                new FrameworkPropertyMetadata(SettingBindingCollection.UnsetValue));
 
         internal static readonly DependencyProperty InitializerProperty =
             DependencyProperty.RegisterAttached(
@@ -44,7 +44,7 @@ namespace WpfApplication.Settings.Binding.Wpf.Markup
         public static SettingBindingCollection GetSettings(DependencyObject element)
         {
             var value = (SettingBindingCollection)element.GetValue(SettingsProperty);
-            if (value == SettingBindingCollection.Empty)
+            if (value == SettingBindingCollection.UnsetValue)
             {
                 value = new SettingBindingCollection(element);
                 SetSettings(element, value);

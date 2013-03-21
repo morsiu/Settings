@@ -5,12 +5,16 @@ using System.Windows;
 
 namespace WpfApplication.Settings.Binding.Wpf
 {
+    /// <summary>
+    /// Collection that stores setting bindings for object that onws it.
+    /// Also supports setting binding providers.
+    /// </summary>
     public class SettingBindingCollection : IList
     {
         private readonly DependencyObject _owner;
         private readonly List<ISettingBindingsProvider> _providersToInitialize = new List<ISettingBindingsProvider>();
         private readonly List<ISettingBinding> _bindings = new List<ISettingBinding>();
-        public static readonly SettingBindingCollection Empty = new SettingBindingCollection(null);
+        public static readonly SettingBindingCollection UnsetValue = new SettingBindingCollection(null);
 
         public SettingBindingCollection(DependencyObject owner)
         {
@@ -19,15 +23,40 @@ namespace WpfApplication.Settings.Binding.Wpf
 
         public void Add(ISettingBinding binding)
         {
-            OnBindingAdded(binding);
+            _bindings.Add(binding);
+
+            var initializer = Markup.Settings.GetInitializer(_owner);
+            if (initializer != null)
+            {
+                initializer.QueueSettingsCollectionUpdate(this);
+            }
+            else
+            {
+                binding.UpdateTarget();
+            }
         }
 
-        public void Add(ISettingBindingsProvider bindingProvider)
+        public void Add(ISettingBindingsProvider bindingsProvider)
         {
-            OnBindingsProviderAdded(bindingProvider);
+            var initializer = Markup.Settings.GetInitializer(_owner);
+            if (initializer != null)
+            {
+                _providersToInitialize.Add(bindingsProvider);
+                initializer.QueueSettingsCollectionUpdate(this);
+            }
+            else
+            {
+                var newBindings = bindingsProvider.ProvideBindings(_owner);
+                UpdateBindings(newBindings);
+            }
         }
 
-        public void UpdateBindings()
+        /// <summary>
+        /// Used by SettingsInitializer
+        /// to update bindings inside collection
+        /// and run bindings providers added to it.
+        /// </summary>
+        internal void Initialize()
         {
             RunProviders();
             UpdateBindings(_bindings);
@@ -48,36 +77,6 @@ namespace WpfApplication.Settings.Binding.Wpf
                 var newBindings = _providersToInitialize.SelectMany(provider => provider.ProvideBindings(_owner));
                 _bindings.AddRange(newBindings);
                 _providersToInitialize.Clear();
-            }
-        }
-
-        private void OnBindingsProviderAdded(ISettingBindingsProvider bindingsProvider)
-        {
-            var initializer = Markup.Settings.GetInitializer(_owner);
-            if (initializer != null)
-            {
-                _providersToInitialize.Add(bindingsProvider);
-                initializer.QueueSettingBindingsUpdate(this);
-            }
-            else
-            {
-                var newBindings = bindingsProvider.ProvideBindings(_owner);
-                UpdateBindings(newBindings);
-            }
-        }
-
-        private void OnBindingAdded(ISettingBinding bindingOrProvider)
-        {
-            _bindings.Add(bindingOrProvider);
-
-            var initializer = Markup.Settings.GetInitializer(_owner);
-            if (initializer != null)
-            {
-                initializer.QueueSettingBindingsUpdate(this);
-            }
-            else
-            {
-                bindingOrProvider.UpdateTarget();
             }
         }
 
