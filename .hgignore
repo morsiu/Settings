@@ -1,0 +1,6 @@
+syntax: glob
+syntax: regexp
+bin/.*
+obj/.*
+.*\.suo
+.*\.user
