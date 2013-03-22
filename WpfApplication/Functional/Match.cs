@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WpfApplication.Functional
 {
-    public class Match<T> : Dictionary<IEnumerable, Func<T>>
+    public class Match<T> : Dictionary<ArrayList, Func<T>>
     {
         private readonly object[] _arguments;
 
@@ -29,7 +29,7 @@ namespace WpfApplication.Functional
 
         private static bool Compare(object patternValue, object value)
         {
-            return value == Any.Value || Equals(patternValue, value);
+            return ReferenceEquals(patternValue, Any.Value) || Equals(patternValue, value);
         }
 
         public static implicit operator T(Match<T> match)
