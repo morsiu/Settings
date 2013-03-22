@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SettingsTests
 {
     [TestClass]
-    public class SettingsTests
+    public class SettingsNamespaceTests
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
