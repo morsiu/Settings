@@ -12,9 +12,9 @@ namespace WpfApplication.Functional
         {
             int value = new Match<int>('a', 'b')
                             {
-                                { new ArrayList { 'a', 'c' }, () => 1 },
-                                { new ArrayList { 'a', Any.Value }, () => 3 },
-                                { new ArrayList { Any.Value, Any.Value }, () => 2 }
+                                { new [] { 'a', 'c' }, () => 1 },
+                                { new [] { 'a', Any.Value }, () => 3 },
+                                { new [] { Any.Value, Any.Value }, () => 2 }
                             };
             Assert.AreEqual(3, value);
         }
@@ -25,7 +25,7 @@ namespace WpfApplication.Functional
         {
             int value = new Match<int>('c', 'd')
                             {
-                                { new ArrayList {'a', 'c'}, () => 1 }
+                                { new [] {'a', 'c'}, () => 1 }
                             };
         }
     }

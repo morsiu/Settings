@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WpfApplication.Functional
 {
-    public class Match<T> : Dictionary<ArrayList, Func<T>>
+    public class Match<T> : Dictionary<IEnumerable, Func<T>>
     {
         private readonly object[] _arguments;
 
