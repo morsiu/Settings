@@ -1,7 +1,7 @@
 ﻿namespace WpfApplication.Functional
 {
-    public class Any
+    public static class Any
     {
-        public static readonly Any Value = new Any();
+        public static readonly object Value = new object();
     }
 }
