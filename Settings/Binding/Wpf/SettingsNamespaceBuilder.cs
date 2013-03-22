@@ -41,20 +41,18 @@ namespace Settings.Binding.Wpf
                 {
                     var parent = LogicalTreeHelper.FindLogicalNode(_creationInfo.Root, _creationInfo.ParentSourceName);
                     parentNamespace = parent == null
-                                          ? null
+                                          ? SettingsNamespace.None
                                           : Markup.Settings.GetNamespace(parent);
                 }
                 else
                 {
                     var inheritedNamespace = Markup.Settings.GetNamespace(_node);
-                    parentNamespace = inheritedNamespace == SettingsNamespace.None
-                                          ? null
-                                          : inheritedNamespace;
+                    parentNamespace = inheritedNamespace;
                 }
             }
             else
             {
-                parentNamespace = null;
+                parentNamespace = SettingsNamespace.None;
             }
             return parentNamespace;
         }
