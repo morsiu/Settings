@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Settings
 {
     public class SettingsNamespace
