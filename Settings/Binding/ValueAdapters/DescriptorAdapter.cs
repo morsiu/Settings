@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace WpfApplication.Settings.Binding.ValueAdapters
+namespace Settings.Binding.ValueAdapters
 {
     public class DescriptorAdapter : IValueAdapter
     {

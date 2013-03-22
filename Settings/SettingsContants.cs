@@ -1,4 +1,4 @@
-﻿namespace WpfApplication.Settings
+﻿namespace Settings
 {
     public static class SettingsConstants
     {

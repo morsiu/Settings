@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Xaml;
 
-namespace WpfApplication.Settings.Binding.Wpf.Markup
+namespace Settings.Binding.Wpf.Markup
 {
     public class NamespaceExtension : MarkupExtension
     {

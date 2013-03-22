@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace WpfApplication.Settings.Binding.Wpf
+namespace Settings.Binding.Wpf
 {
     /// <summary>
     /// Collection that stores setting bindings for object that onws it.

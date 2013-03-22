@@ -1,4 +1,4 @@
-﻿namespace WpfApplication.Settings.Binding
+﻿namespace Settings.Binding
 {
     public interface ISettingBinding
     {

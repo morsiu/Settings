@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Xaml;
 
-namespace WpfApplication.Settings.Binding.Wpf
+namespace Settings.Binding.Wpf
 {
     internal static class SettingsMarkupExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 
-namespace WpfApplication.Settings.Binding
+namespace Settings.Binding
 {
     public interface ISettingBindingsProvider
     {

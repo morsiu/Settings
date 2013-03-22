@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace WpfApplication.Settings.Binding.Wpf
+namespace Settings.Binding.Wpf
 {
     internal class SettingsInitializer
     {

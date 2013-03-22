@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WpfApplication.Settings.Binding.Wpf.Markup
+namespace Settings.Binding.Wpf.Markup
 {
     public class DataGridColumnsBinding : ISettingBindingsProvider
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace WpfApplication.Settings.Binding.ValueAdapters
+namespace Settings.Binding.ValueAdapters
 {
     public class ClrPropertyAdapter : IValueAdapter
     {

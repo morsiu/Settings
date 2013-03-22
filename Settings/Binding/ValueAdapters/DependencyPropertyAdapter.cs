@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 
-namespace WpfApplication.Settings.Binding.ValueAdapters
+namespace Settings.Binding.ValueAdapters
 {
     public class DependencyPropertyAdapter : IValueAdapter
     {

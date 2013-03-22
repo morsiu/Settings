@@ -57,31 +57,6 @@
     <Compile Include="Functional\Any.cs" />
     <Compile Include="Functional\Match.cs" />
     <Compile Include="Functional\MatchTests.cs" />
-    <Compile Include="Settings\Binding\ValueAdapters\DescriptorAdapter.cs" />
-    <Compile Include="Settings\Binding\ISettingBindingsProvider.cs" />
-    <Compile Include="Settings\Binding\Wpf\Markup\Binding.cs" />
-    <Compile Include="Settings\Binding\Wpf\Markup\DataGridColumnsBinding.cs" />
-    <Compile Include="Settings\SettingsContants.cs" />
-    <Compile Include="Settings\Binding\ValueAdapters\ClrPropertyAdapter.cs" />
-    <Compile Include="Settings\Binding\ValueAdapters\DependencyPropertyAdapter.cs" />
-    <Compile Include="Settings\Binding\ValueAdapters\SettingAdapter.cs" />
-    <Compile Include="Settings\Binding\IValueAdapter.cs" />
-    <Compile Include="Settings\ISettingsStore.cs" />
-    <Compile Include="Settings\Binding\Wpf\NamespaceCreationInfo.cs" />
-    <Compile Include="Settings\Binding\ISettingBinding.cs" />
-    <Compile Include="ReadOnlyCollection.cs" />
-    <Compile Include="Settings\Binding\SettingBinding.cs" />
-    <Compile Include="Settings\Binding\Wpf\SettingBindingBuilder.cs" />
-    <Compile Include="Settings\Binding\SettingBindingFactory.cs" />
-    <Compile Include="Settings\Binding\Wpf\SettingsMarkupExtensionsHelper.cs" />
-    <Compile Include="Settings\SettingsNamespace.cs" />
-    <Compile Include="Settings\Binding\Wpf\Markup\NamespaceExtension.cs" />
-    <Compile Include="Settings\Binding\Wpf\Markup\SettingExtension.cs" />
-    <Compile Include="Settings\Binding\Wpf\Markup\Settings.cs" />
-    <Compile Include="Settings\Binding\Wpf\SettingsCollection.cs" />
-    <Compile Include="Settings\Binding\Wpf\SettingsInitializer.cs" />
-    <Compile Include="Settings\Binding\Wpf\SettingsNamespaceBuilder.cs" />
-    <Compile Include="Settings\SettingsStore.cs" />
     <Compile Include="Sample\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -136,8 +111,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Settings\Readme.txt" />
+    <ProjectReference Include="..\Settings\Settings.csproj">
+      <Project>{ce47879d-5bac-4557-a9b4-2a88b5415154}</Project>
+      <Name>Settings</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

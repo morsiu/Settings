@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace WpfApplication.Settings
+namespace Settings
 {
     public class SettingsStore : ISettingsStore
     {

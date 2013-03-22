@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
-using WpfApplication.Settings.Binding.ValueAdapters;
+using Settings.Binding.ValueAdapters;
 
-namespace WpfApplication.Settings.Binding
+namespace Settings.Binding
 {
     public class SettingBindingFactory
     {
