@@ -4,7 +4,7 @@ namespace Settings
 {
     public class SettingsNamespace
     {
-        public static readonly SettingsNamespace None = new SettingsNamespace();
+        public static readonly SettingsNamespace None = new SettingsNamespaceNullObject();
 
         public SettingsNamespace(SettingsNamespace parent, string name)
         {
@@ -31,19 +31,28 @@ namespace Settings
 
         public SettingsNamespace Parent { get; private set; }
 
-        public string Path
+        public virtual string Path
         {
             get
             {
-                return this == None
-                    ? string.Empty
-                    : Parent + "\\" + Name;
+                return Parent + "\\" + Name;
             }
         }
 
         public override string ToString()
         {
             return Path;
+        }
+
+        private class SettingsNamespaceNullObject : SettingsNamespace
+        {
+            public override string Path
+            {
+                get
+                {
+                    return string.Empty;
+                }
+            }
         }
     }
 }
