@@ -64,7 +64,7 @@ namespace SettingsTests
         }
 
         [TestMethod]
-        public void ShouldGiveProperPathForNoneNamespace()
+        public void ShouldGiveEmptyPathForNoneNamespace()
         {
             var ns = SettingsNamespace.None;
             Assert.AreEqual("", ns.Path);
