@@ -6,18 +6,34 @@ namespace Settings.Binding.ValueAdapters
 {
     public class ClrPropertyAdapter : IValueAdapter
     {
-        private readonly object _target;
-        private readonly PropertyInfo _property;
+        private readonly Action<object> _setter;
+        private readonly Func<object> _getter;
         private Action<object> _valueChangedCallback;
 
         public ClrPropertyAdapter(object target, PropertyInfo propertyInfo)
         {
-            _target = target;
-            _property = propertyInfo;
-            var notifyingTarget = _target as INotifyPropertyChanged;
+            if (target == null) throw new ArgumentNullException("target");
+            if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
+            if (propertyInfo.CanWrite)
+            {
+                _setter = value => propertyInfo.SetValue(target, value);
+            }
+            else
+            {
+                _setter = value => { };
+            }
+            if (propertyInfo.CanRead)
+            {
+                _getter = () => propertyInfo.GetValue(target);
+            }
+            else
+            {
+                _getter = () => SettingsConstants.NoValue; 
+            }
+            var notifyingTarget = target as INotifyPropertyChanged;
             if (notifyingTarget != null)
             {
-                PropertyChangedEventManager.AddHandler(notifyingTarget, PropertyChangedHandler, _property.Name);
+                PropertyChangedEventManager.AddHandler(notifyingTarget, PropertyChangedHandler, propertyInfo.Name);
             }
         }
 
@@ -34,13 +50,12 @@ namespace Settings.Binding.ValueAdapters
 
         public object GetValue()
         {
-            var value = _property.GetValue(_target);
-            return value;
+            return _getter();
         }
 
         public void SetValue(object value)
         {
-            _property.SetValue(_target, value);
+            _setter(value);
         }
     }
 }
