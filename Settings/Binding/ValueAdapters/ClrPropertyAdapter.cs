@@ -4,37 +4,65 @@ using System.Reflection;
 
 namespace Settings.Binding.ValueAdapters
 {
-    public class ClrPropertyAdapter : IValueAdapter
+    public sealed class ClrPropertyAdapter : IValueAdapter, IDisposable
     {
-        private readonly Action<object> _setter;
-        private readonly Func<object> _getter;
+        private readonly object _target;
+        private readonly PropertyInfo _propertyInfo;
+        private bool _isDisposed;
         private Action<object> _valueChangedCallback;
 
         public ClrPropertyAdapter(object target, PropertyInfo propertyInfo)
         {
             if (target == null) throw new ArgumentNullException("target");
             if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
-            if (propertyInfo.CanWrite)
-            {
-                _setter = value => propertyInfo.SetValue(target, value);
-            }
-            else
-            {
-                _setter = value => { };
-            }
-            if (propertyInfo.CanRead)
-            {
-                _getter = () => propertyInfo.GetValue(target);
-            }
-            else
-            {
-                _getter = () => SettingsConstants.NoValue; 
-            }
-            var notifyingTarget = target as INotifyPropertyChanged;
+            _propertyInfo = propertyInfo;
+            _target = target;
+            var notifyingTarget = _target as INotifyPropertyChanged;
             if (notifyingTarget != null)
             {
-                PropertyChangedEventManager.AddHandler(notifyingTarget, PropertyChangedHandler, propertyInfo.Name);
+                _valueChangedCallback = newValue => { };
+                PropertyChangedEventManager.AddHandler(notifyingTarget, PropertyChangedHandler, _propertyInfo.Name);
             }
+        }
+
+        public Action<object> ValueChangedCallback
+        {
+            set 
+            {
+                FailIfDisposed();
+                _valueChangedCallback = value ?? (newValue => { }); 
+            }
+       } 
+
+        public object GetValue()
+        {
+            FailIfDisposed();
+            return _propertyInfo.CanRead
+                ? _propertyInfo.GetValue(_target)
+                : SettingsConstants.NoValue;
+        }
+
+        public void SetValue(object value)
+        {
+            FailIfDisposed();
+            if (_propertyInfo.CanWrite)
+            {
+                _propertyInfo.SetValue(_target, value);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+            var notifyingTarget = _target as INotifyPropertyChanged;
+            if (notifyingTarget != null)
+            {
+                PropertyChangedEventManager.RemoveHandler(notifyingTarget, PropertyChangedHandler, _propertyInfo.Name);
+            }
+            _isDisposed = true;
         }
 
         private void PropertyChangedHandler(object sender, PropertyChangedEventArgs e)
@@ -43,19 +71,9 @@ namespace Settings.Binding.ValueAdapters
             _valueChangedCallback(value);
         }
 
-        public Action<object> ValueChangedCallback
+        private void FailIfDisposed()
         {
-            set { _valueChangedCallback = value; }
-        }
-
-        public object GetValue()
-        {
-            return _getter();
-        }
-
-        public void SetValue(object value)
-        {
-            _setter(value);
+            if (_isDisposed) throw new ObjectDisposedException("ClrPropertyAdapter");
         }
     }
 }
