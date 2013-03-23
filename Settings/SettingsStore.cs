@@ -39,12 +39,12 @@ namespace Settings
         {
             public bool Equals(SettingsNamespace x, SettingsNamespace y)
             {
-                return Equals(x.ToString(), y.ToString());
+                return Equals(x.Path, y.Path);
             }
 
             public int GetHashCode(SettingsNamespace ns)
             {
-                return ns.ToString().GetHashCode();
+                return ns.Path.GetHashCode();
             }
         }
 
