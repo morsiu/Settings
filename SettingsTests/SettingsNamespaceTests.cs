@@ -79,7 +79,7 @@ namespace SettingsTests
         }
 
         [TestMethod]
-        public void ShouldIncludEmptyParentForSettingWithNoParent()
+        public void ShouldIncludeEmptyParentForSettingWithNoParent()
         {
             var ns = new SettingsNamespace("Child");
             Assert.AreEqual("\\Child", ns.Path);
