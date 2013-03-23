@@ -39,7 +39,7 @@ namespace Settings
         {
             public bool Equals(SettingsNamespace x, SettingsNamespace y)
             {
-                return Equals(x.Path, y.Path);
+                return x.Path.Equals(y.Path, StringComparison.InvariantCulture);
             }
 
             public int GetHashCode(SettingsNamespace ns)
