@@ -19,17 +19,15 @@ namespace Settings.Binding.ValueAdapters
             _target = target;
             _property = property;
             _descriptor = DependencyPropertyDescriptor.FromProperty(property, property.OwnerType);
+            _valueChangedCallback = newValue => { };
             // TODO: Use weak event pattern here
             _descriptor.AddValueChanged(target, PropertyChangedHandler);
         }
 
         private void PropertyChangedHandler(object sender, EventArgs e)
         {
-            if (_valueChangedCallback != null)
-            {
-                var value = GetValue();
-                _valueChangedCallback(value);
-            }
+            var value = GetValue();
+            _valueChangedCallback(value);
         }
 
         public Action<object> ValueChangedCallback
@@ -37,7 +35,7 @@ namespace Settings.Binding.ValueAdapters
             set 
             {
                 FailIfDisposed();
-                _valueChangedCallback = value;
+                _valueChangedCallback = value ?? (newValue => { });
             }
         }
 
