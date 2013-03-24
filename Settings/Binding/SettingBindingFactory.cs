@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using TheSettings.Binding.ValueAdapters;
+using TheSettings.Binding.Wpf.Markup;
 
 namespace TheSettings.Binding
 {
@@ -22,8 +23,8 @@ namespace TheSettings.Binding
 
         private static SettingAdapter CreateSettingAdapter(SettingsNamespace @namespace, string settingName)
         {
-            var store = SettingsStore.Instance;
-            return new SettingAdapter(store, @namespace, settingName);
+            var storeAccessor = Settings.CurrentStoreAccessor;
+            return new SettingAdapter(storeAccessor, null, @namespace, settingName);
         }
 
         public ISettingBinding Create(DependencyObject target, DependencyProperty property, SettingsNamespace @namespace, string settingName)

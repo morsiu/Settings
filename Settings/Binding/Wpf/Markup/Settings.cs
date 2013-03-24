@@ -31,6 +31,11 @@ namespace TheSettings.Binding.Wpf.Markup
                 typeof(Settings),
                 new FrameworkPropertyMetadata(null, InheritanceFlags));
 
+        static Settings()
+        {
+            CurrentStoreAccessor = new SingleSettingsStoreAccessor(new NullSettingsStore());
+        }
+
         internal static SettingsInitializer GetInitializer(DependencyObject element)
         {
             return (SettingsInitializer) element.GetValue(InitializerProperty);
@@ -66,6 +71,8 @@ namespace TheSettings.Binding.Wpf.Markup
         {
             element.SetValue(NamespaceProperty, value);
         }
+
+        public static ISettingsStoreAccessor CurrentStoreAccessor { get; set; }
 
         internal static void DebugValue(string name, DependencyObject element, ValueSource source, object value)
         {

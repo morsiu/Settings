@@ -90,7 +90,5 @@ namespace TheSettings
         }
 
         public event EventHandler SettingChanged;
-
-        public static readonly SettingsStore Instance = new SettingsStore();
     }
 }

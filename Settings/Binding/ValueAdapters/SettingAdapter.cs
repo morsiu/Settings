@@ -1,20 +1,25 @@
 ﻿using System;
+using TheSettings.Binding.Wpf;
 
 namespace TheSettings.Binding.ValueAdapters
 {
     public class SettingAdapter : IValueAdapter
     {
-        private readonly ISettingsStore _store;
-
+        private readonly ISettingsStoreAccessor _storeAccessor;
         private readonly SettingsNamespace _settingNamespace;
-
         private readonly string _settingName;
+        private readonly object _storeKey;
 
-        public SettingAdapter(ISettingsStore store, SettingsNamespace @namespace, string name)
+        public SettingAdapter(
+            ISettingsStoreAccessor storeAccessor,
+            object storeKey,
+            SettingsNamespace @namespace,
+            string name)
         {
-            _store = store;
+            _storeAccessor = storeAccessor;
             _settingNamespace = @namespace;
             _settingName = name;
+            _storeKey = storeKey;
         }
 
         public Action<object> ValueChangedCallback
@@ -24,12 +29,12 @@ namespace TheSettings.Binding.ValueAdapters
 
         public object GetValue()
         {
-            return _store.GetSetting(_settingNamespace, _settingName);
+            return _storeAccessor.GetSetting(_storeKey, _settingNamespace, _settingName);
         }
 
         public void SetValue(object value)
         {
-            _store.SetSetting(_settingNamespace, _settingName, value);
+            _storeAccessor.SetSetting(_storeKey, _settingNamespace, _settingName, value);
         }
     }
 }

@@ -21,5 +21,12 @@ namespace TheSettingsTests
             var collectionB = Settings.GetSettings(objectB);
             Assert.AreNotSame(collectionA, collectionB);
         }
+
+        [TestMethod]
+        public void ShouldInitializeCurrentStoreAccessor()
+        {
+            var accessor = Settings.CurrentStoreAccessor;
+            Assert.IsNotNull(accessor);
+        }
     }
 }

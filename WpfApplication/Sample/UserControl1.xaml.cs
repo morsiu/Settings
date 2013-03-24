@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TheSettings;
+using TheSettings.Binding.Wpf;
+using TheSettings.Binding.Wpf.Markup;
 
 namespace WpfApplication.Sample
 {
@@ -21,10 +23,14 @@ namespace WpfApplication.Sample
     /// </summary>
     public partial class UserControl1 : UserControl
     {
+        private SettingsStore _store;
+
         public UserControl1()
         {
             InitializeComponent();
-            SettingsStore.Instance.SettingChanged += (o, e) => { RefreshSettings(); };
+            var accessor = (SingleSettingsStoreAccessor)Settings.CurrentStoreAccessor;
+            _store = (SettingsStore)accessor.Store;
+            _store.SettingChanged += (o, e) => { RefreshSettings(); };
         }
 
         private void RefreshSettingsSource(object sender, RoutedEventArgs e)
@@ -34,7 +40,7 @@ namespace WpfApplication.Sample
 
         private void RefreshSettings()
         {
-            var allSettings = SettingsStore.Instance.SettingsByNamespace
+            var allSettings = _store.SettingsByNamespace
                 .SelectMany(
                     n => n.Value.Settings,
                     (n, c) => new { Namespace = n.Key, Key = c.Key, Value = c.Value })
