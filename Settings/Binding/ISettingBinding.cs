@@ -1,4 +1,4 @@
-﻿namespace Settings.Binding
+﻿namespace TheSettings.Binding
 {
     public interface ISettingBinding
     {

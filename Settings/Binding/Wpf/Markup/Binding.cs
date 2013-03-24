@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 
-namespace Settings.Binding.Wpf.Markup
+namespace TheSettings.Binding.Wpf.Markup
 {
     public class Binding : ISettingBindingsProvider
     {

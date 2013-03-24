@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using TheSettings.Binding.Wpf.Markup;
 
-namespace Settings.Binding.Wpf
+namespace TheSettings.Binding.Wpf
 {
     /// <summary>
     /// Collection that stores setting bindings for object that onws it.
@@ -25,7 +26,7 @@ namespace Settings.Binding.Wpf
         {
             _bindings.Add(binding);
 
-            var initializer = Markup.Settings.GetInitializer(_owner);
+            var initializer = Settings.GetInitializer(_owner);
             if (initializer != null)
             {
                 initializer.QueueSettingsCollectionUpdate(this);
@@ -38,7 +39,7 @@ namespace Settings.Binding.Wpf
 
         public void Add(ISettingBindingsProvider bindingsProvider)
         {
-            var initializer = Markup.Settings.GetInitializer(_owner);
+            var initializer = Settings.GetInitializer(_owner);
             if (initializer != null)
             {
                 _providersToInitialize.Add(bindingsProvider);

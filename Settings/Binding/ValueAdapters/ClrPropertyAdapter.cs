@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Settings.Binding.ValueAdapters
+namespace TheSettings.Binding.ValueAdapters
 {
     public sealed class ClrPropertyAdapter : IValueAdapter, IDisposable
     {

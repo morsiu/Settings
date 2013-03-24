@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 
-namespace Settings.Binding.ValueAdapters
+namespace TheSettings.Binding.ValueAdapters
 {
     public sealed class DependencyPropertyAdapter : IValueAdapter, IDisposable
     {

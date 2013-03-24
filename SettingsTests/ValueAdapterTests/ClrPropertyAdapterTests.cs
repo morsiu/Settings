@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Settings;
-using Settings.Binding.ValueAdapters;
+using TheSettings;
+using TheSettings.Binding.ValueAdapters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SettingsTests.ValueAdapterTests
+namespace TheSettingsTests.ValueAdapterTests
 {
     [TestClass]
     public class ClrPropertyAdapterTests

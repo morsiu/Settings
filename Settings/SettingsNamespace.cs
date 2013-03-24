@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Settings
+namespace TheSettings
 {
     public class SettingsNamespace
     {

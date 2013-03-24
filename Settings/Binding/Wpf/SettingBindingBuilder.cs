@@ -1,6 +1,7 @@
 ﻿using System.Windows;
+using TheSettings.Binding.Wpf.Markup;
 
-namespace Settings.Binding.Wpf
+namespace TheSettings.Binding.Wpf
 {
     internal class SettingBindingBuilder
     {
@@ -17,8 +18,8 @@ namespace Settings.Binding.Wpf
 
         public void Build()
         {
-            var @namespace = Markup.Settings.GetNamespace(_target);
-            var settings = Markup.Settings.GetSettings(_target);
+            var @namespace = Settings.GetNamespace(_target);
+            var settings = Settings.GetSettings(_target);
             var bindingFactory = new SettingBindingFactory();
             var binding = bindingFactory.Create(_target, _property, @namespace, _name);
             settings.Add(binding);

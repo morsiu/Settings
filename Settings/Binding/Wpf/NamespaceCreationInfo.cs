@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Settings.Binding.Wpf
+namespace TheSettings.Binding.Wpf
 {
     public class NamespaceCreationInfo
     {

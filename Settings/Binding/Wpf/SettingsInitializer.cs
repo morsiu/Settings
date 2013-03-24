@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using TheSettings.Binding.Wpf.Markup;
 
-namespace Settings.Binding.Wpf
+namespace TheSettings.Binding.Wpf
 {
     internal class SettingsInitializer
     {
@@ -20,7 +21,7 @@ namespace Settings.Binding.Wpf
 
         public static SettingsInitializer GetInstance(FrameworkElement root)
         {
-            var existingInitializer = Markup.Settings.GetInitializer(root);
+            var existingInitializer = Settings.GetInitializer(root);
             if (existingInitializer != null)
             {
                 return existingInitializer;
@@ -33,7 +34,7 @@ namespace Settings.Binding.Wpf
                 throw new InvalidOperationException("Cannot return initializer instance as the root is already initialized.");
             }
             var initializer = new SettingsInitializer(root);
-            Markup.Settings.SetInitializer(root, initializer);
+            Settings.SetInitializer(root, initializer);
             root.Loaded += initializer.RootLoadedCallback;
             return initializer;
         }
@@ -83,7 +84,7 @@ namespace Settings.Binding.Wpf
             _namespaceBuilders.Clear();
             _settingBindingsBuilders.Clear();
             _bindingsCollectionsToInitialize.Clear();
-            _root.ClearValue(Markup.Settings.InitializerProperty);
+            _root.ClearValue(Settings.InitializerProperty);
         }
 
         private void SetupNamespaces()

@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TheSettings.Binding.Wpf.Markup;
 
-namespace SettingsTests
+namespace TheSettingsTests
 {
     [TestClass]
     public class SettingsTests
@@ -16,8 +17,8 @@ namespace SettingsTests
         {
             var objectA = new DependencyObject();
             var objectB = new DependencyObject();
-            var collectionA = Settings.Binding.Wpf.Markup.Settings.GetSettings(objectA);
-            var collectionB = Settings.Binding.Wpf.Markup.Settings.GetSettings(objectB);
+            var collectionA = Settings.GetSettings(objectA);
+            var collectionB = Settings.GetSettings(objectB);
             Assert.AreNotSame(collectionA, collectionB);
         }
     }

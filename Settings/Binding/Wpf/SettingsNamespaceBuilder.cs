@@ -1,6 +1,7 @@
 ﻿using System.Windows;
+using TheSettings.Binding.Wpf.Markup;
 
-namespace Settings.Binding.Wpf
+namespace TheSettings.Binding.Wpf
 {
     internal class SettingsNamespaceBuilder
     {
@@ -15,7 +16,7 @@ namespace Settings.Binding.Wpf
 
         public void Build()
         {
-            var namespaceSource = DependencyPropertyHelper.GetValueSource(_node, Markup.Settings.NamespaceProperty);
+            var namespaceSource = DependencyPropertyHelper.GetValueSource(_node, Settings.NamespaceProperty);
             if (namespaceSource.BaseValueSource != BaseValueSource.Local)
             {
                 var parentNamespace = GetParentNamespace();
@@ -23,11 +24,11 @@ namespace Settings.Binding.Wpf
                 if (_creationInfo.CreateNew)
                 {
                     var newNamespace = new SettingsNamespace(parentNamespace, _creationInfo.Name);
-                    Markup.Settings.SetNamespace(_node, newNamespace);
+                    Settings.SetNamespace(_node, newNamespace);
                 }
                 else
                 {
-                    Markup.Settings.SetNamespace(_node, parentNamespace);
+                    Settings.SetNamespace(_node, parentNamespace);
                 }
             }
         }
@@ -42,11 +43,11 @@ namespace Settings.Binding.Wpf
                     var parent = LogicalTreeHelper.FindLogicalNode(_creationInfo.Root, _creationInfo.ParentSourceName);
                     parentNamespace = parent == null
                                           ? SettingsNamespace.None
-                                          : Markup.Settings.GetNamespace(parent);
+                                          : Settings.GetNamespace(parent);
                 }
                 else
                 {
-                    var inheritedNamespace = Markup.Settings.GetNamespace(_node);
+                    var inheritedNamespace = Settings.GetNamespace(_node);
                     parentNamespace = inheritedNamespace;
                 }
             }

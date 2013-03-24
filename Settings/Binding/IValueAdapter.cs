@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Settings.Binding
+namespace TheSettings.Binding
 {
     public interface IValueAdapter
     {

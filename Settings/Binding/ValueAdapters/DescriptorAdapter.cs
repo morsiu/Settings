@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Settings.Binding.ValueAdapters
+namespace TheSettings.Binding.ValueAdapters
 {
     public class DescriptorAdapter : IValueAdapter, IDisposable
     {

@@ -1,4 +1,4 @@
-﻿namespace Settings
+﻿namespace TheSettings
 {
     public static class SettingsConstants
     {

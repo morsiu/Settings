@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Markup;
 
-namespace Settings.Binding.Wpf.Markup
+namespace TheSettings.Binding.Wpf.Markup
 {
     [ContentProperty("Settings")]
     public static class Settings

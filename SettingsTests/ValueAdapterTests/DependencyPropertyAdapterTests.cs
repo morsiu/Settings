@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Settings.Binding.ValueAdapters;
+using TheSettings.Binding.ValueAdapters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SettingsTests.ValueAdapterTests
+namespace TheSettingsTests.ValueAdapterTests
 {
     [TestClass]
     public class DependencyPropertyAdapterTests
