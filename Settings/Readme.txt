@@ -13,4 +13,4 @@ Namespace Settings\Binding\Wpf contains all stuff that allows settings to be use
 Namespace Settings\Binding\Wpf\Markup contains all classes that should be visible to WPF
 - that is markup extensions, binding providers and attached properties through Settings static class.
 
-The default ISettingStore implementation used by settings can be changed in Settings\Binding\SettingBindingFactory.CreateSettingAdapter.
+By default store reachable through Settings.CurrentStoreAccessor is a NullSettingsStore wrapped in SingleSettingsStoreAccessor.
