@@ -39,6 +39,24 @@ namespace TheSettings
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            var other = obj as SettingsNamespace;
+            if (obj == null) return false;
+            return Equals(other);
+        }
+
+        public bool Equals(SettingsNamespace other)
+        {
+            if (other == null) return false;
+            return Path.Equals(other.Path);
+        }
+
+        public override int GetHashCode()
+        {
+            return Path.GetHashCode();
+        }
+
         public override string ToString()
         {
             return Path;
