@@ -46,11 +46,6 @@ namespace TheSettings
 
         private class SettingsNamespaceNullObject : SettingsNamespace
         {
-            public SettingsNamespaceNullObject()
-                : base(string.Empty)
-            {
-            }
-
             public override string Path
             {
                 get
