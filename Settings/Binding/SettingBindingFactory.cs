@@ -9,9 +9,14 @@ namespace TheSettings.Binding
 {
     public class SettingBindingFactory
     {
-        public ISettingBinding Create(object target, object propertyInfo, SettingsNamespace @namespace, string settingName)
+        public ISettingBinding Create(
+            object target,
+            object propertyInfo,
+            object storeKey,
+            SettingsNamespace @namespace,
+            string settingName)
         {
-            var settingAdapter = CreateSettingAdapter(@namespace, settingName);
+            var settingAdapter = CreateSettingAdapter(storeKey, @namespace, settingName);
             var targetAdapter = GetPropertyAdapter(target, propertyInfo);
             if (targetAdapter == null)
             {
@@ -21,17 +26,22 @@ namespace TheSettings.Binding
             return new SettingBinding(targetAdapter, settingAdapter);
         }
 
-        private static SettingAdapter CreateSettingAdapter(SettingsNamespace @namespace, string settingName)
+        public ISettingBinding Create(
+            DependencyObject target,
+            DependencyProperty property,
+            object storeKey,
+            SettingsNamespace @namespace,
+            string settingName)
         {
-            var storeAccessor = Settings.CurrentStoreAccessor;
-            return new SettingAdapter(storeAccessor, null, @namespace, settingName);
-        }
-
-        public ISettingBinding Create(DependencyObject target, DependencyProperty property, SettingsNamespace @namespace, string settingName)
-        {
-            var settingAdapter = CreateSettingAdapter(@namespace, settingName);
+            var settingAdapter = CreateSettingAdapter(storeKey, @namespace, settingName);
             var targetAdapter = new DependencyPropertyAdapter(target, property);
             return new SettingBinding(targetAdapter, settingAdapter);
+        }
+
+        private static SettingAdapter CreateSettingAdapter(object storeKey, SettingsNamespace @namespace, string settingName)
+        {
+            var storeAccessor = Settings.CurrentStoreAccessor;
+            return new SettingAdapter(storeAccessor, storeKey, @namespace, settingName);
         }
 
         private static IValueAdapter GetPropertyAdapter(object target, object propertyInfo)

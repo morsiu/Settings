@@ -24,6 +24,8 @@ namespace TheSettings.Binding.Wpf.Markup
 
         public string ColumnSettingFormat { get; set; }
 
+        public object Store { get; set; }
+
         public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
         {
             var factory = new SettingBindingFactory();
@@ -43,7 +45,7 @@ namespace TheSettings.Binding.Wpf.Markup
             return
                 from storedProperty in StoredProperties
                 let name = string.Format(ColumnSettingFormat, index, storedProperty.Name)
-                let binding = factory.Create(column, storedProperty, @namespace, name)
+                let binding = factory.Create(column, storedProperty, Store, @namespace, name)
                 select binding;
         }
     }

@@ -19,6 +19,8 @@ namespace TheSettings.Binding.Wpf.Markup
 
         public object DefaultValue { get; set; }
 
+        public object Store { get; set; }
+
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var rootProvider = serviceProvider.RequireService<IRootObjectProvider>();
@@ -29,7 +31,7 @@ namespace TheSettings.Binding.Wpf.Markup
                 throw new InvalidOperationException("Target object is not a DependencyObject.");
             }
             var initializer = rootProvider.RequireInitializer();
-            var builder = new SettingBindingBuilder(target, targetProvider.TargetProperty, Name);
+            var builder = new SettingBindingBuilder(target, targetProvider.TargetProperty, Store, Name);
             initializer.QueueSettingBindingBuild(builder);
 
             if (DefaultValue == UnsetValue)
