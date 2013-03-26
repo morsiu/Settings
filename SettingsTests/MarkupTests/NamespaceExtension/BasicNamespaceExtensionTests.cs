@@ -40,7 +40,7 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtension
         }
 
         [TestMethod]
-        public void ShouldUseSourcePathAsParentIfUsingParentSourceName()
+        public void ShouldUseSpecifiedControlsNamespaceAsParentIfUsingParentSourceName()
         {
             var window = CreateShowThenCloseAtCleanup<NamespaceParent>();
             Assert.AreEqual("\\Root\\Child3\\Child4", window.Child4Namespace.Path);
