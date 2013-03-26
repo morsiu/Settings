@@ -35,7 +35,7 @@ namespace TheSettings.Binding.Wpf
             }
             var initializer = new SettingsInitializer(root);
             Settings.SetInitializer(root, initializer);
-            root.Initialized += initializer.RootLoadedCallback;
+            root.Loaded += initializer.RootLoadedCallback;
             return initializer;
         }
 
@@ -80,7 +80,7 @@ namespace TheSettings.Binding.Wpf
 
         private void Cleanup()
         {
-            _root.Initialized -= RootLoadedCallback;
+            _root.Loaded -= RootLoadedCallback;
             _namespaceBuilders.Clear();
             _settingBindingsBuilders.Clear();
             _bindingsCollectionsToInitialize.Clear();
