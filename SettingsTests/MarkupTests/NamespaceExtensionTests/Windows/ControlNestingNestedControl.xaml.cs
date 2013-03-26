@@ -1,4 +1,5 @@
-﻿using System;
+﻿using TheSettings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,34 +13,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TheSettings;
 using TheSettings.Binding.Wpf.Markup;
 
-namespace TheSettingsTests.MarkupTests
+namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 {
-    public partial class DataTemplates : Window
+    public partial class ControlNestingNestedControl : UserControl
     {
-        public DataTemplates()
+        public ControlNestingNestedControl()
         {
             InitializeComponent();
         }
 
-        public SettingsNamespace TemplateNamespace
+        public SettingsNamespace Level1Namespace
         {
-            get
-            {
-                return Settings.GetNamespace(Content);
-            }
+            get { return Settings.GetNamespace(Level1); }
         }
 
-        public object TemplateDataContext
+        public SettingsNamespace Level2Namespace
         {
-            get
-            {
-                var child = VisualTreeHelper.GetChild(Content, 0);
-                return ((FrameworkElement)child).DataContext;
-            }
+            get { return Settings.GetNamespace(Level2); }
         }
-
     }
 }

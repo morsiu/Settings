@@ -15,18 +15,23 @@ using System.Windows.Shapes;
 using TheSettings;
 using TheSettings.Binding.Wpf.Markup;
 
-namespace TheSettingsTests.MarkupTests
+namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 {
-    public partial class NamespaceParent : Window
+    public partial class Basic : Window
     {
-        public NamespaceParent()
+        public Basic()
         {
             InitializeComponent();
         }
 
         public SettingsNamespace RootNamespace
         {
-            get { return Settings.GetNamespace(Root); }
+            get { return Settings.GetNamespace(this); }
+        }
+
+        public SettingsNamespace Level1Namespace
+        {
+            get { return Settings.GetNamespace(Level1); }
         }
 
         public SettingsNamespace Child1Namespace

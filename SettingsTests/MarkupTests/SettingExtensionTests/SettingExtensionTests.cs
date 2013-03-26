@@ -11,8 +11,9 @@ using TheSettings;
 using TheSettings.Binding.Wpf;
 using TheSettings.Binding.Wpf.Markup;
 using TheSettingsTests.Infrastructure;
+using TheSettingsTests.MarkupTests.SettingExtensionTests.Windows;
 
-namespace TheSettingsTests.MarkupTests.SettingExtensions
+namespace TheSettingsTests.MarkupTests.SettingExtensionsTests
 {
     [TestClass]
     public class SettingExtensionTests : GuiTests
@@ -38,15 +39,6 @@ namespace TheSettingsTests.MarkupTests.SettingExtensions
             Settings.CurrentStoreAccessor.SetSetting(null, new SettingsNamespace("Namespace"), "Setting", 100);
             var window = CreateShowThenCloseAtCleanup<SettingBinding>();
             Assert.AreEqual(100, window.DataContext);
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void ShouldSetStoredValueAfterBindingCreationFromDataTemplate()
-        {
-            Settings.CurrentStoreAccessor.SetSetting(null, new SettingsNamespace("Root"), "Test", 100);
-            var window = CreateShowThenCloseAtCleanup<DataTemplates>();
-            Assert.AreEqual(100, window.TemplateDataContext);
         }
     }
 }

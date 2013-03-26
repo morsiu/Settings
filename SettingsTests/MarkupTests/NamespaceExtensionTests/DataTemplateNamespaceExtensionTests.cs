@@ -7,8 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
+using TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows;
 
-namespace TheSettingsTests.MarkupTests
+namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests
 {
     [TestClass]
     public class DataTemplateNamespaceExtensionTests
@@ -17,13 +18,7 @@ namespace TheSettingsTests.MarkupTests
         [Ignore]
         public void ShouldSetNamespaceOnDataTemplateInstance()
         {
-            var tree = new DataTemplates();
-            if (!tree.IsInitialized)
-            {
-                var waiter = new ManualResetEvent(false);
-                tree.Initialized += (s, e) => waiter.Set();
-                waiter.WaitOne();
-            }
+            var tree = new DataTemplating();
             Assert.AreEqual("\\Root", tree.TemplateNamespace.Path);
         }
     }

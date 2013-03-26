@@ -15,26 +15,28 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TheSettings.Binding.Wpf.Markup;
 
-namespace TheSettingsTests.MarkupTests
+namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 {
-    /// <summary>
-    /// Interaction logic for NestedControl.xaml
-    /// </summary>
-    public partial class NestedControl : UserControl
+    public partial class ControlNesting : Window
     {
-        public NestedControl()
+        public ControlNesting()
         {
             InitializeComponent();
         }
 
-        public SettingsNamespace Level1Namespace
+        public SettingsNamespace NestedLevel1Namespace
         {
-            get { return Settings.GetNamespace(Level1); }
+            get { return Nested.Level1Namespace; }
         }
 
-        public SettingsNamespace Level2Namespace
+        public SettingsNamespace NestedLevel2Namespace
         {
-            get { return Settings.GetNamespace(Level2); }
+            get { return Nested.Level2Namespace; }
+        }
+
+        public SettingsNamespace RootNamespace
+        {
+            get { return Settings.GetNamespace(this); }
         }
     }
 }

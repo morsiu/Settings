@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TheSettingsTests.MarkupTests
+namespace TheSettingsTests.MarkupTests.SettingExtensionTests.Windows
 {
     public partial class SettingBinding : Window
     {

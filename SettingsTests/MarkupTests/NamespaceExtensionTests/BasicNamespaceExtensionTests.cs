@@ -5,45 +5,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheSettingsTests.Infrastructure;
+using TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows;
 
-namespace TheSettingsTests.MarkupTests.NamespaceExtension
+namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests
 {
     [TestClass]
     public class BasicNamespaceExtensionTests : GuiTests
     {
+        private Basic _window;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _window = CreateShowThenCloseAtCleanup<Basic>();
+        }
+
         [TestMethod]
         public void ShouldSetNamespace()
         {
-            var window = CreateShowThenCloseAtCleanup<NamespaceInheritance>();
-            Assert.AreEqual("\\Namespace", window.RootNamespace.Path);
+            Assert.AreEqual("\\Root", _window.RootNamespace.Path);
         }
 
         [TestMethod]
         public void ShouldInheritNamespaceAlongVisualwindow()
         {
-            var window = CreateShowThenCloseAtCleanup<NamespaceInheritance>();
-            Assert.AreEqual("\\Namespace", window.Level1Namespace.Path);
+            Assert.AreEqual("\\Root", _window.Level1Namespace.Path);
         }
 
         [TestMethod]
         public void ShouldInheritAncestorsPathAsParentPath()
         {
-            var window = CreateShowThenCloseAtCleanup<NamespaceParent>();
-            Assert.AreEqual("\\Root\\Child1", window.Child1Namespace.Path);
+            Assert.AreEqual("\\Root\\Child1", _window.Child1Namespace.Path);
         }
 
         [TestMethod]
         public void ShouldNotInheritAncestorsPathAsParentIfNotUsingParent()
         {
-            var window = CreateShowThenCloseAtCleanup<NamespaceParent>();
-            Assert.AreEqual("\\Child2", window.Child2Namespace.Path);
+            Assert.AreEqual("\\Child2", _window.Child2Namespace.Path);
         }
 
         [TestMethod]
         public void ShouldUseSpecifiedControlsNamespaceAsParentIfUsingParentSourceName()
         {
-            var window = CreateShowThenCloseAtCleanup<NamespaceParent>();
-            Assert.AreEqual("\\Root\\Child3\\Child4", window.Child4Namespace.Path);
+            Assert.AreEqual("\\Root\\Child3\\Child4", _window.Child4Namespace.Path);
         }
     }
 }

@@ -1,21 +1,12 @@
-﻿<Window x:Class="TheSettingsTests.MarkupTests.NamespaceParent"
+﻿<Window x:Class="TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows.ControlNesting"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:s="clr-namespace:TheSettings.Binding.Wpf.Markup;assembly=Settings"
+             xmlns:t="clr-namespace:TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows"
              mc:Ignorable="d"
              s:Settings.Namespace="{s:Namespace Root}"
-             x:Name="Root"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid s:Settings.Namespace="{s:Namespace Child1}"
-              x:Name="Child1"/>
-        <Grid s:Settings.Namespace="{s:Namespace Child2, UseParent=False}"
-              x:Name="Child2"/>
-        <Grid s:Settings.Namespace="{s:Namespace Child3}"
-              x:Name="Child3"/>
-        <Grid s:Settings.Namespace="{s:Namespace Child4, ParentSourceName=Child3}"
-              x:Name="Child4"/>
-    </Grid>
+    <t:ControlNestingNestedControl x:Name="Nested"/>
 </Window>
