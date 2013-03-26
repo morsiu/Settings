@@ -10,7 +10,7 @@ namespace TheSettingsTests.Infrastructure
 {
     public class GuiTests
     {
-        private readonly HashSet<Window> _windowsToClose = new HashSet<Window>();
+        private HashSet<Window> _windowsToClose;
 
         protected void ShowThenCloseAtCleanup(Window window)
         {
@@ -21,24 +21,26 @@ namespace TheSettingsTests.Infrastructure
         protected T CreateShowThenCloseAtCleanup<T>()
             where T : Window, new()
         {
+            InitializeWindowsCleanup();
             var window = new T();
             ShowThenCloseAtCleanup(window);
             return window;
         }
 
-        protected virtual void OnCleanup()
+        [TestInitialize]
+        public void InitializeWindowsCleanup()
+        {
+            _windowsToClose = new HashSet<Window>();
+        }
+
+        [TestCleanup]
+        public void CleanupWindows()
         {
             foreach (var window in _windowsToClose)
             {
                 window.Close();
             }
-            _windowsToClose.Clear();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            OnCleanup();
+            _windowsToClose = null;
         }
     }
 }
