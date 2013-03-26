@@ -12,7 +12,7 @@ using TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows;
 namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests
 {
     [TestClass]
-    public class DataTemplateNamespaceExtensionTests
+    public class DataTemplatingNamespaceExtensionTests
     {
         [TestMethod]
         [Ignore]

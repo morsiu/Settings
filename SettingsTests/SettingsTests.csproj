@@ -69,7 +69,7 @@
     <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlNesting.xaml.cs">
       <DependentUpon>ControlNesting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MarkupTests\NamespaceExtensionTests\DataTemplateNamespaceExtensionTests.cs" />
+    <Compile Include="MarkupTests\NamespaceExtensionTests\DataTemplatingNamespaceExtensionTests.cs" />
     <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlNestingNestedControl.xaml.cs">
       <DependentUpon>ControlNestingNestedControl.xaml</DependentUpon>
     </Compile>
