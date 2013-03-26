@@ -28,8 +28,13 @@ namespace TheSettingsTests.MarkupTests
         }
 
         public SettingsNamespace Level1Namespace
-       { 
+        {
             get { return Settings.GetNamespace(Level1); }
+        }
+
+        public SettingsNamespace Level2Namespace
+        {
+            get { return Settings.GetNamespace(Level2); }
         }
     }
 }

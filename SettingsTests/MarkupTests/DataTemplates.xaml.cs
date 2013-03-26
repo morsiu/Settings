@@ -17,31 +17,29 @@ using TheSettings.Binding.Wpf.Markup;
 
 namespace TheSettingsTests.MarkupTests
 {
-    public partial class NamespaceParent : Window
+    public partial class DataTemplates : Window
     {
-        public NamespaceParent()
+        public DataTemplates()
         {
             InitializeComponent();
         }
 
-        public SettingsNamespace RootNamespace
+        public SettingsNamespace TemplateNamespace
         {
-            get { return Settings.GetNamespace(Root); }
+            get
+            {
+                return Settings.GetNamespace(Content);
+            }
         }
 
-        public SettingsNamespace Child1Namespace
+        public object TemplateDataContext
         {
-            get { return Settings.GetNamespace(Child1); }
+            get
+            {
+                var child = VisualTreeHelper.GetChild(Content, 0);
+                return ((FrameworkElement)child).DataContext;
+            }
         }
 
-        public SettingsNamespace Child2Namespace
-        {
-            get { return Settings.GetNamespace(Child2); }
-        }
-
-        public SettingsNamespace Child4Namespace
-        {
-            get { return Settings.GetNamespace(Child4); }
-        }
     }
 }

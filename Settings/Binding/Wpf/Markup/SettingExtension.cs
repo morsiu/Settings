@@ -23,12 +23,20 @@ namespace TheSettings.Binding.Wpf.Markup
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var rootProvider = serviceProvider.RequireService<IRootObjectProvider>();
             var targetProvider = serviceProvider.RequireService<IProvideValueTarget>();
+            if (targetProvider.TargetObject.GetType().FullName == "System.Windows.SharedDp")
+            {
+                return this;
+            }
             var target = targetProvider.TargetObject as DependencyObject;
             if (target == null)
             {
                 throw new InvalidOperationException("Target object is not a DependencyObject.");
+            }
+            var rootProvider = serviceProvider.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
+            if (rootProvider == null)
+            {
+                return this;
             }
             var initializer = rootProvider.RequireInitializer();
             var builder = new SettingBindingBuilder(target, targetProvider.TargetProperty, Store, Name);

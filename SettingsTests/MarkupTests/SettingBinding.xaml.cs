@@ -15,10 +15,7 @@ using System.Windows.Shapes;
 
 namespace TheSettingsTests.MarkupTests
 {
-    /// <summary>
-    /// Interaction logic for SettingBinding.xaml
-    /// </summary>
-    public partial class SettingBinding : UserControl
+    public partial class SettingBinding : Window
     {
         public SettingBinding()
         {

@@ -17,7 +17,7 @@ using TheSettings.Binding.Wpf.Markup;
 
 namespace TheSettingsTests.MarkupTests
 {
-    public partial class NamespaceInheritance : UserControl
+    public partial class NamespaceInheritance : Window
     {
         public NamespaceInheritance()
         {
@@ -32,6 +32,11 @@ namespace TheSettingsTests.MarkupTests
         public SettingsNamespace NestedLevel1Namespace
         {
             get { return Level2.Level1Namespace; }
+        }
+
+        public SettingsNamespace NestedLevel2Namespace
+        {
+            get { return Level2.Level2Namespace; }
         }
 
         public SettingsNamespace RootNamespace

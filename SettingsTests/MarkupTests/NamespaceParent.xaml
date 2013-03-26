@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TheSettingsTests.MarkupTests.NamespaceParent"
+﻿<Window x:Class="TheSettingsTests.MarkupTests.NamespaceParent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,4 +18,4 @@
         <Grid s:Settings.Namespace="{s:Namespace Child4, ParentSourceName=Child3}"
               x:Name="Child4"/>
     </Grid>
-</UserControl>
+</Window>

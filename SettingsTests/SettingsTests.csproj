@@ -57,20 +57,26 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Infrastructure\GuiTests.cs" />
+    <Compile Include="MarkupTests\DataTemplates.xaml.cs">
+      <DependentUpon>DataTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MarkupTests\NamespaceExtension\BasicNamespaceExtensionTests.cs" />
+    <Compile Include="MarkupTests\NamespaceExtension\ControlNestingNamespaceExtensionTests.cs" />
     <Compile Include="MarkupTests\NamespaceInheritance.xaml.cs">
       <DependentUpon>NamespaceInheritance.xaml</DependentUpon>
     </Compile>
     <Compile Include="MarkupTests\NamespaceParent.xaml.cs">
       <DependentUpon>NamespaceParent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MarkupTests\NamespaceExtensionTests.cs" />
+    <Compile Include="MarkupTests\NamespaceExtension\DataTemplateNamespaceExtensionTests.cs" />
     <Compile Include="MarkupTests\NestedControl.xaml.cs">
       <DependentUpon>NestedControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MarkupTests\SettingBinding.xaml.cs">
       <DependentUpon>SettingBinding.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MarkupTests\SettingExtensionTests.cs" />
+    <Compile Include="MarkupTests\SettingsExtension\SettingExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsNamespaceTests.cs" />
     <Compile Include="SettingsTests.cs" />
@@ -87,6 +93,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MarkupTests\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MarkupTests\NamespaceInheritance.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,6 +114,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
