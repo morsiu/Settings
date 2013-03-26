@@ -82,6 +82,7 @@
     <Compile Include="SettingsTests.cs" />
     <Compile Include="ValueAdapterTests\ClrPropertyAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\DependencyPropertyAdapterTests.cs" />
+    <Compile Include="ValueAdapterTests\SettingAdapterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Settings\Settings.csproj">

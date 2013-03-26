@@ -16,6 +16,9 @@ namespace TheSettings.Binding.ValueAdapters
             SettingsNamespace @namespace,
             string name)
         {
+            if (storeAccessor == null) throw new ArgumentNullException("storeAccessor");
+            if (@namespace == null) throw new ArgumentNullException("namespace");
+            if (name == null) throw new ArgumentNullException("name");
             _storeAccessor = storeAccessor;
             _settingNamespace = @namespace;
             _settingName = name;
