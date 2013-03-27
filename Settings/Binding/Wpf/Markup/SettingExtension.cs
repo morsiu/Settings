@@ -33,11 +33,7 @@ namespace TheSettings.Binding.Wpf.Markup
             {
                 throw new InvalidOperationException("Target object is not a DependencyObject.");
             }
-            var rootProvider = serviceProvider.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
-            if (rootProvider == null)
-            {
-                return this;
-            }
+            var rootProvider = serviceProvider.RequireService<IRootObjectProvider>();
             var initializer = rootProvider.RequireInitializer();
             var builder = new SettingBindingBuilder(target, targetProvider.TargetProperty, Store, Name);
             initializer.QueueSettingBindingBuild(builder);
