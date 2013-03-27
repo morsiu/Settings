@@ -24,7 +24,7 @@ namespace TheSettings.Binding.Wpf.Markup
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var targetProvider = serviceProvider.RequireService<IProvideValueTarget>();
-            if (targetProvider.TargetObject.GetType().FullName == "System.Windows.SharedDp")
+            if (targetProvider.IsInsideTemplate())
             {
                 return this;
             }

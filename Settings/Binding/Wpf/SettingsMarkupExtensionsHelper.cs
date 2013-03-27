@@ -65,5 +65,10 @@ namespace TheSettings.Binding.Wpf
             }
             throw new InvalidOperationException("Cannot retrieve default value from target property of target object as they are not supported.");
         }
+
+        public static bool IsInsideTemplate(this IProvideValueTarget provider)
+        {
+            return provider.TargetObject.GetType().FullName == "System.Windows.SharedDp";
+        }
     }
 }
