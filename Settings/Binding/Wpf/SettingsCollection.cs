@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,10 +13,10 @@ namespace TheSettings.Binding.Wpf
     /// </summary>
     public class SettingBindingCollection : IList
     {
+        public static readonly SettingBindingCollection UnsetValue = new SettingBindingCollection(null);
         private readonly DependencyObject _owner;
         private readonly List<ISettingBindingsProvider> _providersToInitialize = new List<ISettingBindingsProvider>();
         private readonly List<ISettingBinding> _bindings = new List<ISettingBinding>();
-        public static readonly SettingBindingCollection UnsetValue = new SettingBindingCollection(null);
 
         public SettingBindingCollection(DependencyObject owner)
         {
