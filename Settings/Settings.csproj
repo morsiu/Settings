@@ -52,6 +52,13 @@
     <Compile Include="Binding\ValueAdapters\DependencyPropertyAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
+    <Compile Include="Infrastructure\ITreeWalker.cs" />
+    <Compile Include="Infrastructure\ITree.cs" />
+    <Compile Include="Binding\Wpf\Infrastructure\WpfLogicalTreeWalker.cs" />
+    <Compile Include="Infrastructure\TreeWalker.cs" />
+    <Compile Include="Binding\Wpf\Infrastructure\WpfVisualTreeWalker.cs" />
+    <Compile Include="Binding\Wpf\Infrastructure\WpfLogicalTree.cs" />
+    <Compile Include="Binding\Wpf\Infrastructure\WpfVisualTree.cs" />
     <Compile Include="Binding\Wpf\ISettingsStoreAccessor.cs" />
     <Compile Include="Binding\Wpf\Markup\Binding.cs" />
     <Compile Include="Binding\Wpf\Markup\DataGridColumnsBinding.cs" />
@@ -75,6 +82,7 @@
   <ItemGroup>
     <None Include="Readme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
