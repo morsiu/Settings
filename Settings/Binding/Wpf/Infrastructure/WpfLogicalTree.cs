@@ -19,5 +19,15 @@ namespace TheSettings.Binding.Wpf.Infrastructure
         {
             return LogicalTreeHelper.GetChildren(element).OfType<DependencyObject>().ElementAt(index);
         }
+
+        public int GetChildrenCount(DependencyObject element)
+        {
+            return LogicalTreeHelper.GetChildren(element).OfType<DependencyObject>().Count();
+        }
+
+        public IEnumerable<DependencyObject> GetChildren(DependencyObject element)
+        {
+            return LogicalTreeHelper.GetChildren(element).OfType<DependencyObject>();
+        }
     }
 }

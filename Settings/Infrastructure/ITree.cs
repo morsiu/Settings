@@ -12,5 +12,9 @@ namespace TheSettings.Infrastructure
         TElement GetParent(TElement element);
 
         TElement GetChild(TElement element, int index);
+
+        IEnumerable<TElement> GetChildren(TElement element);
+
+        int GetChildrenCount(TElement element);
     }
 }

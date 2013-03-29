@@ -20,5 +20,18 @@ namespace TheSettings.Binding.Wpf.Infrastructure
         {
             return VisualTreeHelper.GetChild(element, index);
         }
+
+        public int GetChildrenCount(DependencyObject element)
+        {
+            return VisualTreeHelper.GetChildrenCount(element);
+        }
+
+        public IEnumerable<DependencyObject> GetChildren(DependencyObject element)
+        {
+            for (int index = 0; index < GetChildrenCount(element); ++index)
+            {
+                yield return GetChild(element, index);
+            }
+        }
     }
 }
