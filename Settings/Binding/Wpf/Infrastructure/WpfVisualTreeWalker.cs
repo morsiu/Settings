@@ -11,7 +11,7 @@ namespace TheSettings.Binding.Wpf.Infrastructure
     public class WpfVisualTreeWalker : TreeWalker<DependencyObject>
     {
         public WpfVisualTreeWalker(DependencyObject initialCurrent)
-            : base(initialCurrent, new WpfLogicalTree())
+            : base(initialCurrent, new WpfVisualTree())
         {
         }
     }
