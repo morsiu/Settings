@@ -46,5 +46,11 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests
         {
             Assert.AreEqual("\\TemplateChild3", _window.TemplateChild3Namespace.Path);
         }
+
+        [TestMethod]
+        public void ShouldNotLookForParentSourceElementOutsideOfCurrentNameScope()
+        {
+            Assert.AreEqual("\\TemplateChild4", _window.TemplateChild4Namespace.Path);
+        }
     }
 }

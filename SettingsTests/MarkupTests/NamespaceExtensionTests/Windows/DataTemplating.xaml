@@ -18,8 +18,13 @@
                 <Grid x:Name="TemplateChild1" s:Settings.Namespace="{s:Namespace TemplateChild1}" />
                 <Grid x:Name="TemplateChild2" s:Settings.Namespace="{s:Namespace TemplateChild2, ParentSourceName=TemplateChild1}" />
                 <Grid x:Name="TemplateChild3" s:Settings.Namespace="{s:Namespace TemplateChild3, UseParent=False}" />
+                <Grid x:Name="TemplateChild4" s:Settings.Namespace="{s:Namespace TemplateChild4, ParentSourceName=Outside}" />
             </Grid>
         </DataTemplate>
     </Window.Resources>
-    <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{StaticResource Template}" />
+    <Grid>
+        <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{StaticResource Template}" />
+        <Grid x:Name="Grid"
+              s:Settings.Namespace="{s:Namespace Outside}"/>
+    </Grid>
 </Window>

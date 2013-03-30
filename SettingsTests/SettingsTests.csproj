@@ -58,6 +58,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Infrastructure\GuiTests.cs" />
+    <Compile Include="MarkupTests\NamespaceExtensionTests\ControlTemplatingNamespaceExtensionTests.cs" />
+    <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlTemplating.xaml.cs">
+      <DependentUpon>ControlTemplating.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\DataTemplating.xaml.cs">
       <DependentUpon>DataTemplating.xaml</DependentUpon>
     </Compile>
@@ -95,6 +99,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MarkupTests\NamespaceExtensionTests\Windows\ControlTemplating.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MarkupTests\NamespaceExtensionTests\Windows\DataTemplating.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

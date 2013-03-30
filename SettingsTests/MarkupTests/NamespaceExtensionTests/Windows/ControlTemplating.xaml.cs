@@ -19,14 +19,14 @@ using TheSettings.Infrastructure;
 
 namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 {
-    public partial class DataTemplating : Window
+    public partial class ControlTemplating : Window
     {
-        public DataTemplating()
+        public ControlTemplating()
         {
             InitializeComponent();
         }
 
-        public SettingsNamespace TemplateNamespace
+        public SettingsNamespace ControlTemplateNamespace
         {
             get
             {
@@ -35,7 +35,7 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
             }
         }
 
-        public SettingsNamespace TemplateInTemplateNamespace
+        public SettingsNamespace TemplateInControlTemplateNamespace
         {
             get
             {
@@ -45,7 +45,7 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
             }
         }
 
-        public SettingsNamespace TemplateChild2Namespace
+        public SettingsNamespace ControlTemplateChild2Namespace
         {
             get
             {
@@ -55,7 +55,7 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
             }
         }
 
-        public SettingsNamespace TemplateChild3Namespace
+        public SettingsNamespace ControlTemplateChild3Namespace
         {
             get
             {
@@ -65,7 +65,7 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
             }
         }
 
-        public SettingsNamespace TemplateChild4Namespace
+        public SettingsNamespace ControlTemplateChild4Namespace
         {
             get
             {
@@ -77,7 +77,7 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 
         private ITreeWalker<DependencyObject> GetTemplateRoot()
         {
-            var walker = new WpfVisualTreeWalker(ContentPresenter).ClimbDown(0);
+            var walker = new WpfVisualTreeWalker(ControlTemplate).ClimbDown(0);
             return walker;
         }
     }
