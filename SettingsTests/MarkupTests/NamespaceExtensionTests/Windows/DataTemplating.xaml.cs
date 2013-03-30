@@ -75,6 +75,16 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
             }
         }
 
+        public SettingsNamespace TemplateChild5Namespace
+        {
+            get
+            {
+                // -> 5th grid
+                var grid = GetTemplateRoot().ClimbDown(5).CurrentAs<Grid>();
+                return Settings.GetNamespace(grid);
+            }
+        }
+
         private ITreeWalker<DependencyObject> GetTemplateRoot()
         {
             var walker = new WpfVisualTreeWalker(ContentPresenter).ClimbDown(0);

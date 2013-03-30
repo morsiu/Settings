@@ -10,7 +10,7 @@
     <Window.Resources>
         <!-- The order and nesting inside templates is dependent upon in namespace getters -->
         <DataTemplate x:Key="InnerTemplate">
-            <Grid DataContext="{s:Namespace Template}" />
+            <Grid x:Name="Inner" DataContext="{s:Namespace Template}" />
         </DataTemplate>
         <DataTemplate x:Key="Template">
             <Grid DataContext="{s:Namespace Template}">
@@ -19,6 +19,7 @@
                 <Grid x:Name="TemplateChild2" s:Settings.Namespace="{s:Namespace TemplateChild2, ParentSourceName=TemplateChild1}" />
                 <Grid x:Name="TemplateChild3" s:Settings.Namespace="{s:Namespace TemplateChild3, UseParent=False}" />
                 <Grid x:Name="TemplateChild4" s:Settings.Namespace="{s:Namespace TemplateChild4, ParentSourceName=Outside}" />
+                <Grid x:Name="TemplateChild5" s:Settings.Namespace="{s:Namespace TemplateChild5, ParentSourceName=Inner}" />
             </Grid>
         </DataTemplate>
     </Window.Resources>

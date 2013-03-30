@@ -39,15 +39,21 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests
         }
 
         [TestMethod]
+        public void ShouldNotUseAncestorNamespaceAsParentWhenNotUsingParentInsideControlTemplateInstance()
+        {
+            Assert.AreEqual("\\ControlTemplateChild3", _window.ControlTemplateChild3Namespace.Path);
+        }
+
+        [TestMethod]
         public void ShouldNotLookForParentSourceElementOutsideOfCurrentNameScope()
         {
             Assert.AreEqual("\\ControlTemplateChild4", _window.ControlTemplateChild4Namespace.Path);
         }
 
         [TestMethod]
-        public void ShouldNotUseAncestorNamespaceAsParentWhenNotUsingParentInsideControlTemplateInstance()
+        public void ShouldNotLookForParentSourceElementInsideNestedNameScope()
         {
-            Assert.AreEqual("\\ControlTemplateChild3", _window.ControlTemplateChild3Namespace.Path);
+            Assert.AreEqual("\\ControlTemplateChild5", _window.ControlTemplateChild5Namespace.Path);
         }
     }
 }
