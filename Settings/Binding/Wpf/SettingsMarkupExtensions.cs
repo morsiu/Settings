@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
 using System.Xaml;
+using TheSettings.Binding.Wpf.Infrastructure;
 
 namespace TheSettings.Binding.Wpf
 {
@@ -19,12 +20,24 @@ namespace TheSettings.Binding.Wpf
             return service;
         }
 
-        public static SettingsInitializer RequireInitializer(this IRootObjectProvider rootProvider)
+        public static SettingsInitializer RequireInitializer(this IServiceProvider provider)
         {
-            var root = rootProvider.RootObject as FrameworkElement;
+            var rootProvider = provider.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
+            FrameworkElement root = null;
+            if (rootProvider != null)
+            {
+                root = rootProvider.RootObject as FrameworkElement;
+            }
+            else
+            {
+                var targetProvider = provider.RequireService<IProvideValueTarget>();
+                var target = targetProvider.TargetObject as DependencyObject;
+                var treeWalker = new WpfLogicalTreeWalker(target);
+                root = treeWalker.ClimbToRoot().CurrentAs<FrameworkElement>();
+            }
             if (root == null)
             {
-                throw new InvalidOperationException("No root object provided or it is not a FrameworkElement.");
+                throw new InvalidOperationException("Cannot determine root object for SettingsInitializer.");
             }
             var initializer = SettingsInitializer.GetInstance(root);
             if (initializer == null)

@@ -8,9 +8,18 @@
              s:Settings.Namespace="{s:Namespace Root}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Window.Resources>
+        <!-- The order and nesting inside DataTemplates is dependent upon in namespace getters -->
+        <DataTemplate x:Key="InnerTemplate">
+            <Grid DataContext="{s:Namespace Template}" />
+        </DataTemplate>
         <DataTemplate x:Key="Template">
-            <Grid DataContext="{s:Setting Test}" />
+            <Grid DataContext="{s:Namespace Template}">
+                <ContentPresenter ContentTemplate="{StaticResource InnerTemplate}"/>
+                <Grid x:Name="TemplateChild1" s:Settings.Namespace="{s:Namespace TemplateChild1}" />
+                <Grid x:Name="TemplateChild2" s:Settings.Namespace="{s:Namespace TemplateChild2, ParentSourceName=TemplateChild1}" />
+                <Grid x:Name="TemplateChild3" s:Settings.Namespace="{s:Namespace TemplateChild3, UseParent=False}" />
+            </Grid>
         </DataTemplate>
     </Window.Resources>
-    <ContentPresenter x:Name="Content" Content="Test" ContentTemplate="{StaticResource Template}" />
+    <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{StaticResource Template}" />
 </Window>

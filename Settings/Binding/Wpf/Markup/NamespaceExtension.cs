@@ -27,19 +27,17 @@ namespace TheSettings.Binding.Wpf.Markup
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var targetProvider = serviceProvider.RequireService<IProvideValueTarget>();
-            var rootProvider = serviceProvider.RequireService<IRootObjectProvider>();
-            var initializer = rootProvider.RequireInitializer();
-            var root = rootProvider.RootObject as DependencyObject;
-            if (root == null)
+            if (targetProvider.IsInsideTemplate())
             {
-                throw new InvalidOperationException("Root object is required and must be a DependencyObject.");
+                return this;
             }
+            var initializer = serviceProvider.RequireInitializer();
             var target = targetProvider.TargetObject as DependencyObject;
             if (target == null)
             {
                 throw new InvalidOperationException("Target is not a DependencyObject.");
             }
-            var creationInfo = new NamespaceCreationInfo(Name, UseParent, ParentSourceName, root);
+            var creationInfo = new NamespaceCreationInfo(Name, UseParent, ParentSourceName, initializer.Root);
             var builder = new SettingsNamespaceBuilder(target, creationInfo);
             initializer.QueueNamespaceBuild(builder);
 

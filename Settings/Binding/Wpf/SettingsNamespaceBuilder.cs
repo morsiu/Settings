@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
+using TheSettings.Binding.Wpf.Infrastructure;
 using TheSettings.Binding.Wpf.Markup;
 
 namespace TheSettings.Binding.Wpf
@@ -40,7 +42,17 @@ namespace TheSettings.Binding.Wpf
             {
                 if (_creationInfo.UseParentSource)
                 {
-                    var parent = LogicalTreeHelper.FindLogicalNode(_creationInfo.Root, _creationInfo.ParentSourceName);
+                    var walker = new WpfVisualTreeWalker(_node);
+                    var nodesToSearch =
+                        walker.GetDepthFirstDownards(_node)
+                        .Concat(new[] { _node })
+                        .Concat(walker.GetDepthFirstUpwards(_node));
+                    var parent = nodesToSearch.FirstOrDefault(
+                        node =>
+                        {
+                            var element = node as FrameworkElement;
+                            return element != null && element.Name == _creationInfo.ParentSourceName;
+                        });
                     parentNamespace = parent == null
                                           ? SettingsNamespace.None
                                           : Settings.GetNamespace(parent);

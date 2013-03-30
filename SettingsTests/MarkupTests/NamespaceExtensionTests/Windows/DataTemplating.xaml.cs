@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TheSettings;
+using TheSettings.Binding.Wpf.Infrastructure;
 using TheSettings.Binding.Wpf.Markup;
+using TheSettings.Infrastructure;
 
 namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 {
@@ -28,18 +30,45 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
         {
             get
             {
-                return Settings.GetNamespace(Content);
+                var grid = GetFirstTemplateRoot().CurrentAs<Grid>();
+                return Settings.GetNamespace(grid);
             }
         }
 
-        public object TemplateDataContext
+        public SettingsNamespace TemplateInTemplateNamespace
         {
             get
             {
-                var child = VisualTreeHelper.GetChild(Content, 0);
-                return ((FrameworkElement)child).DataContext;
+                // -> ContentPresenter -> Grid
+                var grid = GetFirstTemplateRoot().ClimbDown(0, 0).CurrentAs<Grid>();
+                return Settings.GetNamespace(grid);
             }
         }
 
+        public SettingsNamespace TemplateChild2Namespace
+        {
+            get
+            {
+                // -> 2nd Grid
+                var grid = GetFirstTemplateRoot().ClimbDown(2).CurrentAs<Grid>();
+                return Settings.GetNamespace(grid);
+            }
+        }
+
+        public SettingsNamespace TemplateChild3Namespace
+        {
+            get
+            {
+                // -> 3rd grid
+                var grid = GetFirstTemplateRoot().ClimbDown(3).CurrentAs<Grid>();
+                return Settings.GetNamespace(grid);
+            }
+        }
+
+        private ITreeWalker<DependencyObject> GetFirstTemplateRoot()
+        {
+            var walker = new WpfVisualTreeWalker(ContentPresenter).ClimbDown(0);
+            return walker;
+        }
     }
 }
