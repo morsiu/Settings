@@ -69,7 +69,7 @@
     <Compile Include="Binding\Wpf\SettingBindingBuilder.cs" />
     <Compile Include="Binding\Wpf\SettingsCollection.cs" />
     <Compile Include="Binding\Wpf\SettingsInitializer.cs" />
-    <Compile Include="Binding\Wpf\SettingsMarkupExtensionsHelper.cs" />
+    <Compile Include="Binding\Wpf\SettingsMarkupExtensions.cs" />
     <Compile Include="Binding\Wpf\SettingsNamespaceBuilder.cs" />
     <Compile Include="Binding\Wpf\SingleSettingsStoreAccessor.cs" />
     <Compile Include="ISettingsStore.cs" />
