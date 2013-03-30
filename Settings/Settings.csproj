@@ -52,6 +52,7 @@
     <Compile Include="Binding\ValueAdapters\DependencyPropertyAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
+    <Compile Include="Binding\Wpf\Infrastructure\NameLookup.cs" />
     <Compile Include="Infrastructure\ITreeWalker.cs" />
     <Compile Include="Infrastructure\ITree.cs" />
     <Compile Include="Binding\Wpf\Infrastructure\WpfLogicalTreeWalker.cs" />

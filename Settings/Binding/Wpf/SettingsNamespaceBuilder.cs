@@ -42,17 +42,8 @@ namespace TheSettings.Binding.Wpf
             {
                 if (_creationInfo.UseParentSource)
                 {
-                    var walker = new WpfVisualTreeWalker(_node);
-                    var nodesToSearch =
-                        walker.GetDepthFirstDownards(_node)
-                        .Concat(new[] { _node })
-                        .Concat(walker.GetDepthFirstUpwards(_node));
-                    var parent = nodesToSearch.FirstOrDefault(
-                        node =>
-                        {
-                            var element = node as FrameworkElement;
-                            return element != null && element.Name == _creationInfo.ParentSourceName;
-                        });
+                    var nameLokup = new NameLookup(_node);
+                    var parent = nameLokup.Find(_creationInfo.ParentSourceName);
                     parentNamespace = parent == null
                                           ? SettingsNamespace.None
                                           : Settings.GetNamespace(parent);
