@@ -8,7 +8,7 @@
              s:Settings.Namespace="{s:Namespace Root}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Window.Resources>
-        <!-- The order and nesting inside DataTemplates is dependent upon in namespace getters -->
+        <!-- The order and nesting inside templates is dependent upon in namespace getters -->
         <DataTemplate x:Key="InnerTemplate">
             <Grid DataContext="{s:Namespace Template}" />
         </DataTemplate>        
