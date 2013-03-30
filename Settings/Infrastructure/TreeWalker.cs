@@ -31,51 +31,37 @@ namespace TheSettings.Infrastructure
             return this;
         }
 
-        private IEnumerable<TElement> GetDescendants(TElement element)
+        public IEnumerable<TElement> GetDepthFirstDownards(TElement element)
         {
-            yield return element;
             foreach (var child in _tree.GetChildren(element))
             {
                 yield return child;
-                foreach (var childOfChild in GetDescendants(child))
+                foreach (var childOfChild in GetDepthFirstDownards(child))
                 {
                     yield return childOfChild;
                 }
             }
         }
 
-        private IEnumerable<TElement> GetAllUpwards(TElement element)
+        public IEnumerable<TElement> GetDepthFirstUpwards(TElement element)
         {
             var parent = _tree.GetParent(element);
             var previousParent = element;
-            yield return element;
             while (parent != null)
             {
                 foreach (var children in _tree.GetChildren(parent))
                 {
-                    if (children == previousParent) continue;
-                    foreach (var childOfChild in GetAllUpwards(children))
+                    if (children.Equals(previousParent)) continue;
+                    yield return children;
+                    foreach (var childOfChild in GetDepthFirstDownards(children))
                     {
-                        yield return children;
+                        yield return childOfChild;
                     }
-
                 }
+                yield return parent;
                 previousParent = parent;
-                parent = _tree.GetParent(element);
+                parent = _tree.GetParent(parent);
             }
-        }
-
-        public TElement SearchAll(Func<TElement, bool> predicate)
-        {
-            foreach (var descendant in GetDescendants(_current))
-            {
-                if (predicate(descendant)) return descendant;
-            }
-            foreach (var element in GetAllUpwards(_current))
-            {
-                if (predicate(element)) return element;
-            }
-            return null;
         }
 
         public ITreeWalker<TElement> ClimbUp(int ladderCount)
