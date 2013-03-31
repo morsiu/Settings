@@ -21,5 +21,11 @@ namespace TheSettingsTests.MarkupTests.SettingExtensionTests.Windows
         {
             InitializeComponent();
         }
+
+        public object Child1DataContext
+        {
+            get { return Child1.DataContext; }
+            set { Child1.DataContext = value; }
+        }
     }
 }

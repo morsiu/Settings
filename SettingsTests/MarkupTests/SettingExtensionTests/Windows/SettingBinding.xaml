@@ -8,7 +8,13 @@
              s:Settings.Namespace="{s:Namespace Namespace}"
              DataContext="{s:Setting Setting}"
              d:DesignHeight="300" d:DesignWidth="300">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="DataContext"
+                    Value="{s:Setting StyleSetting}"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-            
+        <Button x:Name="Child1"/>
     </Grid>
 </Window>

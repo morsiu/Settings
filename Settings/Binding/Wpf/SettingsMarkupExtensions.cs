@@ -83,5 +83,10 @@ namespace TheSettings.Binding.Wpf
         {
             return provider.TargetObject.GetType().FullName == "System.Windows.SharedDp";
         }
+
+        public static bool IsInsideStyleSetter(this IProvideValueTarget provider)
+        {
+            return provider.TargetObject.GetType() == typeof(Setter);
+        }
     }
 }

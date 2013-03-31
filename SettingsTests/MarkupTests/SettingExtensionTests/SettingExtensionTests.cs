@@ -40,5 +40,22 @@ namespace TheSettingsTests.MarkupTests.SettingExtensionsTests
             var window = CreateShowThenCloseAtCleanup<SettingBinding>();
             Assert.AreEqual(100, window.DataContext);
         }
+
+        [TestMethod]
+        public void ShouldCreateThroughStyleBindingThatPassesChangedValueToSettingsStore()
+        {
+            var window = CreateShowThenCloseAtCleanup<SettingBinding>();
+            window.Child1DataContext = 200;
+            var value = Settings.CurrentStoreAccessor.GetSetting(null, new SettingsNamespace("Namespace"), "StyleSetting");
+            Assert.AreEqual(200, value);
+        }
+
+        [TestMethod]
+        public void ShouldSetStoredValueAfterBindingCreatedThroughStyle()
+        {
+            Settings.CurrentStoreAccessor.SetSetting(null, new SettingsNamespace("Namespace"), "StyleSetting", 200);
+            var window = CreateShowThenCloseAtCleanup<SettingBinding>();
+            Assert.AreEqual(200, window.Child1DataContext);
+        }
     }
 }
