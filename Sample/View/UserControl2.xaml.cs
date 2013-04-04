@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Sample.Sample
+namespace Sample.View
 {
     /// <summary>
     /// Interaction logic for UserControl2.xaml

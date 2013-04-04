@@ -9,7 +9,7 @@ using TheSettings;
 using TheSettings.Binding.Wpf;
 using TheSettings.Binding.Wpf.Markup;
 
-namespace WpfApplication
+namespace Sample
 {
     public partial class App : Application
     {

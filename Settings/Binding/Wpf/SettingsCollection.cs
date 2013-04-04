@@ -23,7 +23,7 @@ namespace TheSettings.Binding.Wpf
             _owner = owner;
         }
 
-        public void Add(ISettingBinding binding)
+        public void AddBinding(ISettingBinding binding)
         {
             _bindings.Add(binding);
 
@@ -38,7 +38,7 @@ namespace TheSettings.Binding.Wpf
             }
         }
 
-        public void Add(ISettingBindingsProvider bindingsProvider)
+        public void AddBindingProvider(ISettingBindingsProvider bindingsProvider)
         {
             var initializer = Settings.GetInitializer(_owner);
             if (initializer != null)
@@ -92,13 +92,13 @@ namespace TheSettings.Binding.Wpf
             var bindingProvider = value as ISettingBindingsProvider;
             if (bindingProvider != null)
             {
-                Add(bindingProvider);
+                AddBindingProvider(bindingProvider);
                 return -1;
             }
             else
             {
                 var binding = (ISettingBinding)value;
-                Add(binding);
+                AddBinding(binding);
                 return _bindings.IndexOf(binding);
             }
         }

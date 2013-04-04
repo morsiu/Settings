@@ -24,7 +24,7 @@ namespace TheSettings.Binding.Wpf
             var settings = Settings.GetSettings(_target);
             var bindingFactory = new SettingBindingFactory();
             var binding = bindingFactory.Create(_target, _property, _storeKey, @namespace, _name);
-            settings.Add(binding);
+            settings.AddBinding(binding);
         }
     }
 }
