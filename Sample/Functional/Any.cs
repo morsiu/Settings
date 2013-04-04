@@ -1,4 +1,4 @@
-﻿namespace WpfApplication.Functional
+﻿namespace Sample.Functional
 {
     public static class Any
     {

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
 
-namespace WpfApplication.Functional
+namespace Sample.Functional
 {
     [TestClass]
     public class MatchTests

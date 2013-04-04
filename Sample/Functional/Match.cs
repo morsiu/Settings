@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WpfApplication.Functional
+namespace Sample.Functional
 {
     public class Match<T> : Dictionary<IEnumerable, Func<T>>
     {

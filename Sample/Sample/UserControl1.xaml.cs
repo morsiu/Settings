@@ -16,7 +16,7 @@ using TheSettings;
 using TheSettings.Binding.Wpf;
 using TheSettings.Binding.Wpf.Markup;
 
-namespace WpfApplication.Sample
+namespace Sample.Sample
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
