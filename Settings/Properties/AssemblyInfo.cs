@@ -12,9 +12,9 @@ using System.Windows.Markup;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Settings")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Settings library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Łukasz Mrozek")]
 [assembly: AssemblyProduct("Settings")]
 [assembly: AssemblyCopyright("Copyright © Łukasz Mrozek 2013")]
 [assembly: AssemblyTrademark("")]

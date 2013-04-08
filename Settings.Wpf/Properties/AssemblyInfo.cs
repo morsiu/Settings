@@ -12,9 +12,9 @@ using System.Windows.Markup;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Settings.Wpf")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("WPF part of settings library.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Łukasz Mrozek")]
 [assembly: AssemblyProduct("Settings.Wpf")]
 [assembly: AssemblyCopyright("Copyright © Łukasz Mrozek 2013")]
 [assembly: AssemblyTrademark("")]
