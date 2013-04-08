@@ -1,32 +1,32 @@
 ﻿<Window x:Class="Sample.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sample="clr-namespace:Sample.View"
-        xmlns:s="clr-namespace:TheSettings.Binding.Wpf.Markup;assembly=Settings"
+        xmlns:s="http://thesettings.org/v1"
+        xmlns:views="clr-namespace:Sample.View"
         Title="MainWindow"
         Width="{s:Setting WindowWidth}"
         Height="{s:Setting WindowHeight}"
+        DataContext="Test"
         Left="{s:Setting WindowLeft}"
         Top="{s:Setting WindowTop}"
         WindowState="{s:Setting WindowState}"
-        s:Settings.Namespace="{s:Namespace Test}"
-        DataContext="Test">
+        s:Settings.Namespace="{s:Namespace Test}">
     <Grid x:Name="Grid"
           s:Settings.Namespace="{s:Namespace Grid}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Text="Settings namespaces:" />
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="1"> 
-            <TextBlock Text="TextBox inside Window: "/>
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            <TextBlock Text="TextBox inside Window: " />
             <TextBlock Text="{Binding (s:Settings.Namespace),
-                                 RelativeSource={RelativeSource Self}}"/>
+                                      RelativeSource={RelativeSource Self}}" />
         </StackPanel>
-        <sample:UserControl1 Grid.Row="2" />
-        <sample:UserControl2 Grid.Row="3" />
+        <views:UserControl1 Grid.Row="2" />
+        <views:UserControl2 Grid.Row="3" />
     </Grid>
 </Window>

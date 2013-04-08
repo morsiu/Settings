@@ -11,11 +11,11 @@ using System.Windows.Markup;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Settings")]
+[assembly: AssemblyTitle("Settings.Wpf")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Settings")]
+[assembly: AssemblyProduct("Settings.Wpf")]
 [assembly: AssemblyCopyright("Copyright © Łukasz Mrozek 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -26,7 +26,7 @@ using System.Windows.Markup;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4056a204-f203-400a-a377-825bcbbf74f7")]
+[assembly: Guid("69ab4858-b8e6-4ea9-9962-518d954fa61c")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -40,3 +40,7 @@ using System.Windows.Markup;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: XmlnsDefinition("http://thesettings.org/v1", "TheSettings.Wpf")]
+[assembly: XmlnsDefinition("http://thesettings.org/v1", "TheSettings.Wpf.Binding")]
+[assembly: XmlnsDefinition("http://thesettings.org/v1", "TheSettings.Wpf.Markup")]
+[assembly: XmlnsPrefix("http://thesettings.org/v1", "s")]

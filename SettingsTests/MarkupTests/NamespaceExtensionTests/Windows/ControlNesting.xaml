@@ -1,12 +1,13 @@
 ﻿<Window x:Class="TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows.ControlNesting"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:s="clr-namespace:TheSettings.Binding.Wpf.Markup;assembly=Settings"
-             xmlns:t="clr-namespace:TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows"
-             mc:Ignorable="d"
-             s:Settings.Namespace="{s:Namespace Root}"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <t:ControlNestingNestedControl x:Name="Nested"/>
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="http://thesettings.org/v1"
+        xmlns:t="clr-namespace:TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows"
+        d:DesignHeight="300"
+        d:DesignWidth="300"
+        s:Settings.Namespace="{s:Namespace Root}"
+        mc:Ignorable="d">
+    <t:ControlNestingNestedControl x:Name="Nested" />
 </Window>

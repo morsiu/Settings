@@ -6,8 +6,11 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Markup;
+using TheSettings.Binding;
+using TheSettings.Wpf.Infrastructure;
+using TheSettings.Wpf.Initialization;
 
-namespace TheSettings.Binding.Wpf.Markup
+namespace TheSettings.Wpf
 {
     [ContentProperty("Settings")]
     public static class Settings

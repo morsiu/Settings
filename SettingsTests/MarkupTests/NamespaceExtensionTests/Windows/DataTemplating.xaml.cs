@@ -6,9 +6,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using TheSettings;
-using TheSettings.Binding.Wpf.Infrastructure;
-using TheSettings.Binding.Wpf.Markup;
 using TheSettings.Infrastructure;
+using TheSettings.Wpf;
+using TheSettings.Wpf.Infrastructure;
 
 namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 {

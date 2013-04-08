@@ -4,32 +4,28 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Windows;
-using TheSettings.Infrastructure;
+using TheSettings.Binding;
 
-namespace TheSettings.Binding.Wpf.Infrastructure
+namespace TheSettings.Wpf.Binding
 {
-    public class WpfLogicalTree : ITree<DependencyObject>
+    public class Binding : ISettingBindingsProvider
     {
-        public DependencyObject GetParent(DependencyObject element)
-        {
-            return LogicalTreeHelper.GetParent(element);
-        }
+        public string Property { get; set; }
 
-        public DependencyObject GetChild(DependencyObject element, int index)
-        {
-            return LogicalTreeHelper.GetChildren(element).OfType<DependencyObject>().ElementAt(index);
-        }
+        public string Setting { get; set; }
 
-        public int GetChildrenCount(DependencyObject element)
-        {
-            return LogicalTreeHelper.GetChildren(element).OfType<DependencyObject>().Count();
-        }
+        public object Store { get; set; }
 
-        public IEnumerable<DependencyObject> GetChildren(DependencyObject element)
+        public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
         {
-            return LogicalTreeHelper.GetChildren(element).OfType<DependencyObject>();
+            var factory = new SettingBindingFactory();
+            var @namespace = Settings.GetNamespace(target);
+            var descriptor = TypeDescriptor.GetProperties(target)[Property];
+            var accessor = Settings.CurrentStoreAccessor;
+            var binding = factory.Create(target, descriptor, accessor, Store, @namespace, Setting);
+            return new[] { binding };
         }
     }
 }

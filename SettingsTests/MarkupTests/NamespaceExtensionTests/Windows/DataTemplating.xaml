@@ -1,31 +1,43 @@
 ﻿<Window x:Class="TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows.DataTemplating"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:s="clr-namespace:TheSettings.Binding.Wpf.Markup;assembly=Settings"
-             mc:Ignorable="d" 
-             s:Settings.Namespace="{s:Namespace Root}"
-             d:DesignHeight="300" d:DesignWidth="300">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="http://thesettings.org/v1"
+        d:DesignHeight="300"
+        d:DesignWidth="300"
+        s:Settings.Namespace="{s:Namespace Root}"
+        mc:Ignorable="d">
     <Window.Resources>
-        <!-- The order and nesting inside templates is dependent upon in namespace getters -->
+        <!--  The order and nesting inside templates is dependent upon in namespace getters  -->
         <DataTemplate x:Key="InnerTemplate">
-            <Grid x:Name="Inner" DataContext="{s:Namespace Template}" />
+            <Grid x:Name="Inner"
+                  DataContext="{s:Namespace Template}" />
         </DataTemplate>
         <DataTemplate x:Key="Template">
             <Grid DataContext="{s:Namespace Template}">
-                <ContentPresenter ContentTemplate="{StaticResource InnerTemplate}"/>
-                <Grid x:Name="TemplateChild1" s:Settings.Namespace="{s:Namespace TemplateChild1}" />
-                <Grid x:Name="TemplateChild2" s:Settings.Namespace="{s:Namespace TemplateChild2, ParentSourceName=TemplateChild1}" />
-                <Grid x:Name="TemplateChild3" s:Settings.Namespace="{s:Namespace TemplateChild3, UseParent=False}" />
-                <Grid x:Name="TemplateChild4" s:Settings.Namespace="{s:Namespace TemplateChild4, ParentSourceName=Outside}" />
-                <Grid x:Name="TemplateChild5" s:Settings.Namespace="{s:Namespace TemplateChild5, ParentSourceName=Inner}" />
+                <ContentPresenter ContentTemplate="{StaticResource InnerTemplate}" />
+                <Grid x:Name="TemplateChild1"
+                      s:Settings.Namespace="{s:Namespace TemplateChild1}" />
+                <Grid x:Name="TemplateChild2"
+                      s:Settings.Namespace="{s:Namespace TemplateChild2,
+                                                         ParentSourceName=TemplateChild1}" />
+                <Grid x:Name="TemplateChild3"
+                      s:Settings.Namespace="{s:Namespace TemplateChild3,
+                                                         UseParent=False}" />
+                <Grid x:Name="TemplateChild4"
+                      s:Settings.Namespace="{s:Namespace TemplateChild4,
+                                                         ParentSourceName=Outside}" />
+                <Grid x:Name="TemplateChild5"
+                      s:Settings.Namespace="{s:Namespace TemplateChild5,
+                                                         ParentSourceName=Inner}" />
             </Grid>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{StaticResource Template}" />
+        <ContentPresenter x:Name="ContentPresenter"
+                          ContentTemplate="{StaticResource Template}" />
         <Grid x:Name="Grid"
-              s:Settings.Namespace="{s:Namespace Outside}"/>
+              s:Settings.Namespace="{s:Namespace Outside}" />
     </Grid>
 </Window>

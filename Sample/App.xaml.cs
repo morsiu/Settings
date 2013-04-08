@@ -5,8 +5,8 @@
 
 using System.Windows;
 using TheSettings;
-using TheSettings.Binding.Wpf;
-using TheSettings.Binding.Wpf.Markup;
+using TheSettings.Binding;
+using TheSettings.Wpf;
 
 namespace Sample
 {

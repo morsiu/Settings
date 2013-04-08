@@ -7,8 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using TheSettings;
+using TheSettings.Binding;
 using TheSettings.Binding.ValueAdapters;
-using TheSettings.Binding.Wpf;
 
 namespace TheSettingsTests.ValueAdapterTests
 {

@@ -7,9 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using TheSettings.Binding.Wpf.Markup;
+using TheSettings.Binding;
 
-namespace TheSettings.Binding.Wpf
+namespace TheSettings.Wpf.Infrastructure
 {
     /// <summary>
     /// Collection that stores setting bindings for object that onws it.

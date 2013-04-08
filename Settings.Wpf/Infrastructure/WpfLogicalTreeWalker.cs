@@ -3,27 +3,16 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
+using TheSettings.Infrastructure;
 
-namespace TheSettings.Binding.Wpf.Markup
+namespace TheSettings.Wpf.Infrastructure
 {
-    public class Binding : ISettingBindingsProvider
+    public class WpfLogicalTreeWalker : TreeWalker<DependencyObject>
     {
-        public string Property { get; set; }
-
-        public string Setting { get; set; }
-
-        public object Store { get; set; }
-
-        public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
+        public WpfLogicalTreeWalker(DependencyObject initialCurrent)
+            : base(initialCurrent, new WpfLogicalTree())
         {
-            var factory = new SettingBindingFactory();
-            var @namespace = Settings.GetNamespace(target);
-            var descriptor = TypeDescriptor.GetProperties(target)[Property];
-            var binding = factory.Create(target, descriptor, Store, @namespace, Setting);
-            return new[] { binding };
         }
     }
 }

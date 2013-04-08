@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using TheSettings.Binding.ValueAdapters;
-using TheSettings.Binding.Wpf.Markup;
 
 namespace TheSettings.Binding
 {
@@ -17,11 +16,12 @@ namespace TheSettings.Binding
         public ISettingBinding Create(
             object target,
             object propertyInfo,
+            ISettingsStoreAccessor storeAccessor,
             object storeKey,
             SettingsNamespace @namespace,
             string settingName)
         {
-            var settingAdapter = CreateSettingAdapter(storeKey, @namespace, settingName);
+            var settingAdapter = CreateSettingAdapter(storeAccessor, storeKey, @namespace, settingName);
             var targetAdapter = GetPropertyAdapter(target, propertyInfo);
             if (targetAdapter == null)
             {
@@ -34,18 +34,18 @@ namespace TheSettings.Binding
         public ISettingBinding Create(
             DependencyObject target,
             DependencyProperty property,
+            ISettingsStoreAccessor storeAccessor,
             object storeKey,
             SettingsNamespace @namespace,
             string settingName)
         {
-            var settingAdapter = CreateSettingAdapter(storeKey, @namespace, settingName);
+            var settingAdapter = CreateSettingAdapter(storeAccessor, storeKey, @namespace, settingName);
             var targetAdapter = new DependencyPropertyAdapter(target, property);
             return new SettingBinding(targetAdapter, settingAdapter);
         }
 
-        private static SettingAdapter CreateSettingAdapter(object storeKey, SettingsNamespace @namespace, string settingName)
+        private static SettingAdapter CreateSettingAdapter(ISettingsStoreAccessor storeAccessor, object storeKey, SettingsNamespace @namespace, string settingName)
         {
-            var storeAccessor = Settings.CurrentStoreAccessor;
             return new SettingAdapter(storeAccessor, storeKey, @namespace, settingName);
         }
 

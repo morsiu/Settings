@@ -4,15 +4,33 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Windows;
-using TheSettings.Infrastructure;
+using TheSettings.Binding;
 
-namespace TheSettings.Binding.Wpf.Infrastructure
+namespace TheSettings.Wpf.Initialization
 {
-    public class WpfVisualTreeWalker : TreeWalker<DependencyObject>
+    internal class SettingBindingBuilder
     {
-        public WpfVisualTreeWalker(DependencyObject initialCurrent)
-            : base(initialCurrent, new WpfVisualTree())
+        private readonly DependencyObject _target;
+        private readonly object _property;
+        private readonly string _name;
+        private readonly object _storeKey;
+
+        public SettingBindingBuilder(DependencyObject target, object property, object storeKey, string name)
         {
+            _target = target;
+            _property = property;
+            _name = name;
+            _storeKey = storeKey;
+        }
+
+        public void Build()
+        {
+            var @namespace = Settings.GetNamespace(_target);
+            var settings = Settings.GetSettings(_target);
+            var bindingFactory = new SettingBindingFactory();
+            var accessor = Settings.CurrentStoreAccessor;
+            var binding = bindingFactory.Create(_target, _property, accessor, _storeKey, @namespace, _name);
+            settings.AddBinding(binding);
         }
     }
 }

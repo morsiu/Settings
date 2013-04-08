@@ -1,33 +1,44 @@
 ﻿<Window x:Class="TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows.ControlTemplating"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:s="clr-namespace:TheSettings.Binding.Wpf.Markup;assembly=Settings"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             s:Settings.Namespace="{s:Namespace Root}"
-             d:DesignHeight="300" d:DesignWidth="300">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="http://thesettings.org/v1"
+        d:DesignHeight="300"
+        d:DesignWidth="300"
+        s:Settings.Namespace="{s:Namespace Root}"
+        mc:Ignorable="d">
     <Window.Resources>
-        <!-- The order and nesting inside templates is dependent upon in namespace getters -->
+        <!--  The order and nesting inside templates is dependent upon in namespace getters  -->
         <DataTemplate x:Key="InnerTemplate">
-            <Grid x:Name="Inner" DataContext="{s:Namespace Template}" />
-        </DataTemplate>        
+            <Grid x:Name="Inner"
+                  DataContext="{s:Namespace Template}" />
+        </DataTemplate>
         <ControlTemplate x:Key="ControlTemplate">
             <Grid DataContext="{s:Namespace Template}">
-                <ContentPresenter ContentTemplate="{StaticResource InnerTemplate}"/>
-                <Grid x:Name="ControlTemplateChild1" s:Settings.Namespace="{s:Namespace ControlTemplateChild1}" />
-                <Grid x:Name="ControlTemplateChild2" s:Settings.Namespace="{s:Namespace ControlTemplateChild2, ParentSourceName=ControlTemplateChild1}" />
-                <Grid x:Name="ControlTemplateChild3" s:Settings.Namespace="{s:Namespace ControlTemplateChild3, UseParent=False}" />
-                <Grid x:Name="ControlTemplateChild4" s:Settings.Namespace="{s:Namespace ControlTemplateChild4, ParentSourceName=Outside}" />
-                <Grid x:Name="ControlTemplateChild5" s:Settings.Namespace="{s:Namespace ControlTemplateChild5, ParentSourceName=Inner}" />
+                <ContentPresenter ContentTemplate="{StaticResource InnerTemplate}" />
+                <Grid x:Name="ControlTemplateChild1"
+                      s:Settings.Namespace="{s:Namespace ControlTemplateChild1}" />
+                <Grid x:Name="ControlTemplateChild2"
+                      s:Settings.Namespace="{s:Namespace ControlTemplateChild2,
+                                                         ParentSourceName=ControlTemplateChild1}" />
+                <Grid x:Name="ControlTemplateChild3"
+                      s:Settings.Namespace="{s:Namespace ControlTemplateChild3,
+                                                         UseParent=False}" />
+                <Grid x:Name="ControlTemplateChild4"
+                      s:Settings.Namespace="{s:Namespace ControlTemplateChild4,
+                                                         ParentSourceName=Outside}" />
+                <Grid x:Name="ControlTemplateChild5"
+                      s:Settings.Namespace="{s:Namespace ControlTemplateChild5,
+                                                         ParentSourceName=Inner}" />
             </Grid>
         </ControlTemplate>
     </Window.Resources>
     <Grid>
-        <Button s:Settings.Namespace="{s:Namespace Control}"
-                x:Name="ControlTemplate"
-                Template="{StaticResource ControlTemplate}" />
+        <Button x:Name="ControlTemplate"
+                Template="{StaticResource ControlTemplate}"
+                s:Settings.Namespace="{s:Namespace Control}" />
         <Grid x:Name="Outside"
-              s:Settings.Namespace="{s:Namespace Outside}"/>
+              s:Settings.Namespace="{s:Namespace Outside}" />
     </Grid>
 </Window>

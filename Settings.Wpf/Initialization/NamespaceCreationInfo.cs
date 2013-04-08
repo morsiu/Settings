@@ -3,12 +3,36 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace TheSettings.Binding.Wpf
-{
-    public interface ISettingsStoreAccessor
-    {
-        object GetSetting(object storeKey, SettingsNamespace @namespace, string setting);
+using System.Windows;
 
-        void SetSetting(object storeKey, SettingsNamespace @namespace, string setting, object value);
+namespace TheSettings.Wpf.Initialization
+{
+    public class NamespaceCreationInfo
+    {
+        public NamespaceCreationInfo(string name, bool useParent, string parentSourceName, DependencyObject root)
+        {
+            Name = name;
+            UseParent = useParent;
+            ParentSourceName = parentSourceName;
+            Root = root;
+        }
+
+        public string Name { get; private set; }
+
+        public string ParentSourceName { get; private set; }
+
+        public bool UseParent { get; private set; }
+
+        public DependencyObject Root { get; private set; }
+
+        public bool UseParentSource
+        {
+            get { return ParentSourceName != null; }
+        }
+
+        public bool CreateNew
+        {
+            get { return Name != null; }
+        }
     }
 }

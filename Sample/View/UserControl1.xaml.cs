@@ -7,21 +7,21 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using TheSettings;
-using TheSettings.Binding.Wpf;
-using TheSettings.Binding.Wpf.Markup;
+using TheSettings.Binding;
+using TheSettings.Wpf;
 
 namespace Sample.View
 {
     public partial class UserControl1 : UserControl
     {
-        private SettingsStore _store;
+        private readonly SettingsStore _store;
 
         public UserControl1()
         {
             InitializeComponent();
             var accessor = (SingleSettingsStoreAccessor)Settings.CurrentStoreAccessor;
             _store = (SettingsStore)accessor.Store;
-            _store.SettingChanged += (o, e) => { RefreshSettings(); };
+            _store.SettingChanged += (o, e) => RefreshSettings();
         }
 
         private void RefreshSettingsSource(object sender, RoutedEventArgs e)

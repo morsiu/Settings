@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CE47879D-5BAC-4557-A9B4-2A88B5415154}</ProjectGuid>
+    <ProjectGuid>{CA06670C-B829-4AEF-9052-35AE54195011}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TheSettings</RootNamespace>
-    <AssemblyName>Settings</AssemblyName>
+    <RootNamespace>TheSettings.Wpf</RootNamespace>
+    <AssemblyName>Settings.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,26 +43,29 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binding\ISettingBinding.cs" />
-    <Compile Include="Binding\ISettingBindingsProvider.cs" />
-    <Compile Include="Binding\ISettingsStoreAccessor.cs" />
-    <Compile Include="Binding\IValueAdapter.cs" />
-    <Compile Include="Binding\SettingBinding.cs" />
-    <Compile Include="Binding\SettingBindingFactory.cs" />
-    <Compile Include="Binding\ValueAdapters\ClrPropertyAdapter.cs" />
-    <Compile Include="Binding\ValueAdapters\DependencyPropertyAdapter.cs" />
-    <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />
-    <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
-    <Compile Include="Infrastructure\ITreeWalker.cs" />
-    <Compile Include="Infrastructure\ITree.cs" />
-    <Compile Include="Infrastructure\TreeWalker.cs" />
-    <Compile Include="ISettingsStore.cs" />
-    <Compile Include="NullSettingsStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsContants.cs" />
-    <Compile Include="SettingsNamespace.cs" />
-    <Compile Include="SettingsStore.cs" />
-    <Compile Include="Binding\SingleSettingsStoreAccessor.cs" />
+    <Compile Include="Infrastructure\NameLookup.cs" />
+    <Compile Include="Infrastructure\WpfLogicalTree.cs" />
+    <Compile Include="Infrastructure\WpfLogicalTreeWalker.cs" />
+    <Compile Include="Infrastructure\WpfVisualTree.cs" />
+    <Compile Include="Infrastructure\WpfVisualTreeWalker.cs" />
+    <Compile Include="Binding\Binding.cs" />
+    <Compile Include="Binding\DataGridColumnsBinding.cs" />
+    <Compile Include="Markup\NamespaceExtension.cs" />
+    <Compile Include="Markup\SettingExtension.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Initialization\NamespaceCreationInfo.cs" />
+    <Compile Include="Initialization\SettingBindingBuilder.cs" />
+    <Compile Include="Infrastructure\SettingsCollection.cs" />
+    <Compile Include="Initialization\SettingsInitializer.cs" />
+    <Compile Include="Markup\SettingsMarkupExtensions.cs" />
+    <Compile Include="Initialization\SettingsNamespaceBuilder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Settings\Settings.csproj">
+      <Project>{ce47879d-5bac-4557-a9b4-2a88b5415154}</Project>
+      <Name>Settings</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

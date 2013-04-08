@@ -3,33 +3,36 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
 using System.Windows;
-using TheSettings.Binding.Wpf.Markup;
+using System.Windows.Media;
+using TheSettings.Infrastructure;
 
-namespace TheSettings.Binding.Wpf
+namespace TheSettings.Wpf.Infrastructure
 {
-    internal class SettingBindingBuilder
+    public class WpfVisualTree : ITree<DependencyObject>
     {
-        private readonly DependencyObject _target;
-        private readonly object _property;
-        private readonly string _name;
-        private readonly object _storeKey;
-
-        public SettingBindingBuilder(DependencyObject target, object property, object storeKey, string name)
+        public DependencyObject GetParent(DependencyObject element)
         {
-            _target = target;
-            _property = property;
-            _name = name;
-            _storeKey = storeKey;
+            return VisualTreeHelper.GetParent(element);
         }
 
-        public void Build()
+        public DependencyObject GetChild(DependencyObject element, int index)
         {
-            var @namespace = Settings.GetNamespace(_target);
-            var settings = Settings.GetSettings(_target);
-            var bindingFactory = new SettingBindingFactory();
-            var binding = bindingFactory.Create(_target, _property, _storeKey, @namespace, _name);
-            settings.AddBinding(binding);
+            return VisualTreeHelper.GetChild(element, index);
+        }
+
+        public int GetChildrenCount(DependencyObject element)
+        {
+            return VisualTreeHelper.GetChildrenCount(element);
+        }
+
+        public IEnumerable<DependencyObject> GetChildren(DependencyObject element)
+        {
+            for (int index = 0; index < GetChildrenCount(element); ++index)
+            {
+                yield return GetChild(element, index);
+            }
         }
     }
 }

@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using TheSettings.Binding.Wpf.Markup;
+using TheSettings.Wpf.Infrastructure;
 
-namespace TheSettings.Binding.Wpf
+namespace TheSettings.Wpf.Initialization
 {
     internal class SettingsInitializer
     {

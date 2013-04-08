@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{4D0714B9-FB04-4DDB-BFF5-98BE2A17E371}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "Settings\Settings.csproj", "{CE47879D-5BAC-4557-A9B4-2A88B5415154}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsTests", "SettingsTests\SettingsTests.csproj", "{B5841271-0438-4787-837C-E54067459C86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings.Wpf", "Settings.Wpf\Settings.Wpf.csproj", "{CA06670C-B829-4AEF-9052-35AE54195011}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{B5841271-0438-4787-837C-E54067459C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5841271-0438-4787-837C-E54067459C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5841271-0438-4787-837C-E54067459C86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA06670C-B829-4AEF-9052-35AE54195011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA06670C-B829-4AEF-9052-35AE54195011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA06670C-B829-4AEF-9052-35AE54195011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA06670C-B829-4AEF-9052-35AE54195011}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

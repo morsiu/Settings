@@ -6,8 +6,9 @@
 using System;
 using System.Windows;
 using System.Windows.Markup;
+using TheSettings.Wpf.Initialization;
 
-namespace TheSettings.Binding.Wpf.Markup
+namespace TheSettings.Wpf.Markup
 {
     public class SettingExtension : MarkupExtension
     {

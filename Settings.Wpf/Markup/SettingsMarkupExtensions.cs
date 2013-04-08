@@ -8,9 +8,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
 using System.Xaml;
-using TheSettings.Binding.Wpf.Infrastructure;
+using TheSettings.Wpf.Infrastructure;
+using TheSettings.Wpf.Initialization;
 
-namespace TheSettings.Binding.Wpf
+namespace TheSettings.Wpf.Markup
 {
     internal static class SettingsMarkupExtensions
     {

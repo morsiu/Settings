@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using TheSettings.Binding;
 
-namespace TheSettings.Binding.Wpf.Markup
+namespace TheSettings.Wpf.Binding
 {
     public class DataGridColumnsBinding : ISettingBindingsProvider
     {
@@ -47,10 +48,11 @@ namespace TheSettings.Binding.Wpf.Markup
             SettingsNamespace @namespace, 
             SettingBindingFactory factory)
         {
+            var accessor = Settings.CurrentStoreAccessor;
             return
                 from storedProperty in StoredProperties
                 let name = string.Format(ColumnSettingFormat, index, storedProperty.Name)
-                let binding = factory.Create(column, storedProperty, Store, @namespace, name)
+                let binding = factory.Create(column, storedProperty, accessor, Store, @namespace, name)
                 select binding;
         }
     }

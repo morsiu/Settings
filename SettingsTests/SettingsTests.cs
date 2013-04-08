@@ -5,7 +5,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows;
-using TheSettings.Binding.Wpf.Markup;
+using TheSettings.Wpf;
 
 namespace TheSettingsTests
 {

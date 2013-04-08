@@ -3,36 +3,12 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media;
-using TheSettings.Infrastructure;
-
-namespace TheSettings.Binding.Wpf.Infrastructure
+namespace TheSettings.Binding
 {
-    public class WpfVisualTree : ITree<DependencyObject>
+    public interface ISettingsStoreAccessor
     {
-        public DependencyObject GetParent(DependencyObject element)
-        {
-            return VisualTreeHelper.GetParent(element);
-        }
+        object GetSetting(object storeKey, SettingsNamespace @namespace, string setting);
 
-        public DependencyObject GetChild(DependencyObject element, int index)
-        {
-            return VisualTreeHelper.GetChild(element, index);
-        }
-
-        public int GetChildrenCount(DependencyObject element)
-        {
-            return VisualTreeHelper.GetChildrenCount(element);
-        }
-
-        public IEnumerable<DependencyObject> GetChildren(DependencyObject element)
-        {
-            for (int index = 0; index < GetChildrenCount(element); ++index)
-            {
-                yield return GetChild(element, index);
-            }
-        }
+        void SetSetting(object storeKey, SettingsNamespace @namespace, string setting, object value);
     }
 }

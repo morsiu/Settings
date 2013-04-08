@@ -116,6 +116,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Settings.Wpf\Settings.Wpf.csproj">
+      <Project>{ca06670c-b829-4aef-9052-35ae54195011}</Project>
+      <Name>Settings.Wpf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{ce47879d-5bac-4557-a9b4-2a88b5415154}</Project>
       <Name>Settings</Name>

@@ -90,6 +90,10 @@
     <Compile Include="ValueAdapterTests\SettingAdapterTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Settings.Wpf\Settings.Wpf.csproj">
+      <Project>{CA06670C-B829-4AEF-9052-35AE54195011}</Project>
+      <Name>Settings.Wpf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{ce47879d-5bac-4557-a9b4-2a88b5415154}</Project>
       <Name>Settings</Name>

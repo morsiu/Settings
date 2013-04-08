@@ -3,37 +3,27 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Linq;
-using System.Windows;
-
-namespace TheSettings.Binding.Wpf.Infrastructure
+namespace TheSettings.Binding
 {
-    public class NameLookup
+    public class SingleSettingsStoreAccessor : ISettingsStoreAccessor
     {
-        DependencyObject _startingElement;
+        private readonly ISettingsStore _store;
 
-        public NameLookup(DependencyObject startingElement)
+        public SingleSettingsStoreAccessor(ISettingsStore store)
         {
-            _startingElement = startingElement;
+            _store = store;
         }
 
-        public DependencyObject Find(string name)
+        public ISettingsStore Store { get { return _store; } }
+
+        public object GetSetting(object storeKey, SettingsNamespace @namespace, string setting)
         {
-            // This code could use INameScope etc. (see WPF XAML Namescopes help topic),
-            // as now it walks the WPF logical tree manualy
-            // checking all FrameworkElement nodes Name property.
-            var walker = new WpfLogicalTreeWalker(_startingElement);
-            var nodesToSearch =
-                walker.GetDepthFirstDownards(_startingElement)
-                .Concat(new[] { _startingElement })
-                .Concat(walker.GetDepthFirstUpwards(_startingElement));
-            var parent = nodesToSearch.FirstOrDefault(
-                node =>
-                {
-                    var element = node as FrameworkElement;
-                    return element != null && element.Name == name;
-                });
-            return parent;
+            return _store.GetSetting(@namespace, setting);
+        }
+
+        public void SetSetting(object storeKey, SettingsNamespace @namespace, string setting, object value)
+        {
+            _store.SetSetting(@namespace, setting, value);
         }
     }
 }

@@ -5,7 +5,7 @@
 
 using TheSettings;
 using System.Windows;
-using TheSettings.Binding.Wpf.Markup;
+using TheSettings.Wpf;
 
 namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests.Windows
 {

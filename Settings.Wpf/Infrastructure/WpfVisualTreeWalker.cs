@@ -4,35 +4,15 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Windows;
+using TheSettings.Infrastructure;
 
-namespace TheSettings.Binding.Wpf
+namespace TheSettings.Wpf.Infrastructure
 {
-    public class NamespaceCreationInfo
+    public class WpfVisualTreeWalker : TreeWalker<DependencyObject>
     {
-        public NamespaceCreationInfo(string name, bool useParent, string parentSourceName, DependencyObject root)
+        public WpfVisualTreeWalker(DependencyObject initialCurrent)
+            : base(initialCurrent, new WpfVisualTree())
         {
-            Name = name;
-            UseParent = useParent;
-            ParentSourceName = parentSourceName;
-            Root = root;
-        }
-
-        public string Name { get; private set; }
-
-        public string ParentSourceName { get; private set; }
-
-        public bool UseParent { get; private set; }
-
-        public DependencyObject Root { get; private set; }
-
-        public bool UseParentSource
-        {
-            get { return ParentSourceName != null; }
-        }
-
-        public bool CreateNew
-        {
-            get { return Name != null; }
         }
     }
 }
