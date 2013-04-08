@@ -3,27 +3,46 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace TheSettings.Binding
-{
-    public class SingleSettingsStoreAccessor : ISettingsStoreAccessor
-    {
-        private readonly ISettingsStore _store;
+using System.Collections.Generic;
 
-        public SingleSettingsStoreAccessor(ISettingsStore store)
+namespace TheSettings.Binding.Accessors
+{
+    public class DictionarySettingsStoreAccessor : ISettingsStoreAccessor
+    {
+        private readonly IDictionary<object, ISettingsStore> _stores;
+
+        public DictionarySettingsStoreAccessor()
         {
-            _store = store;
+            _stores = new Dictionary<object, ISettingsStore>();
         }
 
-        public ISettingsStore Store { get { return _store; } }
+        public ISettingsStore DefaultStore { get; set; }
 
         public object GetSetting(object storeKey, SettingsNamespace @namespace, string setting)
         {
-            return _store.GetSetting(@namespace, setting);
+            var store = GetEffectiveStore(storeKey);
+            return store.GetSetting(@namespace, setting);
+        }
+
+        public void Set(object key, ISettingsStore store)
+        {
+            _stores[key] = store;
         }
 
         public void SetSetting(object storeKey, SettingsNamespace @namespace, string setting, object value)
         {
-            _store.SetSetting(@namespace, setting, value);
+            var store = GetEffectiveStore(storeKey);
+            store.SetSetting(@namespace, setting, value);
+        }
+
+        private ISettingsStore GetEffectiveStore(object key)
+        {
+            ISettingsStore store;
+            if (_stores.TryGetValue(key, out store))
+            {
+                return store;
+            }
+            return DefaultStore ?? SettingsConstants.NullStore;
         }
     }
 }

@@ -5,12 +5,12 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheSettings;
-using TheSettings.Binding;
+using TheSettings.Binding.Accessors;
 using TheSettings.Wpf;
 using TheSettingsTests.Infrastructure;
-using SettingBinding = TheSettingsTests.MarkupTests.SettingExtensionTests.Windows.SettingBinding;
+using TheSettingsTests.MarkupTests.SettingExtensionTests.Windows;
 
-namespace TheSettingsTests.MarkupTests.SettingExtensionsTests
+namespace TheSettingsTests.MarkupTests.SettingExtensionTests
 {
     [TestClass]
     public class SettingExtensionTests : GuiTests

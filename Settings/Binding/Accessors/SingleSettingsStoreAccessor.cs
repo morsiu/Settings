@@ -3,12 +3,27 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace TheSettings
+namespace TheSettings.Binding.Accessors
 {
-    public static class SettingsConstants
+    public class SingleSettingsStoreAccessor : ISettingsStoreAccessor
     {
-        public static readonly object NoValue = new object();
+        private readonly ISettingsStore _store;
 
-        public static readonly ISettingsStore NullStore = new NullSettingsStore();
+        public SingleSettingsStoreAccessor(ISettingsStore store)
+        {
+            _store = store;
+        }
+
+        public ISettingsStore Store { get { return _store; } }
+
+        public object GetSetting(object storeKey, SettingsNamespace @namespace, string setting)
+        {
+            return _store.GetSetting(@namespace, setting);
+        }
+
+        public void SetSetting(object storeKey, SettingsNamespace @namespace, string setting, object value)
+        {
+            _store.SetSetting(@namespace, setting, value);
+        }
     }
 }

@@ -5,7 +5,7 @@
 
 using System.Windows;
 using TheSettings;
-using TheSettings.Binding;
+using TheSettings.Binding.Accessors;
 using TheSettings.Wpf;
 
 namespace Sample

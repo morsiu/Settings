@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Markup;
 using TheSettings.Binding;
+using TheSettings.Binding.Accessors;
 using TheSettings.Wpf.Infrastructure;
 using TheSettings.Wpf.Initialization;
 

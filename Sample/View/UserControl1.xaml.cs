@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using TheSettings;
-using TheSettings.Binding;
+using TheSettings.Binding.Accessors;
 using TheSettings.Wpf;
 
 namespace Sample.View

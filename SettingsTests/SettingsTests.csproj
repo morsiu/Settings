@@ -57,6 +57,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AccessorTests\DictionarySettingsStoreAccessorTests.cs" />
     <Compile Include="Infrastructure\GuiTests.cs" />
     <Compile Include="MarkupTests\NamespaceExtensionTests\ControlTemplatingNamespaceExtensionTests.cs" />
     <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlTemplating.xaml.cs">
