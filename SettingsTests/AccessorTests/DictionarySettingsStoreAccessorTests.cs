@@ -14,10 +14,10 @@ namespace TheSettingsTests.AccessorTests
     [TestClass]
     public class DictionarySettingsStoreAccessorTests
     {
+        private const string Setting = "Setting";
+        private const string StoreKey = "Key";
+        private static readonly SettingsNamespace Namespace = new SettingsNamespace("NS");
         private DictionarySettingsStoreAccessor _accessor;
-        private static readonly SettingsNamespace _namespace = new SettingsNamespace("NS");
-        private static readonly string _setting = "Setting";
-        private static readonly string _storeKey = "Key";
 
         [TestInitialize]
         public void Initialize()
@@ -28,7 +28,7 @@ namespace TheSettingsTests.AccessorTests
         [TestMethod]
         public void ShouldGetNoValueWhenGettingSettingAndNoStoreIsSetForKey()
         {
-            var value = _accessor.GetSetting(_storeKey, _namespace, _setting);
+            var value = _accessor.GetSetting(StoreKey, Namespace, Setting);
             Assert.AreEqual(SettingsConstants.NoValue, value);
         }
 
@@ -37,7 +37,7 @@ namespace TheSettingsTests.AccessorTests
         {
             try
             {
-                _accessor.SetSetting(_storeKey, _namespace, _setting, null);
+                _accessor.SetSetting(StoreKey, Namespace, Setting, null);
             }
             catch (Exception)
             {
@@ -51,9 +51,9 @@ namespace TheSettingsTests.AccessorTests
             var store = new Mock<ISettingsStore>();
             var expectedValue = 5;
             store.Setup(s => s.GetSetting(It.IsAny<SettingsNamespace>(), It.IsAny<string>())).Returns(expectedValue);
-            _accessor.Set(_storeKey, store.Object);
+            _accessor.Set(StoreKey, store.Object);
 
-            var value = _accessor.GetSetting(_storeKey, _namespace, _setting);
+            var value = _accessor.GetSetting(StoreKey, Namespace, Setting);
             Assert.AreEqual(expectedValue, value);
         }
 
@@ -61,9 +61,9 @@ namespace TheSettingsTests.AccessorTests
         public void ShouldSetValueToStoreOfGivenKey()
         {
             var store = new Mock<ISettingsStore>();
-            _accessor.Set(_storeKey, store.Object);
+            _accessor.Set(StoreKey, store.Object);
 
-            _accessor.SetSetting(_storeKey, _namespace, _setting, null);
+            _accessor.SetSetting(StoreKey, Namespace, Setting, null);
             store.Verify(s => s.SetSetting(It.IsAny<SettingsNamespace>(), It.IsAny<string>(), It.IsAny<object>()), Times.AtLeastOnce());
         }
 
@@ -72,9 +72,9 @@ namespace TheSettingsTests.AccessorTests
         {
             var store = new Mock<ISettingsStore>();
             var expectedNamespace = new SettingsNamespace("Namespace");
-            _accessor.Set(_storeKey, store.Object);
+            _accessor.Set(StoreKey, store.Object);
 
-            _accessor.GetSetting(_storeKey, expectedNamespace, _setting);
+            _accessor.GetSetting(StoreKey, expectedNamespace, Setting);
             store.Verify(s => s.GetSetting(It.Is<SettingsNamespace>(ns => expectedNamespace.Equals(ns)), It.IsAny<string>()));
         }
 
@@ -83,9 +83,9 @@ namespace TheSettingsTests.AccessorTests
         {
             var store = new Mock<ISettingsStore>();
             var expectedName = "Setting";
-            _accessor.Set(_storeKey, store.Object);
+            _accessor.Set(StoreKey, store.Object);
 
-            _accessor.GetSetting(_storeKey, _namespace, expectedName);
+            _accessor.GetSetting(StoreKey, Namespace, expectedName);
             store.Verify(s => s.GetSetting(It.IsAny<SettingsNamespace>(), It.Is<string>(name => expectedName == name)));
         }
 
@@ -94,9 +94,9 @@ namespace TheSettingsTests.AccessorTests
         {
             var store = new Mock<ISettingsStore>();
             var expectedNamespace = new SettingsNamespace("Namespace");
-            _accessor.Set(_storeKey, store.Object);
+            _accessor.Set(StoreKey, store.Object);
 
-            _accessor.SetSetting(_storeKey, expectedNamespace, _setting, null);
+            _accessor.SetSetting(StoreKey, expectedNamespace, Setting, null);
             store.Verify(s => s.SetSetting(It.Is<SettingsNamespace>(ns => expectedNamespace.Equals(ns)), It.IsAny<string>(), It.IsAny<object>()));
         }
 
@@ -105,9 +105,9 @@ namespace TheSettingsTests.AccessorTests
         {
             var store = new Mock<ISettingsStore>();
             var expectedName = "Setting";
-            _accessor.Set(_storeKey, store.Object);
+            _accessor.Set(StoreKey, store.Object);
 
-            _accessor.SetSetting(_storeKey, _namespace, expectedName, null);
+            _accessor.SetSetting(StoreKey, Namespace, expectedName, null);
             store.Verify(s => s.SetSetting(It.IsAny<SettingsNamespace>(), It.Is<string>(name => expectedName == name), It.IsAny<object>()));
         }
 
@@ -116,9 +116,9 @@ namespace TheSettingsTests.AccessorTests
         {
             var store = new Mock<ISettingsStore>();
             var expectedValue = new object();
-            _accessor.Set(_storeKey, store.Object);
+            _accessor.Set(StoreKey, store.Object);
 
-            _accessor.SetSetting(_storeKey, _namespace, "Name", expectedValue);
+            _accessor.SetSetting(StoreKey, Namespace, "Name", expectedValue);
             store.Verify(s => s.SetSetting(It.IsAny<SettingsNamespace>(), It.IsAny<string>(), It.Is<object>(value => value == expectedValue)));
         }
 
@@ -126,10 +126,10 @@ namespace TheSettingsTests.AccessorTests
         public void ShouldNotUseStoreOfClearedKey()
         {
             var store = new Mock<ISettingsStore>();
-            _accessor.Set(_storeKey, store.Object);
-            _accessor.Clear(_storeKey);
+            _accessor.Set(StoreKey, store.Object);
+            _accessor.Clear(StoreKey);
 
-            _accessor.SetSetting(_storeKey, _namespace, "Name", null);
+            _accessor.SetSetting(StoreKey, Namespace, "Name", null);
             store.Verify(s => s.SetSetting(It.IsAny<SettingsNamespace>(), It.IsAny<string>(), It.IsAny<object>()), Times.Never());
         }
     }
