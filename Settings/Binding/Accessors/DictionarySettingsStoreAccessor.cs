@@ -16,8 +16,6 @@ namespace TheSettings.Binding.Accessors
             _stores = new Dictionary<object, ISettingsStore>();
         }
 
-        public ISettingsStore DefaultStore { get; set; }
-
         public object GetSetting(object storeKey, SettingsNamespace @namespace, string setting)
         {
             var store = GetEffectiveStore(storeKey);
@@ -27,6 +25,11 @@ namespace TheSettings.Binding.Accessors
         public void Set(object key, ISettingsStore store)
         {
             _stores[key] = store;
+        }
+
+        public void Clear(object key)
+        {
+            _stores.Remove(key);
         }
 
         public void SetSetting(object storeKey, SettingsNamespace @namespace, string setting, object value)
@@ -42,7 +45,7 @@ namespace TheSettings.Binding.Accessors
             {
                 return store;
             }
-            return DefaultStore ?? SettingsConstants.NullStore;
+            return SettingsConstants.NullStore;
         }
     }
 }
