@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TheSettings;
 using TheSettings.Binding.Accessors;
+using TheSettings.Stores;
 
 namespace TheSettingsTests.AccessorTests
 {
@@ -38,6 +39,19 @@ namespace TheSettingsTests.AccessorTests
             try
             {
                 _accessor.SetSetting(StoreKey, Namespace, Setting, null);
+            }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void ShouldAllowNullStoreKeys()
+        {
+            try
+            {
+                _accessor.Set(null, new SettingsStore());
             }
             catch (Exception)
             {

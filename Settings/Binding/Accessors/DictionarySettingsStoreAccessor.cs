@@ -9,6 +9,7 @@ namespace TheSettings.Binding.Accessors
 {
     public class DictionarySettingsStoreAccessor : ISettingsStoreAccessor
     {
+        private static readonly object NullStoreKey = new object();
         private readonly IDictionary<object, ISettingsStore> _stores;
 
         public DictionarySettingsStoreAccessor()
@@ -24,12 +25,14 @@ namespace TheSettings.Binding.Accessors
 
         public void Set(object key, ISettingsStore store)
         {
-            _stores[key] = store;
+            var normalizedKey = NormalizeStoreKey(key);
+            _stores[normalizedKey] = store;
         }
 
         public void Clear(object key)
         {
-            _stores.Remove(key);
+            var normalizedKey = NormalizeStoreKey(key);
+            _stores.Remove(normalizedKey);
         }
 
         public void SetSetting(object storeKey, SettingsNamespace @namespace, string setting, object value)
@@ -41,11 +44,17 @@ namespace TheSettings.Binding.Accessors
         private ISettingsStore GetEffectiveStore(object key)
         {
             ISettingsStore store;
-            if (_stores.TryGetValue(key, out store))
+            var normalizedKey = NormalizeStoreKey(key);
+            if (_stores.TryGetValue(normalizedKey, out store))
             {
                 return store;
             }
             return SettingsConstants.NullStore;
+        }
+
+        private object NormalizeStoreKey(object key)
+        {
+            return key ?? NullStoreKey;
         }
     }
 }
