@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using TheSettings;
 using TheSettings.Binding.Accessors;
+using TheSettings.Stores;
 using TheSettings.Wpf;
 
 namespace Sample.View

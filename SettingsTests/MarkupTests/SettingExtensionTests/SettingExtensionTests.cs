@@ -6,6 +6,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheSettings;
 using TheSettings.Binding.Accessors;
+using TheSettings.Stores;
 using TheSettings.Wpf;
 using TheSettingsTests.Infrastructure;
 using TheSettingsTests.MarkupTests.SettingExtensionTests.Windows;

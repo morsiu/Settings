@@ -6,6 +6,7 @@
 using System.Windows;
 using TheSettings;
 using TheSettings.Binding.Accessors;
+using TheSettings.Stores;
 using TheSettings.Wpf;
 
 namespace Sample
