@@ -5,4 +5,4 @@ bin/.*
 obj/.*
 .*\.suo
 .*\.user
-Settings.*/.*\.nupkg
+.*Settings\.(Wpf\.)?(\d+\.){4}(symbols\.)?nupkg
