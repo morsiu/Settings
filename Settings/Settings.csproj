@@ -42,7 +42,7 @@
     <Compile Include="Binding\ISettingsStoreAccessor.cs" />
     <Compile Include="Binding\IValueAdapter.cs" />
     <Compile Include="Binding\SetBinding.cs" />
-    <Compile Include="Binding\SettingBinding.cs" />
+    <Compile Include="Binding\ValueBinding.cs" />
     <Compile Include="Binding\SettingBindingFactory.cs" />
     <Compile Include="Binding\ValueAdapters\ClrPropertyAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\DependencyPropertyAdapter.cs" />
