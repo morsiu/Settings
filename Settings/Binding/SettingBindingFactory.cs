@@ -28,7 +28,7 @@ namespace TheSettings.Binding
                 throw new ArgumentException("Unsupported type of target and property");
             }
 
-            return new SettingBinding(targetAdapter, settingAdapter);
+            return new ValueBinding(targetAdapter, settingAdapter);
         }
 
         public ISettingBinding Create(
@@ -41,7 +41,7 @@ namespace TheSettings.Binding
         {
             var settingAdapter = CreateSettingAdapter(storeAccessor, storeKey, @namespace, settingName);
             var targetAdapter = new DependencyPropertyAdapter(target, property);
-            return new SettingBinding(targetAdapter, settingAdapter);
+            return new ValueBinding(targetAdapter, settingAdapter);
         }
 
         private static SettingAdapter CreateSettingAdapter(ISettingsStoreAccessor storeAccessor, object storeKey, SettingsNamespace @namespace, string settingName)
