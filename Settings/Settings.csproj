@@ -41,11 +41,13 @@
     <Compile Include="Binding\ISettingBindingsProvider.cs" />
     <Compile Include="Binding\ISettingsStoreAccessor.cs" />
     <Compile Include="Binding\IValueAdapter.cs" />
+    <Compile Include="Binding\SetBinding.cs" />
     <Compile Include="Binding\SettingBinding.cs" />
     <Compile Include="Binding\SettingBindingFactory.cs" />
     <Compile Include="Binding\ValueAdapters\ClrPropertyAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\DependencyPropertyAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />
+    <Compile Include="Binding\ICollectionAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
     <Compile Include="Infrastructure\ITreeWalker.cs" />
     <Compile Include="Infrastructure\ITree.cs" />
@@ -62,6 +64,7 @@
   <ItemGroup>
     <None Include="Settings.nuspec" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

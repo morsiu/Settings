@@ -3,29 +3,18 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
+
 namespace TheSettings.Binding
 {
-    public class SettingBinding : ISettingBinding
+    public delegate void CollectionChangedCallbackHandler(IEnumerable<object> added, IEnumerable<object> removed);
+
+    public interface ICollectionAdapter
     {
-        private readonly IValueAdapter _targetAdapter;
-        private readonly IValueAdapter _settingAdapter;
+        CollectionChangedCallbackHandler CollectionChangedCallback { set; }
 
-        public SettingBinding(IValueAdapter targetAdapter, IValueAdapter settingAdapter)
-        {
-            _targetAdapter = targetAdapter;
-            _settingAdapter = settingAdapter;
-            _targetAdapter.ValueChangedCallback = _settingAdapter.SetValue;
-            _settingAdapter.ValueChangedCallback = _targetAdapter.SetValue;
-        }
+        IEnumerable<object> GetItems();
 
-        public void UpdateTarget()
-        {
-            var value = _settingAdapter.GetValue();
-            if (value == SettingsConstants.NoValue)
-            {
-                return;
-            }
-            _targetAdapter.SetValue(value);
-        }
+        void SetItems(IEnumerable<object> items);
     }
 }
