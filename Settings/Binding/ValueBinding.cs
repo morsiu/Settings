@@ -5,12 +5,12 @@
 
 namespace TheSettings.Binding
 {
-    public class SettingBinding : ISettingBinding
+    public class ValueBinding : ISettingBinding
     {
         private readonly IValueAdapter _targetAdapter;
         private readonly IValueAdapter _settingAdapter;
 
-        public SettingBinding(IValueAdapter targetAdapter, IValueAdapter settingAdapter)
+        public ValueBinding(IValueAdapter targetAdapter, IValueAdapter settingAdapter)
         {
             _targetAdapter = targetAdapter;
             _settingAdapter = settingAdapter;
