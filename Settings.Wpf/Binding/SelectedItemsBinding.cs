@@ -33,9 +33,13 @@ namespace TheSettings.Wpf.Binding
 
         public object Store { get; set; }
 
+        public IEqualityComparer<object> Comparer { get; set; }
+
+        public Func<object, object> ItemKeySelector { get; set; }
+
         public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
         {
-            Func<object, object> keySelector = item => SelectKey(item, ItemKeyProperty);
+            var keySelector = ItemKeySelector ?? (item => SelectKey(item, ItemKeyProperty));
             var adapter = AdapterFactories
                 .Select(factory => factory(target, keySelector))
                 .FirstOrDefault();
@@ -46,7 +50,7 @@ namespace TheSettings.Wpf.Binding
 
             var @namespace = Settings.GetNamespace(target);
             var settingsAdapter = new SettingAdapter(Settings.CurrentStoreAccessor, Store, @namespace, Setting);
-            var comparer = EqualityComparer<object>.Default;
+            var comparer = Comparer ?? EqualityComparer<object>.Default;
             return new[] { new SetBinding(adapter, settingsAdapter, comparer) };
         }
 
