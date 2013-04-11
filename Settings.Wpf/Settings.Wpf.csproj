@@ -39,7 +39,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binding\Infrastructure\MultiSelectorSelectedItemsAdapter.cs" />
+    <Compile Include="Binding\Adapters\MultiSelectorSelectedItemsAdapter.cs" />
     <Compile Include="Binding\Infrastructure\SelectionPersister.cs" />
     <Compile Include="Binding\SelectedItemsBinding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

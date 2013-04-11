@@ -12,8 +12,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using TheSettings.Binding;
+using TheSettings.Wpf.Binding.Infrastructure;
 
-namespace TheSettings.Wpf.Binding.Infrastructure
+namespace TheSettings.Wpf.Binding.Adapters
 {
     public class MultiSelectorSelectedItemsAdapter : ICollectionAdapter
     {
