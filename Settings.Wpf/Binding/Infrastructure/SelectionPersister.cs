@@ -25,9 +25,14 @@ namespace TheSettings.Wpf.Binding.Infrastructure
         private ItemsCollectionState _itemsCollectionState;
         private IEnumerable<object> _targetSelectionKeys;
 
-        public SelectionPersister(Action<IEnumerable<object>> setSelectionCallback)
+        public SelectionPersister(
+            IEnumerable initialItemsCollection,
+            Action<IEnumerable<object>> setSelectionCallback)
         {
+            if (initialItemsCollection == null) throw new ArgumentNullException("initialItemsCollection");
+            if (setSelectionCallback == null) throw new ArgumentNullException("setSelectionCallback");
             _setSelectionCallback = setSelectionCallback;
+            ResetItemsCollection(initialItemsCollection);
         }
 
         private enum ItemsCollectionState
