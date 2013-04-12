@@ -32,8 +32,7 @@ namespace TheSettings.Wpf.Binding.Adapters
             DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(ItemsControl))
                 .AddValueChanged(_control, OnControlItemsSourceChanged);
             _itemKeySelector = itemKeySelector;
-            _selectionPersister = new SelectionPersister(SetItems);
-            _selectionPersister.ResetItemsCollection(GetControlItems());
+            _selectionPersister = new SelectionPersister(GetControlItems(), SetItems);
         }
 
         public CollectionChangedCallbackHandler CollectionChangedCallback { private get; set; }
