@@ -33,6 +33,7 @@ namespace TheSettings.Wpf.Binding.Adapters
                 .AddValueChanged(_control, OnControlItemsSourceChanged);
             _itemKeySelector = itemKeySelector;
             _selectionPersister = new SelectionPersister(SetItems);
+            _selectionPersister.ResetItemsCollection(GetControlItems());
         }
 
         public CollectionChangedCallbackHandler CollectionChangedCallback { private get; set; }
@@ -77,11 +78,9 @@ namespace TheSettings.Wpf.Binding.Adapters
             }
         }
 
-        private IEnumerable<object> GetControlItems()
+        private IEnumerable GetControlItems()
         {
-            return _control.ItemsSource != null
-                ? _control.ItemsSource.OfType<object>()
-                : _control.Items.OfType<object>();
+            return _control.ItemsSource ?? _control.Items;
         }
 
         private IEnumerable<object> GetKeys(IEnumerable source)
@@ -112,7 +111,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         private void SelectControlItems(IEnumerable<object> keysOfSelected)
         {
-            var itemsToSelect = GetControlItems()
+            var itemsToSelect = GetControlItems().OfType<object>()
                 .Where(item => keysOfSelected.Contains(_itemKeySelector(item)))
                 .ToList();
             foreach (var item in itemsToSelect)
