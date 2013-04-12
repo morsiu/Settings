@@ -15,33 +15,19 @@ namespace TheSettings.Wpf.Initialization
         private readonly HashSet<SettingBindingCollection> _bindingsCollectionsToInitialize = new HashSet<SettingBindingCollection>();
         private readonly List<SettingsNamespaceBuilder> _namespaceBuilders = new List<SettingsNamespaceBuilder>();
         private readonly List<SettingBindingBuilder> _settingBindingsBuilders = new List<SettingBindingBuilder>();
-        private readonly FrameworkElement _root;
+        private readonly FrameworkElement _owner;
 
-        public SettingsInitializer(FrameworkElement root)
+        public SettingsInitializer(FrameworkElement owner)
         {
-            _root = root;
+            if (owner == null) throw new ArgumentNullException("owner");
+            if (owner.IsLoaded) throw new ArgumentException("Owner is already loaded.", "owner");
+            _owner = owner;
+            _owner.Loaded += OwnerLoadedCallback;
         }
 
-        public FrameworkElement Root { get { return _root; } }
-
-        public static SettingsInitializer GetInstance(FrameworkElement root)
+        public FrameworkElement Owner
         {
-            var existingInitializer = Settings.GetInitializer(root);
-            if (existingInitializer != null)
-            {
-                return existingInitializer;
-            }
-
-            // This is called by MarkupExtensions during XAML loading,
-            // so Loaded event should not have fired yet.
-            if (root.IsLoaded)
-            {
-                throw new InvalidOperationException("Cannot return initializer instance as the root is already initialized.");
-            }
-            var initializer = new SettingsInitializer(root);
-            Settings.SetInitializer(root, initializer);
-            root.Loaded += initializer.RootLoadedCallback;
-            return initializer;
+            get { return _owner; }
         }
 
         public void QueueNamespaceBuild(SettingsNamespaceBuilder builder)
@@ -59,7 +45,7 @@ namespace TheSettings.Wpf.Initialization
             _bindingsCollectionsToInitialize.Add(settingsCollection);
         }
 
-        private void RootLoadedCallback(object sender, EventArgs e)
+        private void OwnerLoadedCallback(object sender, EventArgs e)
         {
             SetupNamespaces();
             SetupBindings();
@@ -85,11 +71,11 @@ namespace TheSettings.Wpf.Initialization
 
         private void Cleanup()
         {
-            _root.Loaded -= RootLoadedCallback;
+            _owner.Loaded -= OwnerLoadedCallback;
             _namespaceBuilders.Clear();
             _settingBindingsBuilders.Clear();
             _bindingsCollectionsToInitialize.Clear();
-            _root.ClearValue(Settings.InitializerProperty);
+            _owner.ClearValue(Settings.InitializerProperty);
         }
 
         private void SetupNamespaces()

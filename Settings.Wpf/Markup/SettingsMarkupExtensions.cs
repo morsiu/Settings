@@ -28,29 +28,8 @@ namespace TheSettings.Wpf.Markup
 
         public static SettingsInitializer RequireInitializer(this IServiceProvider provider)
         {
-            var rootProvider = provider.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
-            FrameworkElement root = null;
-            if (rootProvider != null)
-            {
-                root = rootProvider.RootObject as FrameworkElement;
-            }
-            else
-            {
-                var targetProvider = provider.RequireService<IProvideValueTarget>();
-                var target = targetProvider.TargetObject as DependencyObject;
-                var treeWalker = new WpfLogicalTreeWalker(target);
-                root = treeWalker.ClimbToRoot().CurrentAs<FrameworkElement>();
-            }
-            if (root == null)
-            {
-                throw new InvalidOperationException("Cannot determine root object for SettingsInitializer.");
-            }
-            var initializer = SettingsInitializer.GetInstance(root);
-            if (initializer == null)
-            {
-                throw new InvalidOperationException("Failed to obtain initializer.");
-            }
-            return initializer;
+            var lookup = new InitializerLookup();
+            return lookup.RequireInitializer(provider);
         }
 
         public static object GetUnsetValue(object targetObject, object targetProperty)

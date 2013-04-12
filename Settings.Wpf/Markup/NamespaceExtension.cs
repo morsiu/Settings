@@ -42,7 +42,7 @@ namespace TheSettings.Wpf.Markup
             {
                 throw new InvalidOperationException("Target is not a DependencyObject.");
             }
-            var creationInfo = new NamespaceCreationInfo(Name, UseParent, ParentSourceName, initializer.Root);
+            var creationInfo = new NamespaceCreationInfo(Name, UseParent, ParentSourceName, initializer.Owner);
             var builder = new SettingsNamespaceBuilder(target, creationInfo);
             initializer.QueueNamespaceBuild(builder);
 

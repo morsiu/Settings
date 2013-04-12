@@ -3,16 +3,18 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using TheSettings.Binding;
+using TheSettings.Wpf.Initialization;
 
 namespace TheSettings.Wpf.Infrastructure
 {
     /// <summary>
-    /// Collection that stores setting bindings for object that onws it.
+    /// Collection that stores setting bindings for object that owns it.
     /// Also supports setting binding providers.
     /// </summary>
     public class SettingBindingCollection : IList
@@ -21,17 +23,20 @@ namespace TheSettings.Wpf.Infrastructure
         private readonly DependencyObject _owner;
         private readonly List<ISettingBindingsProvider> _providersToInitialize = new List<ISettingBindingsProvider>();
         private readonly List<ISettingBinding> _bindings = new List<ISettingBinding>();
+        private Lazy<SettingsInitializer> _initializerSource;
 
         public SettingBindingCollection(DependencyObject owner)
         {
             _owner = owner;
+            _initializerSource = new Lazy<SettingsInitializer>(
+                () => new InitializerLookup().TryGetInitializer(owner));
         }
 
         public void AddBinding(ISettingBinding binding)
         {
             _bindings.Add(binding);
 
-            var initializer = Settings.GetInitializer(_owner);
+            var initializer = GetInitializer();
             if (initializer != null)
             {
                 initializer.QueueSettingsCollectionUpdate(this);
@@ -44,7 +49,7 @@ namespace TheSettings.Wpf.Infrastructure
 
         public void AddBindingProvider(ISettingBindingsProvider bindingsProvider)
         {
-            var initializer = Settings.GetInitializer(_owner);
+            var initializer = GetInitializer();
             if (initializer != null)
             {
                 _providersToInitialize.Add(bindingsProvider);
@@ -68,9 +73,23 @@ namespace TheSettings.Wpf.Infrastructure
             UpdateBindings(_bindings);
         }
 
+        private SettingsInitializer GetInitializer()
+        {
+            if (_initializerSource == null)
+            {
+                return null;
+            }
+            var initializer = _initializerSource.Value;
+            if (initializer == null)
+            {
+                _initializerSource = null;
+            }
+            return initializer;
+        }
+
         private void UpdateBindings(IEnumerable<ISettingBinding> bindings)
         {
-            foreach(var binding in bindings)
+            foreach (var binding in bindings)
             {
                 binding.UpdateTarget();
             }
@@ -184,6 +203,6 @@ namespace TheSettings.Wpf.Infrastructure
             throw new System.NotImplementedException();
         }
 
-        #endregion
+        #endregion Implementation of IList
     }
 }
