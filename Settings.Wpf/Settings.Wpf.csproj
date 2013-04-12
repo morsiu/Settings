@@ -42,7 +42,7 @@
     <Compile Include="Binding\Adapters\MultiSelectorSelectedItemsAdapter.cs" />
     <Compile Include="Binding\Infrastructure\SelectionPersister.cs" />
     <Compile Include="Binding\SelectedItemsBinding.cs" />
-    <Compile Include="Infrastructure\InitializerLookup.cs" />
+    <Compile Include="Initialization\InitializerLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\NameLookup.cs" />
     <Compile Include="Infrastructure\WpfLogicalTree.cs" />
