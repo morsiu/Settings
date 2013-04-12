@@ -11,12 +11,13 @@ namespace TheSettings.Infrastructure
     public class TreeWalker<TElement> : ITreeWalker<TElement>
         where TElement : class
     {
+        private readonly ITree<TElement> _tree;
         private TElement _current;
-        private ITree<TElement> _tree;
 
         public TreeWalker(TElement initialCurrent, ITree<TElement> tree)
         {
-            if (initialCurrent == null) throw new ArgumentNullException();
+            if (initialCurrent == null) throw new ArgumentNullException("initialCurrent");
+            if (tree == null) throw new ArgumentNullException("tree");
             _current = initialCurrent;
             _tree = tree;
         }
