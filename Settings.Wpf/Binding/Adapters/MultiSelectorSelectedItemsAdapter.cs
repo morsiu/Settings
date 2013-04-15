@@ -91,8 +91,8 @@ namespace TheSettings.Wpf.Binding.Adapters
             {
                 return;
             }
-            var keysOfAdded = GetKeys(e.AddedItems);
-            var keysOfRemoved = GetKeys(e.RemovedItems);
+            var keysOfAdded = GetKeys(e.AddedItems).ToArray();
+            var keysOfRemoved = GetKeys(e.RemovedItems).ToArray();
             callback(keysOfAdded, keysOfRemoved);
         }
 
