@@ -6,13 +6,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using TheSettings.Binding;
-using TheSettings.Wpf.Binding.Infrastructure;
 
 namespace TheSettings.Wpf.Binding.Adapters
 {
@@ -20,7 +18,6 @@ namespace TheSettings.Wpf.Binding.Adapters
     {
         private readonly MultiSelector _control;
         private readonly Func<object, object> _itemKeySelector;
-        private readonly SelectionPersister _selectionPersister;
         private bool _isControlSelectionChangedCallbackDisabled;
 
         public MultiSelectorSelectedItemsAdapter(
@@ -29,10 +26,7 @@ namespace TheSettings.Wpf.Binding.Adapters
         {
             _control = control;
             _control.SelectionChanged += OnControlSelectionChanged;
-            DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(ItemsControl))
-                .AddValueChanged(_control, OnControlItemsSourceChanged);
             _itemKeySelector = itemKeySelector;
-            _selectionPersister = new SelectionPersister(GetControlItems(), SetItems);
         }
 
         public CollectionChangedCallbackHandler CollectionChangedCallback { private get; set; }
@@ -56,7 +50,6 @@ namespace TheSettings.Wpf.Binding.Adapters
             try
             {
                 var keyList = keysOfItemsToSelect.ToList();
-                _selectionPersister.SetTargetSelection(keyList);
                 SelectControlItems(keyList);
                 DeselectControlItems(keyList);
             }
@@ -85,11 +78,6 @@ namespace TheSettings.Wpf.Binding.Adapters
         private IEnumerable<object> GetKeys(IEnumerable source)
         {
             return source.OfType<object>().Select(item => _itemKeySelector(item));
-        }
-
-        private void OnControlItemsSourceChanged(object sender, EventArgs e)
-        {
-            _selectionPersister.ResetItemsCollection(_control.ItemsSource);
         }
 
         private void OnControlSelectionChanged(object sender, SelectionChangedEventArgs e)
