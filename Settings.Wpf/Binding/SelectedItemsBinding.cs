@@ -63,7 +63,7 @@ namespace TheSettings.Wpf.Binding
             var propertyInfo = value.GetType().GetProperty(keyProperty);
             if (propertyInfo == null || !propertyInfo.CanRead)
             {
-                throw new InvalidOperationException(string.Format("Object of type {0} does not have readable property {1}.", value.GetType(), keyProperty));
+                return null;
             }
             return propertyInfo.GetValue(value);
         }

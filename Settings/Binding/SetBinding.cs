@@ -4,6 +4,7 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,7 +34,7 @@ namespace TheSettings.Binding
         public void UpdateSource()
         {
             var items = _collectionAdapter.GetItems();
-            var itemsToStore = new HashSet<object>(items, _comparer);
+            var itemsToStore = new HashSet<object>(items.OfType<object>(), _comparer);
             _settingAdapter.SetValue(itemsToStore);
         }
 
@@ -47,8 +48,8 @@ namespace TheSettings.Binding
         }
 
         private void OnCollectionChangedCallback(
-            IEnumerable<object> added,
-            IEnumerable<object> removed)
+            IEnumerable added,
+            IEnumerable removed)
         {
             var storedItems = GetSourceItemsAsSet();
             foreach (var item in added)
@@ -64,17 +65,17 @@ namespace TheSettings.Binding
 
         private void OnStoredItemsChangedCallback(object value)
         {
-            var items = value as IEnumerable<object>;
+            var items = value as IEnumerable;
             if (items != null)
             {
                 _collectionAdapter.SetItems(items);
             }
         }
 
-        private IEnumerable<object> GetSourceItems()
+        private IEnumerable GetSourceItems()
         {
             var value = _settingAdapter.GetValue();
-            return value as IEnumerable<object>;
+            return value as IEnumerable;
         }
 
         private ISet<object> GetSourceItemsAsSet()
@@ -87,8 +88,8 @@ namespace TheSettings.Binding
                 return storedItems;
             }
 
-            var sourceItems = value as IEnumerable<object> ?? Enumerable.Empty<object>();
-            return new HashSet<object>(sourceItems, _comparer);
+            var sourceItems = value as IEnumerable ?? Enumerable.Empty<object>();
+            return new HashSet<object>(sourceItems.OfType<object>(), _comparer);
         }
     }
 }

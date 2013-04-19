@@ -39,17 +39,17 @@ namespace TheSettings.Wpf.Binding.Adapters
                 : null;
         }
 
-        public IEnumerable<object> GetItems()
+        public IEnumerable GetItems()
         {
             return _control.SelectedItems.OfType<object>().Select(_itemKeySelector);
         }
 
-        public void SetItems(IEnumerable<object> keysOfItemsToSelect)
+        public void SetItems(IEnumerable keysOfItemsToSelect)
         {
             _isControlSelectionChangedCallbackDisabled = true;
             try
             {
-                var keyList = keysOfItemsToSelect.ToList();
+                var keyList = keysOfItemsToSelect.OfType<object>().ToList();
                 SelectControlItems(keyList);
                 DeselectControlItems(keyList);
             }

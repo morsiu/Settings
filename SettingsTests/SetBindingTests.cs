@@ -124,12 +124,12 @@ namespace TheSettingsTests
 
             public CollectionChangedCallbackHandler CollectionChangedCallback { set; get; }
 
-            public IEnumerable<object> GetItems()
+            public IEnumerable GetItems()
             {
                 return Items;
             }
 
-            public void SetItems(IEnumerable<object> items)
+            public void SetItems(IEnumerable items)
             {
                 Items.Clear();
                 foreach (var item in items)
