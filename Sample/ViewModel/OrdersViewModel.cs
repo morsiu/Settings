@@ -3,28 +3,36 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Windows;
-using TheSettings;
-using TheSettings.Binding.Accessors;
-using TheSettings.Stores;
-using TheSettings.Wpf;
-using TheSettings.Wpf.Binding;
-using TheSettings.Wpf.Binding.Adapters;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Data;
+using Sample.Model;
 
-namespace Sample
+namespace Sample.ViewModel
 {
-    public partial class App : Application
+    public class OrdersViewModel
     {
-        protected override void OnStartup(StartupEventArgs e)
+        public OrdersViewModel()
         {
-            base.OnStartup(e);
-            SelectedItemsBinding.AdapterFactories.Add(MultiSelectorSelectedItemsAdapter.Create);
-            var settingsStore = new SettingsStore();
-            Settings.CurrentStoreAccessor = new SingleSettingsStoreAccessor(settingsStore);
-
-            var @namespace = new SettingsNamespace(new SettingsNamespace("Test"), "DataGridComboBoxColumnFiasco");
-            var value = new[] { 1, 5, 7 };
-            settingsStore.SetSetting(@namespace, "SelectedItems", value);
+            Customers = new ObservableCollection<Person>();
+            foreach (var index in Enumerable.Range(1, 10))
+            {
+                Customers.Add(new Person(index, string.Format("Customer {0}", index)));
+            }
+            OrdersSource = new ObservableCollection<Order>();
+            var customerIdSource = new Random();
+            foreach (var index in Enumerable.Range(1, 15))
+            {
+                OrdersSource.Add(new Order(index, customerIdSource.Next(1, 10), string.Format("Order {0}", index)));
+            }
+            Orders = new ListCollectionView(OrdersSource);
         }
+
+        public ListCollectionView Orders { get; private set; }
+
+        public ObservableCollection<Order> OrdersSource { get; private set; }
+
+        public ObservableCollection<Person> Customers { get; private set; }
     }
 }

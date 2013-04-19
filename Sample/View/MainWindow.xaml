@@ -11,22 +11,12 @@
         Top="{s:Setting WindowTop}"
         WindowState="{s:Setting WindowState}"
         s:Settings.Namespace="{s:Namespace Test}">
-    <Grid x:Name="Grid"
-          s:Settings.Namespace="{s:Namespace Grid}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <TextBlock Text="Settings namespaces:" />
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal">
-            <TextBlock Text="TextBox inside Window: " />
-            <TextBlock Text="{Binding (s:Settings.Namespace),
-                                      RelativeSource={RelativeSource Self}}" />
-        </StackPanel>
-        <views:UserControl1 Grid.Row="2" />
-        <views:UserControl2 Grid.Row="3" />
-    </Grid>
+    <TabControl>
+        <TabItem Header="Test">
+            <views:Test />
+        </TabItem>
+        <TabItem Header="DataGridComboBoxColumn fiasco">
+            <views:DataGridComboBoxColumnFiasco />
+        </TabItem>
+    </TabControl>
 </Window>
