@@ -5,14 +5,14 @@
 
 using System;
 using System.ComponentModel;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
 {
-    public class DescriptorAdapter : IValueAdapter, IDisposable
+    public class DescriptorAdapter : Disposable, IValueAdapter
     {
         private readonly PropertyDescriptor _descriptor;
         private readonly object _target;
-        private bool _isDisposed;
         private Action<object> _valueChangedCallback;
 
         public DescriptorAdapter(object target, PropertyDescriptor descriptor)
@@ -51,19 +51,12 @@ namespace TheSettings.Binding.ValueAdapters
             _descriptor.SetValue(_target, value);
         }
 
-        public void Dispose()
+        protected override void Dispose(bool isDisposing)
         {
-            if (_isDisposed)
+            if (isDisposing)
             {
-                return;
+                _descriptor.RemoveValueChanged(_target, OnValueChanged);
             }
-            _descriptor.RemoveValueChanged(_target, OnValueChanged);
-            _isDisposed = true;
-        }
-
-        private void FailIfDisposed()
-        {
-            if (_isDisposed) throw new ObjectDisposedException("DescriptorAdapter");
         }
     }
 }
