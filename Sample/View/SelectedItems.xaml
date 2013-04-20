@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance viewModel:OrdersViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             s:Settings.Namespace="{s:Namespace DataGridComboBoxColumnFiasco}"
+             s:Settings.Namespace="{s:Namespace SelectedItems}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <support:ObjectDataSource x:Key="ViewModel"
