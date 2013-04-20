@@ -8,9 +8,9 @@ using Sample.ViewModel;
 
 namespace Sample.View
 {
-    public partial class DataGridComboBoxColumnFiasco : UserControl
+    public partial class SelectedItems : UserControl
     {
-        public DataGridComboBoxColumnFiasco()
+        public SelectedItems()
         {
             DataContext = new OrdersViewModel();
             InitializeComponent();

@@ -15,8 +15,8 @@
         <TabItem Header="Test">
             <views:Test />
         </TabItem>
-        <TabItem Header="DataGridComboBoxColumn fiasco">
-            <views:DataGridComboBoxColumnFiasco />
+        <TabItem Header="Selected items">
+            <views:SelectedItems />
         </TabItem>
     </TabControl>
 </Window>

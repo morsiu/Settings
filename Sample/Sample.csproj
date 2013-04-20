@@ -63,8 +63,8 @@
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="ViewModel\OrdersViewModel.cs" />
-    <Compile Include="View\DataGridComboBoxColumnFiasco.xaml.cs">
-      <DependentUpon>DataGridComboBoxColumnFiasco.xaml</DependentUpon>
+    <Compile Include="View\SelectedItems.xaml.cs">
+      <DependentUpon>SelectedItems.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Support\ObjectDataSource.cs" />
     <Compile Include="View\Test.xaml.cs">
@@ -88,7 +88,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\DataGridComboBoxColumnFiasco.xaml">
+    <Page Include="View\SelectedItems.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
