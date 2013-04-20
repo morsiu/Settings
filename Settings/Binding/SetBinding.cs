@@ -7,10 +7,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding
 {
-    public class SetBinding : ISettingBinding
+    public class SetBinding : Disposable, ISettingBinding
     {
         private readonly ICollectionAdapter _collectionAdapter;
         private readonly IValueAdapter _settingAdapter;
@@ -33,6 +34,7 @@ namespace TheSettings.Binding
 
         public void UpdateSource()
         {
+            FailIfDisposed();
             var items = _collectionAdapter.GetItems();
             var itemsToStore = new HashSet<object>(items.OfType<object>(), _comparer);
             _settingAdapter.SetValue(itemsToStore);
@@ -40,10 +42,20 @@ namespace TheSettings.Binding
 
         public void UpdateTarget()
         {
+            FailIfDisposed();
             var storedItems = GetSourceItems();
             if (storedItems != null)
             {
                 _collectionAdapter.SetItems(storedItems);
+            }
+        }
+
+        protected override void Dispose(bool isDisposing)
+        {
+            if (isDisposing)
+            {
+                Dispose(_collectionAdapter);
+                Dispose(_settingAdapter);
             }
         }
 
