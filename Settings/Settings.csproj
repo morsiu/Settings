@@ -49,6 +49,7 @@
     <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />
     <Compile Include="Binding\ICollectionAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
+    <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\ITreeWalker.cs" />
     <Compile Include="Infrastructure\ITree.cs" />
     <Compile Include="Infrastructure\TreeWalker.cs" />
