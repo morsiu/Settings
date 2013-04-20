@@ -15,6 +15,16 @@ namespace TheSettings.Infrastructure
     {
         protected bool IsDiposed { get; private set; }
 
+        public void Dispose()
+        {
+            if (IsDiposed)
+            {
+                return;
+            }
+            Dispose(true);
+            IsDiposed = true;
+        }
+
         protected virtual void Dispose(bool isDisposing)
         {
         }
@@ -25,16 +35,6 @@ namespace TheSettings.Infrastructure
             {
                 throw new ObjectDisposedException(null);
             }
-        }
-
-        public void Dispose()
-        {
-            if (IsDiposed)
-            {
-                return;
-            }
-            Dispose(true);
-            IsDiposed = true;
         }
 
         protected void Dispose(object dependency)
