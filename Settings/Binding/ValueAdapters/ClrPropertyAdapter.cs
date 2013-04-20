@@ -6,14 +6,14 @@
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
 {
-    public sealed class ClrPropertyAdapter : IValueAdapter, IDisposable
+    public sealed class ClrPropertyAdapter : Disposable, IValueAdapter
     {
         private readonly object _target;
         private readonly PropertyInfo _propertyInfo;
-        private bool _isDisposed;
         private Action<object> _valueChangedCallback;
 
         public ClrPropertyAdapter(object target, PropertyInfo propertyInfo)
@@ -34,14 +34,14 @@ namespace TheSettings.Binding.ValueAdapters
         {
             set 
             {
-                FailIfDisposed();
+                CheckNotDisposed();
                 _valueChangedCallback = value ?? (newValue => { }); 
             }
        } 
 
         public object GetValue()
         {
-            FailIfDisposed();
+            CheckNotDisposed();
             return _propertyInfo.CanRead
                 ? _propertyInfo.GetValue(_target)
                 : SettingsConstants.NoValue;
@@ -49,36 +49,29 @@ namespace TheSettings.Binding.ValueAdapters
 
         public void SetValue(object value)
         {
-            FailIfDisposed();
+            CheckNotDisposed();
             if (_propertyInfo.CanWrite)
             {
                 _propertyInfo.SetValue(_target, value);
             }
         }
 
-        public void Dispose()
+        public void Dispose(bool isDisposing)
         {
-            if (_isDisposed)
+            if (isDisposing)
             {
-                return;
+                var notifyingTarget = _target as INotifyPropertyChanged;
+                if (notifyingTarget != null)
+                {
+                    PropertyChangedEventManager.RemoveHandler(notifyingTarget, PropertyChangedHandler, _propertyInfo.Name);
+                }
             }
-            var notifyingTarget = _target as INotifyPropertyChanged;
-            if (notifyingTarget != null)
-            {
-                PropertyChangedEventManager.RemoveHandler(notifyingTarget, PropertyChangedHandler, _propertyInfo.Name);
-            }
-            _isDisposed = true;
         }
 
         private void PropertyChangedHandler(object sender, PropertyChangedEventArgs e)
         {
             var value = GetValue();
             _valueChangedCallback(value);
-        }
-
-        private void FailIfDisposed()
-        {
-            if (_isDisposed) throw new ObjectDisposedException("ClrPropertyAdapter");
         }
     }
 }
