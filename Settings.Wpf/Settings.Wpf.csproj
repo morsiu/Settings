@@ -55,7 +55,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Initialization\NamespaceCreationInfo.cs" />
     <Compile Include="Initialization\SettingBindingBuilder.cs" />
-    <Compile Include="Infrastructure\SettingsCollection.cs" />
+    <Compile Include="Infrastructure\SettingBindingCollection.cs" />
     <Compile Include="Initialization\SettingsInitializer.cs" />
     <Compile Include="Markup\SettingsMarkupExtensions.cs" />
     <Compile Include="Initialization\SettingsNamespaceBuilder.cs" />
