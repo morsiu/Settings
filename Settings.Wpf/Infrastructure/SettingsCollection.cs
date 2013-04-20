@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using TheSettings.Binding;
+using TheSettings.Infrastructure;
 using TheSettings.Wpf.Initialization;
 
 namespace TheSettings.Wpf.Infrastructure
@@ -17,7 +18,7 @@ namespace TheSettings.Wpf.Infrastructure
     /// Collection that stores setting bindings for object that owns it.
     /// Also supports setting binding providers.
     /// </summary>
-    public class SettingBindingCollection : IList
+    public class SettingBindingCollection : Disposable, IList
     {
         public static readonly SettingBindingCollection UnsetValue = new SettingBindingCollection(null);
         private readonly DependencyObject _owner;
@@ -34,6 +35,7 @@ namespace TheSettings.Wpf.Infrastructure
 
         public void AddBinding(ISettingBinding binding)
         {
+            FailIfDisposed();
             _bindings.Add(binding);
 
             var initializer = GetInitializer();
@@ -49,6 +51,7 @@ namespace TheSettings.Wpf.Infrastructure
 
         public void AddBindingProvider(ISettingBindingsProvider bindingsProvider)
         {
+            FailIfDisposed();
             var initializer = GetInitializer();
             if (initializer != null)
             {
@@ -69,8 +72,21 @@ namespace TheSettings.Wpf.Infrastructure
         /// </summary>
         internal void Initialize()
         {
+            FailIfDisposed();
             RunProviders();
             UpdateBindings(_bindings);
+        }
+
+        protected override void Dispose(bool isDisposing)
+        {
+            if (isDisposing)
+            {
+                foreach (var binding in _bindings)
+                {
+                    Dispose(binding);
+                }
+                _bindings.Clear();
+            }
         }
 
         private SettingsInitializer GetInitializer()
