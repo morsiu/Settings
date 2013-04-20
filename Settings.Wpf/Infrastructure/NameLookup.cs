@@ -27,13 +27,13 @@ namespace TheSettings.Wpf.Infrastructure
                 walker.GetDepthFirstDownards(_startingElement)
                 .Concat(new[] { _startingElement })
                 .Concat(walker.GetDepthFirstUpwards(_startingElement));
-            var parent = nodesToSearch.FirstOrDefault(
+            var found = nodesToSearch.FirstOrDefault(
                 node =>
                 {
                     var element = node as FrameworkElement;
                     return element != null && element.Name == name;
                 });
-            return parent;
+            return found;
         }
     }
 }
