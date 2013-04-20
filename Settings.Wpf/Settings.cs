@@ -83,10 +83,5 @@ namespace TheSettings.Wpf
         }
 
         public static ISettingsStoreAccessor CurrentStoreAccessor { get; set; }
-
-        internal static void DebugValue(string name, DependencyObject element, ValueSource source, object value)
-        {
-            Debug.Print("{2}, {3}, \"{1}\", {0}", element.GetType(), value, source.BaseValueSource, name);
-        }
     }
 }
