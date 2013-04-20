@@ -56,7 +56,7 @@ namespace TheSettings.Binding.ValueAdapters
             }
         }
 
-        public void Dispose(bool isDisposing)
+        protected override void Dispose(bool isDisposing)
         {
             if (isDisposing)
             {
