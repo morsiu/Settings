@@ -36,5 +36,14 @@ namespace TheSettings.Infrastructure
             Dispose(true);
             IsDiposed = true;
         }
+
+        protected void Dispose(object dependency)
+        {
+            var disposable = dependency as IDisposable;
+            if (disposable != null)
+            {
+                disposable.Dispose();
+            }
+        }
     }
 }
