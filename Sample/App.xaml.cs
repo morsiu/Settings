@@ -22,7 +22,7 @@ namespace Sample
             var settingsStore = new SettingsStore();
             Settings.CurrentStoreAccessor = new SingleSettingsStoreAccessor(settingsStore);
 
-            var @namespace = new SettingsNamespace(new SettingsNamespace("Test"), "DataGridComboBoxColumnFiasco");
+            var @namespace = new SettingsNamespace(new SettingsNamespace("Test"), "SelectedItems");
             var value = new[] { 1, 5, 7 };
             settingsStore.SetSetting(@namespace, "SelectedItems", value);
         }
