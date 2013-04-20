@@ -54,7 +54,7 @@
     <Compile Include="Infrastructure\ITree.cs" />
     <Compile Include="Infrastructure\TreeWalker.cs" />
     <Compile Include="ISettingsStore.cs" />
-    <Compile Include="NullSettingsStore.cs" />
+    <Compile Include="Stores\NullSettingsStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsContants.cs" />
     <Compile Include="SettingsNamespace.cs" />
