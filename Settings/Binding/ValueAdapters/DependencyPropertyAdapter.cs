@@ -6,15 +6,15 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
 {
-    public sealed class DependencyPropertyAdapter : IValueAdapter, IDisposable
+    public sealed class DependencyPropertyAdapter : Disposable, IValueAdapter
     {
         private readonly DependencyProperty _property;
         private readonly DependencyPropertyDescriptor _descriptor;
         private readonly DependencyObject _target;
-        private bool _isDisposed;
         private Action<object> _valueChangedCallback;
 
         public DependencyPropertyAdapter(DependencyObject target, DependencyProperty property)
@@ -39,39 +39,32 @@ namespace TheSettings.Binding.ValueAdapters
         {
             set 
             {
-                FailIfDisposed();
+                CheckNotDisposed();
                 _valueChangedCallback = value ?? (newValue => { });
             }
         }
 
         public object GetValue()
         {
-            FailIfDisposed();
+            CheckNotDisposed();
             return _target.GetValue(_property);
         }
 
         public void SetValue(object value)
         {
-            FailIfDisposed();
+            CheckNotDisposed();
             if (!_property.ReadOnly)
             {
                 _target.SetValue(_property, value);
             }
         }
 
-        public void Dispose()
+        protected override void Dispose(bool isDisposing)
         {
-            if (_isDisposed)
+            if (isDisposing)
             {
-                return;
+                _descriptor.RemoveValueChanged(_target, PropertyChangedHandler);
             }
-            _descriptor.RemoveValueChanged(_target, PropertyChangedHandler);
-            _isDisposed = true;
-        }
-
-        private void FailIfDisposed()
-        {
-            if (_isDisposed) throw new ObjectDisposedException("DependencyPropertyAdapter");
         }
     }
 }
