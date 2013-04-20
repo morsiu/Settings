@@ -39,20 +39,20 @@ namespace TheSettings.Binding.ValueAdapters
         {
             set 
             {
-                CheckNotDisposed();
+                FailIfDisposed();
                 _valueChangedCallback = value ?? (newValue => { });
             }
         }
 
         public object GetValue()
         {
-            CheckNotDisposed();
+            FailIfDisposed();
             return _target.GetValue(_property);
         }
 
         public void SetValue(object value)
         {
-            CheckNotDisposed();
+            FailIfDisposed();
             if (!_property.ReadOnly)
             {
                 _target.SetValue(_property, value);

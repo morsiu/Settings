@@ -14,7 +14,7 @@ namespace TheSettings.Infrastructure
         {
         }
 
-        protected void CheckNotDisposed()
+        protected void FailIfDisposed()
         {
             if (IsDiposed)
             {

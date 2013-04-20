@@ -34,14 +34,14 @@ namespace TheSettings.Binding.ValueAdapters
         {
             set 
             {
-                CheckNotDisposed();
+                FailIfDisposed();
                 _valueChangedCallback = value ?? (newValue => { }); 
             }
        } 
 
         public object GetValue()
         {
-            CheckNotDisposed();
+            FailIfDisposed();
             return _propertyInfo.CanRead
                 ? _propertyInfo.GetValue(_target)
                 : SettingsConstants.NoValue;
@@ -49,7 +49,7 @@ namespace TheSettings.Binding.ValueAdapters
 
         public void SetValue(object value)
         {
-            CheckNotDisposed();
+            FailIfDisposed();
             if (_propertyInfo.CanWrite)
             {
                 _propertyInfo.SetValue(_target, value);
