@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace TheSettings.Stores
 {
-    public class SettingsStore : ISettingsStore
+    public sealed class SettingsStore : ISettingsStore
     {
         private readonly IDictionary<SettingsNamespace, SettingsContainer> _namespaceContainers;
         private readonly IReadOnlyDictionary<SettingsNamespace, SettingsContainer> _namespaceContainersAccessor;
@@ -22,7 +22,7 @@ namespace TheSettings.Stores
             _namespaceContainersAccessor = new ReadOnlyDictionary<SettingsNamespace, SettingsContainer>(_namespaceContainers);
         }
 
-        public event EventHandler SettingChanged;
+        public event EventHandler<SettingChangedEventArgs> SettingChanged;
 
         public IReadOnlyDictionary<SettingsNamespace, SettingsContainer> SettingsByNamespace
         {
@@ -41,7 +41,7 @@ namespace TheSettings.Stores
             container.SetSetting(name, value);
             if (SettingChanged != null)
             {
-                SettingChanged(this, EventArgs.Empty);
+                SettingChanged(this, new SettingChangedEventArgs(@namespace, name, value));
             }
         }
 

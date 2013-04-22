@@ -59,6 +59,7 @@
     <Compile Include="SettingsContants.cs" />
     <Compile Include="SettingsNamespace.cs" />
     <Compile Include="Stores\InvalidatableSettingsStore.cs" />
+    <Compile Include="Stores\SettingChangedEventArgs.cs" />
     <Compile Include="Stores\SettingsStore.cs" />
     <Compile Include="Binding\Accessors\SingleSettingsStoreAccessor.cs" />
   </ItemGroup>
