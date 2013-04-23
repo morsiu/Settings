@@ -12,7 +12,7 @@ using TheSettings.Stores;
 namespace TheSettingsTests.StoreTests
 {
     [TestClass]
-    public class InvalidatableSettingsStoreTests
+    public class InvalidatableSettingsStoreTests : DelegatingStoreTestSuite
     {
         private const string SettingName = "Setting";
         private static readonly SettingsNamespace Namespace = new SettingsNamespace("NS");
@@ -76,59 +76,9 @@ namespace TheSettingsTests.StoreTests
                 Times.AtLeastOnce());
         }
 
-        [TestMethod]
-        public void ShouldPassSettingsNamespaceToStoreWhenGettingASetting()
+        protected override ISettingsStore ProvideStore(ISettingsStore innerStore)
         {
-            var innerStore = new Mock<ISettingsStore>();
-            var expectedNamespace = new SettingsNamespace("Namespace");
-            var store = new InvalidatableSettingsStore(innerStore.Object, oldStore => oldStore);
-
-            store.GetSetting(expectedNamespace, SettingName);
-            innerStore.Verify(s => s.GetSetting(It.Is<SettingsNamespace>(ns => expectedNamespace.Equals(ns)), It.IsAny<string>()));
-        }
-
-        [TestMethod]
-        public void ShouldPassSettingNameToStoreWhenGettingASetting()
-        {
-            var innerStore = new Mock<ISettingsStore>();
-            var expectedName = "Setting";
-            var store = new InvalidatableSettingsStore(innerStore.Object, oldStore => oldStore);
-
-            store.GetSetting(Namespace, expectedName);
-            innerStore.Verify(s => s.GetSetting(It.IsAny<SettingsNamespace>(), It.Is<string>(name => expectedName == name)));
-        }
-
-        [TestMethod]
-        public void ShouldPassSettingsNamespaceToStoreWhenSettingASetting()
-        {
-            var innerStore = new Mock<ISettingsStore>();
-            var expectedNamespace = new SettingsNamespace("Namespace");
-            var store = new InvalidatableSettingsStore(innerStore.Object, oldStore => oldStore);
-
-            store.SetSetting(expectedNamespace, SettingName, null);
-            innerStore.Verify(s => s.SetSetting(It.Is<SettingsNamespace>(ns => expectedNamespace.Equals(ns)), It.IsAny<string>(), It.IsAny<object>()));
-        }
-
-        [TestMethod]
-        public void ShouldPassSettingNameToStoreWhenSettingASetting()
-        {
-            var innerStore = new Mock<ISettingsStore>();
-            var expectedName = "Setting";
-            var store = new InvalidatableSettingsStore(innerStore.Object, oldStore => oldStore);
-
-            store.SetSetting(Namespace, expectedName, null);
-            innerStore.Verify(s => s.SetSetting(It.IsAny<SettingsNamespace>(), It.Is<string>(name => expectedName == name), It.IsAny<object>()));
-        }
-
-        [TestMethod]
-        public void ShouldPassSettingValueToStoreWhenSettingASetting()
-        {
-            var innerStore = new Mock<ISettingsStore>();
-            var expectedValue = new object();
-            var store = new InvalidatableSettingsStore(innerStore.Object, oldStore => oldStore);
-
-            store.SetSetting(Namespace, SettingName, expectedValue);
-            innerStore.Verify(s => s.SetSetting(It.IsAny<SettingsNamespace>(), It.IsAny<string>(), It.Is<object>(value => value == expectedValue)));
+            return new InvalidatableSettingsStore(innerStore, oldStore => oldStore);
         }
     }
 }
