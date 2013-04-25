@@ -4,6 +4,7 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -11,14 +12,14 @@ namespace TheSettings.Stores
 {
     public sealed class SettingsStore : ISettingsStore
     {
-        private readonly IDictionary<SettingsNamespace, SettingsContainer> _namespaceContainers;
+        private readonly ConcurrentDictionary<SettingsNamespace, SettingsContainer> _namespaceContainers;
         private readonly IReadOnlyDictionary<SettingsNamespace, SettingsContainer> _namespaceContainersAccessor;
         private readonly IEqualityComparer<SettingsNamespace> _namespaceComparer;
 
         public SettingsStore()
         {
             _namespaceComparer = new NamespaceComparer();
-            _namespaceContainers = new Dictionary<SettingsNamespace, SettingsContainer>(_namespaceComparer);
+            _namespaceContainers = new ConcurrentDictionary<SettingsNamespace, SettingsContainer>(_namespaceComparer);
             _namespaceContainersAccessor = new ReadOnlyDictionary<SettingsNamespace, SettingsContainer>(_namespaceContainers);
         }
 
@@ -47,24 +48,17 @@ namespace TheSettings.Stores
 
         private SettingsContainer GetContainer(SettingsNamespace @namespace)
         {
-            SettingsContainer container;
-            if (_namespaceContainers.TryGetValue(@namespace, out container))
-            {
-                return container;
-            }
-            container = new SettingsContainer();
-            _namespaceContainers[@namespace] = container;
-            return container;
+            return _namespaceContainers.GetOrAdd(@namespace, key => new SettingsContainer());
         }
 
         public class SettingsContainer
         {
-            private readonly IDictionary<string, object> _settings;
+            private readonly ConcurrentDictionary<string, object> _settings;
             private readonly IReadOnlyDictionary<string, object> _settingsAccessor;
 
             public SettingsContainer()
             {
-                _settings = new Dictionary<string, object>();
+                _settings = new ConcurrentDictionary<string, object>();
                 _settingsAccessor = new ReadOnlyDictionary<string, object>(_settings);
             }
 
