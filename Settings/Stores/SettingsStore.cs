@@ -40,9 +40,15 @@ namespace TheSettings.Stores
         {
             var container = GetContainer(@namespace);
             container.SetSetting(name, value);
-            if (SettingChanged != null)
+            OnSettingChanged(@namespace, name, value);
+        }
+
+        private void OnSettingChanged(SettingsNamespace @namespace, string name, object value)
+        {
+            var handler = SettingChanged;
+            if (handler != null)
             {
-                SettingChanged(this, new SettingChangedEventArgs(@namespace, name, value));
+                handler(this, new SettingChangedEventArgs(@namespace, name, value));
             }
         }
 
