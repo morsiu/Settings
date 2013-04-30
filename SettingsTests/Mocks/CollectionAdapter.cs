@@ -18,7 +18,7 @@ namespace TheSettingsTests.Mocks
 
         public List<object> Items { get; set; }
 
-        public CollectionChangedCallbackHandler CollectionChangedCallback { set; get; }
+        public CollectionChangedCallbackHandler CollectionChangedCallback { get; set; }
 
         public IEnumerable GetItems()
         {

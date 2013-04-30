@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheSettings.Binding;
 using TheSettingsTests.Mocks;
 
-namespace TheSettingsTests
+namespace TheSettingsTests.BindingTests
 {
     [TestClass]
     public class SetBindingTests
