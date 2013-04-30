@@ -14,6 +14,7 @@ namespace TheSettings.Wpf.Binding
     public class DataGridColumnsBinding : ISettingBindingsProvider
     {
         private const string DefaultColumnSettingFormat = "Column{0}{1}";
+
         private static readonly IEnumerable<DependencyProperty> StoredProperties =
             new[]
             {
@@ -34,25 +35,28 @@ namespace TheSettings.Wpf.Binding
 
         public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
         {
-            var factory = new SettingBindingFactory();
+            var builder = new ValueBindingBuilder();
             var dataGrid = (DataGrid)target;
             var @namespace = Settings.GetNamespace(target);
             var bindings = dataGrid.Columns.SelectMany(
-                (column, index) => BindColumn(column, index, @namespace, factory));
+                (column, index) => BindColumn(column, index, @namespace, builder));
             return bindings;
         }
 
         private IEnumerable<ISettingBinding> BindColumn(
-            DataGridColumn column, 
-            int index, 
-            SettingsNamespace @namespace, 
-            SettingBindingFactory factory)
+            DataGridColumn column,
+            int index,
+            SettingsNamespace @namespace,
+            ValueBindingBuilder builder)
         {
             var accessor = Settings.CurrentStoreAccessor;
             return
                 from storedProperty in StoredProperties
                 let name = string.Format(ColumnSettingFormat, index, storedProperty.Name)
-                let binding = factory.Create(column, storedProperty, accessor, Store, @namespace, name)
+                let binding = builder
+                    .SetTargetAdapter(column, storedProperty)
+                    .SetSourceAdapter(accessor, Store, @namespace, name)
+                    .Build()
                 select binding;
         }
     }

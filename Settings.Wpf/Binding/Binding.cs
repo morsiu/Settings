@@ -20,11 +20,14 @@ namespace TheSettings.Wpf.Binding
 
         public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
         {
-            var factory = new SettingBindingFactory();
+            var builder = new ValueBindingBuilder();
             var @namespace = Settings.GetNamespace(target);
             var descriptor = TypeDescriptor.GetProperties(target)[Property];
             var accessor = Settings.CurrentStoreAccessor;
-            var binding = factory.Create(target, descriptor, accessor, Store, @namespace, Setting);
+            var binding = builder
+                .SetTargetAdapter(target, descriptor)
+                .SetSourceAdapter(accessor, Store, @namespace, Setting)
+                .Build();
             return new[] { binding };
         }
     }

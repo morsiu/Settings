@@ -45,7 +45,7 @@
     <Compile Include="Binding\SetBinding.cs" />
     <Compile Include="Binding\ValueAdapters\ConvertingAdapter.cs" />
     <Compile Include="Binding\ValueBinding.cs" />
-    <Compile Include="Binding\SettingBindingFactory.cs" />
+    <Compile Include="Binding\ValueBindingBuilder.cs" />
     <Compile Include="Binding\ValueAdapters\ClrPropertyAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\DependencyPropertyAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />

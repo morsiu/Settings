@@ -11,37 +11,51 @@ using TheSettings.Binding.ValueAdapters;
 
 namespace TheSettings.Binding
 {
-    public class SettingBindingFactory
+    public class ValueBindingBuilder
     {
-        public ISettingBinding Create(
+        private IValueAdapter _targetAdapter;
+        private IValueAdapter _sourceAdapter;
+
+        public ValueBindingBuilder SetTargetAdapter(
             object target,
-            object propertyInfo,
-            ISettingsStoreAccessor storeAccessor,
-            object storeKey,
-            SettingsNamespace @namespace,
-            string settingName)
+            object propertyInfo)
         {
-            var settingAdapter = CreateSettingAdapter(storeAccessor, storeKey, @namespace, settingName);
             var targetAdapter = GetPropertyAdapter(target, propertyInfo);
             if (targetAdapter == null)
             {
                 throw new ArgumentException("Unsupported type of target and property");
             }
-
-            return new ValueBinding(targetAdapter, settingAdapter);
+            _targetAdapter = targetAdapter;
+            return this;
         }
 
-        public ISettingBinding Create(
+        public ValueBindingBuilder SetTargetAdapter(
             DependencyObject target,
-            DependencyProperty property,
+            DependencyProperty property)
+        {
+            _targetAdapter = new DependencyPropertyAdapter(target, property);
+            return this;
+        }
+
+        public ValueBindingBuilder SetTargetAdapter(IValueAdapter adapter)
+        {
+            _targetAdapter = adapter;
+            return this;
+        }
+
+        public ValueBindingBuilder SetSourceAdapter(
             ISettingsStoreAccessor storeAccessor,
             object storeKey,
             SettingsNamespace @namespace,
             string settingName)
         {
-            var settingAdapter = CreateSettingAdapter(storeAccessor, storeKey, @namespace, settingName);
-            var targetAdapter = new DependencyPropertyAdapter(target, property);
-            return new ValueBinding(targetAdapter, settingAdapter);
+            _sourceAdapter = CreateSettingAdapter(storeAccessor, storeKey, @namespace, settingName);
+            return this;
+        }
+
+        public ISettingBinding Build()
+        {
+            return new ValueBinding(_targetAdapter, _sourceAdapter);
         }
 
         private static SettingAdapter CreateSettingAdapter(ISettingsStoreAccessor storeAccessor, object storeKey, SettingsNamespace @namespace, string settingName)

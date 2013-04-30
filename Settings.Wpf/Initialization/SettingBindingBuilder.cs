@@ -27,9 +27,12 @@ namespace TheSettings.Wpf.Initialization
         {
             var @namespace = Settings.GetNamespace(_target);
             var settings = Settings.GetSettings(_target);
-            var bindingFactory = new SettingBindingFactory();
+            var bindingBuilder = new ValueBindingBuilder();
             var accessor = Settings.CurrentStoreAccessor;
-            var binding = bindingFactory.Create(_target, _property, accessor, _storeKey, @namespace, _name);
+            var binding = bindingBuilder
+                .SetTargetAdapter(_target, _property)
+                .SetSourceAdapter(accessor, _storeKey, @namespace, _name)
+                .Build();
             settings.AddBinding(binding);
         }
     }
