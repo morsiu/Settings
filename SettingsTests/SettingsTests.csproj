@@ -82,6 +82,7 @@
       <DependentUpon>SettingBinding.xaml</DependentUpon>
     </Compile>
     <Compile Include="MarkupTests\SettingExtensionTests\SettingExtensionTests.cs" />
+    <Compile Include="Mocks\NullValueConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetBindingTests.cs" />
     <Compile Include="SettingsNamespaceTests.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="TreeTests\TreeWalkerTests.cs" />
     <Compile Include="Mocks\ValueAdapter.cs" />
     <Compile Include="ValueAdapterTests\ClrPropertyAdapterTests.cs" />
+    <Compile Include="ValueAdapterTests\ConvertingAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\DependencyPropertyAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\SettingAdapterTests.cs" />
     <Compile Include="Mocks\ValueConverter.cs" />

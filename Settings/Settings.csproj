@@ -43,6 +43,7 @@
     <Compile Include="Binding\IValueAdapter.cs" />
     <Compile Include="Binding\IValueConverter.cs" />
     <Compile Include="Binding\SetBinding.cs" />
+    <Compile Include="Binding\ValueAdapters\ConvertingAdapter.cs" />
     <Compile Include="Binding\ValueBinding.cs" />
     <Compile Include="Binding\SettingBindingFactory.cs" />
     <Compile Include="Binding\ValueAdapters\ClrPropertyAdapter.cs" />

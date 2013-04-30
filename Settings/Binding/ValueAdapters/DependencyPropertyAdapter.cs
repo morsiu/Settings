@@ -37,7 +37,7 @@ namespace TheSettings.Binding.ValueAdapters
 
         public Action<object> ValueChangedCallback
         {
-            set 
+            set
             {
                 FailIfDisposed();
                 _valueChangedCallback = value ?? (newValue => { });

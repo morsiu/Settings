@@ -9,23 +9,24 @@ namespace TheSettingsTests.Mocks
 {
     public class ValueConverter : IValueConverter
     {
-        private readonly object _source;
-        private readonly object _target;
+        public object ReturnedSource { get; set; }
 
-        public ValueConverter(object source, object target)
+        public object ReturnedTarget { get; set; }
+
+        public object ReceivedSource { get; set; }
+
+        public object ReceivedTarget { get; set; }
+
+        public object ConvertToSource(object target)
         {
-            _source = source;
-            _target = target;
+            ReceivedTarget = target;
+            return ReturnedSource;
         }
 
-        public object ConvertToSource(object value)
+        public object ConvertToTarget(object source)
         {
-            return _source;
-        }
-
-        public object ConvertFromSource(object value)
-        {
-            return _target;
+            ReceivedSource = source;
+            return ReturnedTarget;
         }
     }
 }
