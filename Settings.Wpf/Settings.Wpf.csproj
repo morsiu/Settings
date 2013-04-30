@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Binding\Adapters\MultiSelectorSelectedItemsAdapter.cs" />
     <Compile Include="Binding\SelectedItemsBinding.cs" />
+    <Compile Include="Binding\ValueConverters\TypeConverterAdapter.cs" />
     <Compile Include="Initialization\InitializerLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\NameLookup.cs" />

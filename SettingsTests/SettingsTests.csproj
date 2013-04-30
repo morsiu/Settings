@@ -97,6 +97,7 @@
     <Compile Include="ValueAdapterTests\DependencyPropertyAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\SettingAdapterTests.cs" />
     <Compile Include="Mocks\ValueConverter.cs" />
+    <Compile Include="ValueConverterTests\TypeConverterAdapterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Settings.Wpf\Settings.Wpf.csproj">
