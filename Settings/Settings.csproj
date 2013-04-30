@@ -41,6 +41,7 @@
     <Compile Include="Binding\ISettingBindingsProvider.cs" />
     <Compile Include="Binding\ISettingsStoreAccessor.cs" />
     <Compile Include="Binding\IValueAdapter.cs" />
+    <Compile Include="Binding\IValueConverter.cs" />
     <Compile Include="Binding\SetBinding.cs" />
     <Compile Include="Binding\ValueBinding.cs" />
     <Compile Include="Binding\SettingBindingFactory.cs" />
@@ -70,7 +71,9 @@
   <ItemGroup>
     <None Include="Settings.nuspec" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Binding\ValueConverters\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -90,9 +90,11 @@
     <Compile Include="StoreTests\InvalidatableSettingsStoreTests.cs" />
     <Compile Include="StoreTests\PersistentStoreTests.cs" />
     <Compile Include="TreeTests\TreeWalkerTests.cs" />
+    <Compile Include="Mocks\ValueAdapter.cs" />
     <Compile Include="ValueAdapterTests\ClrPropertyAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\DependencyPropertyAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\SettingAdapterTests.cs" />
+    <Compile Include="Mocks\ValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Settings.Wpf\Settings.Wpf.csproj">

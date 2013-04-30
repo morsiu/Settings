@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheSettings.Binding;
+using TheSettingsTests.Mocks;
 
 namespace TheSettingsTests
 {
@@ -136,31 +137,6 @@ namespace TheSettingsTests
                 {
                     Items.Add(item);
                 }
-            }
-        }
-
-        private class ValueAdapter : IValueAdapter
-        {
-            public object Value { get; set; }
-
-            public ICollection ValueAsCollection
-            {
-                get { return ((ISet<object>)Value).ToList(); }
-            }
-
-            public bool SetValueCalled { get; set; }
-
-            public Action<object> ValueChangedCallback { get; set; }
-
-            public object GetValue()
-            {
-                return Value;
-            }
-
-            public void SetValue(object value)
-            {
-                SetValueCalled = true;
-                Value = value;
             }
         }
     }
