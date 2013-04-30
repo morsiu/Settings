@@ -77,16 +77,13 @@ namespace TheSettings.Wpf.Infrastructure
             UpdateBindings(_bindings);
         }
 
-        protected override void Dispose(bool isDisposing)
+        protected override void DisposeManaged()
         {
-            if (isDisposing)
+            foreach (var binding in _bindings)
             {
-                foreach (var binding in _bindings)
-                {
-                    Dispose(binding);
-                }
-                _bindings.Clear();
+                Dispose(binding);
             }
+            _bindings.Clear();
         }
 
         private SettingsInitializer GetInitializer()

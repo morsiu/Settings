@@ -30,6 +30,12 @@ namespace TheSettings.Binding
             ForwardValueToTargetIfNotNoValue(value);
         }
 
+        protected override void DisposeManaged()
+        {
+            Dispose(_targetAdapter);
+            Dispose(_sourceAdapter);
+        }
+
         private void ForwardValueToTargetIfNotNoValue(object value)
         {
             if (value == SettingsConstants.NoValue)
@@ -37,15 +43,6 @@ namespace TheSettings.Binding
                 return;
             }
             _targetAdapter.SetValue(value);
-        }
-
-        protected override void Dispose(bool isDisposing)
-        {
-            if (isDisposing)
-            {
-                Dispose(_targetAdapter);
-                Dispose(_sourceAdapter);
-            }
         }
     }
 }

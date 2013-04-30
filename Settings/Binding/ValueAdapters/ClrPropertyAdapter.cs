@@ -32,12 +32,12 @@ namespace TheSettings.Binding.ValueAdapters
 
         public Action<object> ValueChangedCallback
         {
-            set 
+            set
             {
                 FailIfDisposed();
-                _valueChangedCallback = value ?? (newValue => { }); 
+                _valueChangedCallback = value ?? (newValue => { });
             }
-       } 
+        }
 
         public object GetValue()
         {
@@ -56,15 +56,12 @@ namespace TheSettings.Binding.ValueAdapters
             }
         }
 
-        protected override void Dispose(bool isDisposing)
+        protected override void DisposeManaged()
         {
-            if (isDisposing)
+            var notifyingTarget = _target as INotifyPropertyChanged;
+            if (notifyingTarget != null)
             {
-                var notifyingTarget = _target as INotifyPropertyChanged;
-                if (notifyingTarget != null)
-                {
-                    PropertyChangedEventManager.RemoveHandler(notifyingTarget, PropertyChangedHandler, _propertyInfo.Name);
-                }
+                PropertyChangedEventManager.RemoveHandler(notifyingTarget, PropertyChangedHandler, _propertyInfo.Name);
             }
         }
 

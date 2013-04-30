@@ -59,12 +59,9 @@ namespace TheSettings.Binding.ValueAdapters
             }
         }
 
-        protected override void Dispose(bool isDisposing)
+        protected override void DisposeManaged()
         {
-            if (isDisposing)
-            {
-                _descriptor.RemoveValueChanged(_target, PropertyChangedHandler);
-            }
+            _descriptor.RemoveValueChanged(_target, PropertyChangedHandler);
         }
     }
 }

@@ -50,13 +50,10 @@ namespace TheSettings.Binding
             }
         }
 
-        protected override void Dispose(bool isDisposing)
+        protected override void DisposeManaged()
         {
-            if (isDisposing)
-            {
-                Dispose(_collectionAdapter);
-                Dispose(_settingAdapter);
-            }
+            Dispose(_collectionAdapter);
+            Dispose(_settingAdapter);
         }
 
         private void OnCollectionChangedCallback(

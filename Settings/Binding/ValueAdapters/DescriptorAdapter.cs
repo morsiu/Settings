@@ -31,7 +31,7 @@ namespace TheSettings.Binding.ValueAdapters
 
         public Action<object> ValueChangedCallback
         {
-            set 
+            set
             {
                 FailIfDisposed();
                 _valueChangedCallback = value ?? (newValue => { });
@@ -51,12 +51,9 @@ namespace TheSettings.Binding.ValueAdapters
             _descriptor.SetValue(_target, value);
         }
 
-        protected override void Dispose(bool isDisposing)
+        protected override void DisposeManaged()
         {
-            if (isDisposing)
-            {
-                _descriptor.RemoveValueChanged(_target, OnValueChanged);
-            }
+            _descriptor.RemoveValueChanged(_target, OnValueChanged);
         }
     }
 }
