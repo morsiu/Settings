@@ -3,6 +3,7 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System;
 using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding
@@ -10,20 +11,27 @@ namespace TheSettings.Binding
     public class ValueBinding : Disposable, ISettingBinding
     {
         private readonly IValueAdapter _targetAdapter;
-        private readonly IValueAdapter _settingAdapter;
+        private readonly IValueAdapter _sourceAdapter;
 
-        public ValueBinding(IValueAdapter targetAdapter, IValueAdapter settingAdapter)
+        public ValueBinding(IValueAdapter targetAdapter, IValueAdapter sourceAdapter)
         {
+            if (targetAdapter == null) throw new ArgumentNullException("targetAdapter");
+            if (sourceAdapter == null) throw new ArgumentNullException("sourceAdapter");
             _targetAdapter = targetAdapter;
-            _settingAdapter = settingAdapter;
-            _targetAdapter.ValueChangedCallback = _settingAdapter.SetValue;
-            _settingAdapter.ValueChangedCallback = _targetAdapter.SetValue;
+            _sourceAdapter = sourceAdapter;
+            _targetAdapter.ValueChangedCallback = _sourceAdapter.SetValue;
+            _sourceAdapter.ValueChangedCallback = ForwardValueToTargetIfNotNoValue;
         }
 
         public void UpdateTarget()
         {
             FailIfDisposed();
-            var value = _settingAdapter.GetValue();
+            var value = _sourceAdapter.GetValue();
+            ForwardValueToTargetIfNotNoValue(value);
+        }
+
+        private void ForwardValueToTargetIfNotNoValue(object value)
+        {
             if (value == SettingsConstants.NoValue)
             {
                 return;
@@ -36,7 +44,7 @@ namespace TheSettings.Binding
             if (isDisposing)
             {
                 Dispose(_targetAdapter);
-                Dispose(_settingAdapter);
+                Dispose(_sourceAdapter);
             }
         }
     }
