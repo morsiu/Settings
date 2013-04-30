@@ -125,6 +125,7 @@ namespace TheSettings.Wpf.Infrastructure
 
         int IList.Add(object value)
         {
+            FailIfDisposed();
             var bindingProvider = value as ISettingBindingsProvider;
             if (bindingProvider != null)
             {
