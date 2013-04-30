@@ -4,7 +4,6 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -112,32 +111,6 @@ namespace TheSettingsTests
 
             binding.UpdateSource();
             CollectionAssert.AreEqual(expectedItems, _valueAdapter.ValueAsCollection);
-        }
-
-        private class CollectionAdapter : ICollectionAdapter
-        {
-            public CollectionAdapter()
-            {
-                Items = new List<object>();
-            }
-
-            public List<object> Items { get; set; }
-
-            public CollectionChangedCallbackHandler CollectionChangedCallback { set; get; }
-
-            public IEnumerable GetItems()
-            {
-                return Items;
-            }
-
-            public void SetItems(IEnumerable items)
-            {
-                Items.Clear();
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
-            }
         }
     }
 }
