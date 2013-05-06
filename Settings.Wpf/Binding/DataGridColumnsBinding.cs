@@ -35,9 +35,11 @@ namespace TheSettings.Wpf.Binding
             ColumnSettingNaming = DefaultColumnSettingNaming;
         }
 
-        public delegate string ColumnSettingNameFactory(DataGridColumn column, int columnIndex, DependencyProperty property);
+        public delegate string ColumnSettingNameFactory(string settingName, DataGridColumn column, int columnIndex, DependencyProperty property);
 
         public string ColumnSettingNaming { get; set; }
+
+        public string Setting { get; set; }
 
         public object Store { get; set; }
 
@@ -65,7 +67,7 @@ namespace TheSettings.Wpf.Binding
             var accessor = Settings.CurrentStoreAccessor;
             return
                 from storedProperty in StoredProperties
-                let name = nameFactory(column, index, storedProperty)
+                let name = nameFactory(Setting, column, index, storedProperty)
                 let targetAdapter = CreateTargetAdapter(column, storedProperty)
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
