@@ -21,8 +21,8 @@ namespace TheSettings.Wpf.Binding
 
         public static readonly string DefaultSettingNameFactoryKey = string.Empty;
 
-        private static readonly IEnumerable<DependencyProperty> StoredProperties =
-            new[]
+        public static readonly List<DependencyProperty> DefaultStoredProperties =
+            new List<DependencyProperty>
             {
                 DataGridColumn.DisplayIndexProperty,
                 DataGridColumn.SortDirectionProperty,
@@ -38,6 +38,8 @@ namespace TheSettings.Wpf.Binding
         public delegate string ColumnSettingNameFactory(string settingName, DataGridColumn column, int columnIndex, DependencyProperty property);
 
         public ColumnSettingNameFactory SettingNameFactory { get; set; }
+
+        public IEnumerable<DependencyProperty> StoredProperties { get; set; }
 
         public string SettingNameFactoryKey { get; set; }
 
@@ -68,7 +70,7 @@ namespace TheSettings.Wpf.Binding
             }
             var accessor = Settings.CurrentStoreAccessor;
             return
-                from storedProperty in StoredProperties
+                from storedProperty in GetStoredProperties()
                 let name = nameFactory(Setting, column, index, storedProperty)
                 let targetAdapter = CreateTargetAdapter(column, storedProperty)
                 let binding = builder
@@ -76,6 +78,13 @@ namespace TheSettings.Wpf.Binding
                     .SetSourceAdapter(accessor, Store, @namespace, name)
                     .Build()
                 select binding;
+        }
+
+        private IEnumerable<DependencyProperty> GetStoredProperties()
+        {
+            return StoredProperties
+                ?? DefaultStoredProperties
+                ?? Enumerable.Empty<DependencyProperty>();
         }
 
         private ColumnSettingNameFactory GetColumnSettingNameFactory()
