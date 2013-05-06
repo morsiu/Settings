@@ -19,7 +19,7 @@ namespace TheSettings.Wpf.Binding
     {
         public static readonly IDictionary<string, ColumnSettingNameFactory> ColumnSettingNameFactories = new Dictionary<string, ColumnSettingNameFactory>();
 
-        public static readonly string DefaultColumnSettingNaming = string.Empty;
+        public static readonly string DefaultSettingNameFactoryKey = string.Empty;
 
         private static readonly IEnumerable<DependencyProperty> StoredProperties =
             new[]
@@ -32,12 +32,14 @@ namespace TheSettings.Wpf.Binding
 
         public DataGridColumnsBinding()
         {
-            ColumnSettingNaming = DefaultColumnSettingNaming;
+            SettingNameFactoryKey = DefaultSettingNameFactoryKey;
         }
 
         public delegate string ColumnSettingNameFactory(string settingName, DataGridColumn column, int columnIndex, DependencyProperty property);
 
-        public string ColumnSettingNaming { get; set; }
+        public ColumnSettingNameFactory SettingNameFactory { get; set; }
+
+        public string SettingNameFactoryKey { get; set; }
 
         public string Setting { get; set; }
 
@@ -59,7 +61,7 @@ namespace TheSettings.Wpf.Binding
             SettingsNamespace @namespace,
             ValueBindingBuilder builder)
         {
-            var nameFactory = GetColumnSettingNameFactory(ColumnSettingNaming);
+            var nameFactory = GetColumnSettingNameFactory();
             if (nameFactory == null)
             {
                 return Enumerable.Empty<ISettingBinding>();
@@ -76,14 +78,18 @@ namespace TheSettings.Wpf.Binding
                 select binding;
         }
 
-        private static ColumnSettingNameFactory GetColumnSettingNameFactory(string factoryName)
+        private ColumnSettingNameFactory GetColumnSettingNameFactory()
         {
-            if (factoryName == null)
+            if (SettingNameFactory != null)
+            {
+                return SettingNameFactory;
+            }
+            if (SettingNameFactoryKey == null)
             {
                 return null;
             }
             ColumnSettingNameFactory factory;
-            ColumnSettingNameFactories.TryGetValue(factoryName, out factory);
+            ColumnSettingNameFactories.TryGetValue(SettingNameFactoryKey, out factory);
             return factory;
         }
 
