@@ -19,6 +19,8 @@ namespace TheSettings.Wpf.Binding
     {
         public static readonly IDictionary<string, ColumnSettingNameFactory> ColumnSettingNameFactories = new Dictionary<string, ColumnSettingNameFactory>();
 
+        public static readonly string DefaultColumnSettingNaming = string.Empty;
+
         private static readonly IEnumerable<DependencyProperty> StoredProperties =
             new[]
             {
@@ -27,8 +29,6 @@ namespace TheSettings.Wpf.Binding
                 DataGridColumn.WidthProperty,
                 DataGridColumn.VisibilityProperty
             };
-
-        public static readonly string DefaultColumnSettingNaming = string.Empty;
 
         public DataGridColumnsBinding()
         {
