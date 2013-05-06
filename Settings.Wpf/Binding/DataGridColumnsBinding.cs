@@ -17,7 +17,7 @@ namespace TheSettings.Wpf.Binding
 {
     public class DataGridColumnsBinding : ISettingBindingsProvider
     {
-        private const string DefaultColumnSettingFormat = "Column{0}{1}";
+        public static readonly IDictionary<string, ColumnSettingNameFactory> ColumnSettingNameFactories = new Dictionary<string, ColumnSettingNameFactory>();
 
         private static readonly IEnumerable<DependencyProperty> StoredProperties =
             new[]
@@ -28,12 +28,16 @@ namespace TheSettings.Wpf.Binding
                 DataGridColumn.VisibilityProperty
             };
 
+        public static readonly string DefaultColumnSettingNaming = string.Empty;
+
         public DataGridColumnsBinding()
         {
-            ColumnSettingFormat = DefaultColumnSettingFormat;
+            ColumnSettingNaming = DefaultColumnSettingNaming;
         }
 
-        public string ColumnSettingFormat { get; set; }
+        public delegate string ColumnSettingNameFactory(DataGridColumn column, int columnIndex, DependencyProperty property);
+
+        public string ColumnSettingNaming { get; set; }
 
         public object Store { get; set; }
 
@@ -53,10 +57,15 @@ namespace TheSettings.Wpf.Binding
             SettingsNamespace @namespace,
             ValueBindingBuilder builder)
         {
+            var nameFactory = GetColumnSettingNameFactory(ColumnSettingNaming);
+            if (nameFactory == null)
+            {
+                return Enumerable.Empty<ISettingBinding>();
+            }
             var accessor = Settings.CurrentStoreAccessor;
             return
                 from storedProperty in StoredProperties
-                let name = string.Format(ColumnSettingFormat, index, storedProperty.Name)
+                let name = nameFactory(column, index, storedProperty)
                 let targetAdapter = CreateTargetAdapter(column, storedProperty)
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
@@ -65,7 +74,18 @@ namespace TheSettings.Wpf.Binding
                 select binding;
         }
 
-        private IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty)
+        private static ColumnSettingNameFactory GetColumnSettingNameFactory(string factoryName)
+        {
+            if (factoryName == null)
+            {
+                return null;
+            }
+            ColumnSettingNameFactory factory;
+            ColumnSettingNameFactories.TryGetValue(factoryName, out factory);
+            return factory;
+        }
+
+        private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty)
         {
             var propertyType = storedProperty.PropertyType;
             var propertyAdapter = new DependencyPropertyAdapter(column, storedProperty);
