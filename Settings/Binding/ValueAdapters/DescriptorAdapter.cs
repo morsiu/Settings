@@ -13,6 +13,7 @@ namespace TheSettings.Binding.ValueAdapters
     {
         private readonly PropertyDescriptor _descriptor;
         private readonly object _target;
+        private bool _isSettingValue;
         private Action<object> _valueChangedCallback;
 
         public DescriptorAdapter(object target, PropertyDescriptor descriptor)
@@ -25,6 +26,10 @@ namespace TheSettings.Binding.ValueAdapters
 
         private void OnValueChanged(object sender, EventArgs e)
         {
+            if (_isSettingValue)
+            {
+                return;
+            }
             var value = GetValue();
             _valueChangedCallback(value);
         }
@@ -48,7 +53,15 @@ namespace TheSettings.Binding.ValueAdapters
         public void SetValue(object value)
         {
             FailIfDisposed();
-            _descriptor.SetValue(_target, value);
+            _isSettingValue = true;
+            try
+            {
+                _descriptor.SetValue(_target, value);
+            }
+            finally
+            {
+                _isSettingValue = false;
+            }
         }
 
         protected override void DisposeManaged()
