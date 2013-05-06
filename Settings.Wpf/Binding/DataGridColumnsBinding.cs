@@ -106,6 +106,11 @@ namespace TheSettings.Wpf.Binding
         {
             var propertyType = storedProperty.PropertyType;
             var propertyAdapter = new DependencyPropertyAdapter(column, storedProperty);
+            return WrapInTypeConverterIfNecessary(propertyAdapter, propertyType);
+        }
+
+        private static IValueAdapter WrapInTypeConverterIfNecessary(IValueAdapter propertyAdapter, Type propertyType)
+        {
             var typeConverter = GetTypeConverterIfAny(propertyType);
             if (typeConverter != null)
             {
@@ -117,24 +122,20 @@ namespace TheSettings.Wpf.Binding
 
         private static TypeConverter GetTypeConverterIfAny(Type propertyType)
         {
-            if (!propertyType.IsDefined(typeof(TypeConverterAttribute), false))
+            if (IsApplicableForTypeConversion(propertyType))
             {
-                return null;
+                var converter = TypeDescriptor.GetConverter(propertyType);
+                return converter;
             }
-            var converterAttribute = propertyType.GetCustomAttributes(typeof(TypeConverterAttribute), false).OfType<TypeConverterAttribute>().First();
-            var converterType = Type.GetType(converterAttribute.ConverterTypeName, false);
-            if (converterType == null || !typeof(TypeConverter).IsAssignableFrom(converterType))
-            {
-                if (propertyType.IsEnum)
-                {
-                    converterType = typeof(EnumConverter);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            return (TypeConverter)Activator.CreateInstance(converterType);
+            return null;
+        }
+
+        private static bool IsApplicableForTypeConversion(Type propertyType)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(propertyType);
+            var isEnum = propertyType.IsEnum || (underlyingType != null && underlyingType.IsEnum);
+            var hasTypeConverterAttribute = propertyType.IsDefined(typeof(TypeConverterAttribute), false);
+            return isEnum || hasTypeConverterAttribute;
         }
     }
 }
