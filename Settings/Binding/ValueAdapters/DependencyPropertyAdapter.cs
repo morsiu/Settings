@@ -15,6 +15,7 @@ namespace TheSettings.Binding.ValueAdapters
         private readonly DependencyProperty _property;
         private readonly DependencyPropertyDescriptor _descriptor;
         private readonly DependencyObject _target;
+        private bool _isSettingValue;
         private Action<object> _valueChangedCallback;
 
         public DependencyPropertyAdapter(DependencyObject target, DependencyProperty property)
@@ -31,6 +32,10 @@ namespace TheSettings.Binding.ValueAdapters
 
         private void PropertyChangedHandler(object sender, EventArgs e)
         {
+            if (_isSettingValue)
+            {
+                return;
+            }
             var value = GetValue();
             _valueChangedCallback(value);
         }
@@ -55,7 +60,15 @@ namespace TheSettings.Binding.ValueAdapters
             FailIfDisposed();
             if (!_property.ReadOnly)
             {
-                _target.SetValue(_property, value);
+                _isSettingValue = true;
+                try
+                {
+                    _target.SetValue(_property, value);
+                }
+                finally
+                {
+                    _isSettingValue = false;
+                }
             }
         }
 
