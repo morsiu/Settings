@@ -15,6 +15,7 @@ namespace TheSettings.Binding.ValueAdapters
         private readonly object _target;
         private readonly PropertyInfo _propertyInfo;
         private Action<object> _valueChangedCallback;
+        private bool _isSettingValue;
 
         public ClrPropertyAdapter(object target, PropertyInfo propertyInfo)
         {
@@ -52,7 +53,15 @@ namespace TheSettings.Binding.ValueAdapters
             FailIfDisposed();
             if (_propertyInfo.CanWrite)
             {
-                _propertyInfo.SetValue(_target, value);
+                _isSettingValue = true;
+                try
+                {
+                    _propertyInfo.SetValue(_target, value);
+                }
+                finally
+                {
+                    _isSettingValue = false;
+                }
             }
         }
 
@@ -67,6 +76,10 @@ namespace TheSettings.Binding.ValueAdapters
 
         private void PropertyChangedHandler(object sender, PropertyChangedEventArgs e)
         {
+            if (_isSettingValue)
+            {
+                return;
+            }
             var value = GetValue();
             _valueChangedCallback(value);
         }
