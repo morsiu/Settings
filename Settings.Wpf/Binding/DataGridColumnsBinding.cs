@@ -125,7 +125,14 @@ namespace TheSettings.Wpf.Binding
             var converterType = Type.GetType(converterAttribute.ConverterTypeName, false);
             if (converterType == null || !typeof(TypeConverter).IsAssignableFrom(converterType))
             {
-                return null;
+                if (propertyType.IsEnum)
+                {
+                    converterType = typeof(EnumConverter);
+                }
+                else
+                {
+                    return null;
+                }
             }
             return (TypeConverter)Activator.CreateInstance(converterType);
         }
