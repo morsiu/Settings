@@ -3,28 +3,26 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Windows;
-using TheSettings;
-using TheSettings.Binding.Accessors;
-using TheSettings.Stores;
-using TheSettings.Wpf;
-using TheSettings.Wpf.Binding;
-using TheSettings.Wpf.Binding.Adapters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Sample
+namespace TheSettings.Infrastructure.Factories
 {
-    public partial class App : Application
+    public class FactoryChain<TFactory>
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            SelectedItemsBinding.RegisterAdapterFactory(MultiSelectorSelectedItemsAdapter.Create);
-            var settingsStore = new SettingsStore();
-            Settings.CurrentStoreAccessor = new SingleSettingsStoreAccessor(settingsStore);
+        private readonly ICollection<TFactory> _factories = new HashSet<TFactory>();
 
-            var @namespace = new SettingsNamespace(new SettingsNamespace("Test"), "SelectedItems");
-            var value = new[] { 1, 5, 7 };
-            settingsStore.SetSetting(@namespace, "SelectedItems", value);
+        public void RegisterFactory(TFactory factory)
+        {
+            if (factory == null) throw new ArgumentNullException("factory");
+            _factories.Add(factory);
+        }
+
+        public TValue CreateValue<TValue>(Func<TFactory, TValue> creator)
+        {
+            if (creator == null) throw new ArgumentNullException("creator");
+            return _factories.Select(creator).FirstOrDefault(value => value != null);
         }
     }
 }

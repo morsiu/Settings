@@ -9,12 +9,13 @@ using System.Linq;
 using System.Windows;
 using TheSettings.Binding;
 using TheSettings.Binding.ValueAdapters;
+using TheSettings.Infrastructure.Factories;
 
 namespace TheSettings.Wpf.Binding
 {
     public class SelectedItemsBinding : ISettingBindingsProvider
     {
-        public static readonly IList<CollectionAdapterFactory> AdapterFactories = new List<CollectionAdapterFactory>();
+        private static readonly FactoryChain<CollectionAdapterFactory> _adapterFactoryChain = new FactoryChain<CollectionAdapterFactory>();
 
         public SelectedItemsBinding()
         {
@@ -23,6 +24,11 @@ namespace TheSettings.Wpf.Binding
         public SelectedItemsBinding(string itemKeyProperty)
         {
             ItemKeyProperty = itemKeyProperty;
+        }
+
+        public static void RegisterAdapterFactory(CollectionAdapterFactory factory)
+        {
+            _adapterFactoryChain.RegisterFactory(factory);
         }
 
         public delegate ICollectionAdapter CollectionAdapterFactory(DependencyObject target, Func<object, object> keySelector);
@@ -40,9 +46,8 @@ namespace TheSettings.Wpf.Binding
         public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
         {
             var keySelector = ItemKeySelector ?? (item => SelectKey(item, ItemKeyProperty));
-            var adapter = AdapterFactories
-                .Select(factory => factory(target, keySelector))
-                .FirstOrDefault();
+            var adapter = _adapterFactoryChain.CreateValue<ICollectionAdapter>(
+                factory => factory(target, keySelector));
             if (adapter == null)
             {
                 return Enumerable.Empty<ISettingBinding>();
