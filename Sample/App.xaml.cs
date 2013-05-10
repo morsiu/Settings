@@ -19,6 +19,9 @@ namespace Sample
         {
             base.OnStartup(e);
             SelectedItemsBinding.RegisterAdapterFactory(MultiSelectorSelectedItemsAdapter.Create);
+            DataGridColumnsBinding.ColumnSettingNameFactories.Add(
+                DataGridColumnsBinding.DefaultSettingNameFactoryKey,
+                (setting, column, index, property) => string.Format("Column{0}{1}", index, property.Name));
             var settingsStore = new SettingsStore();
             Settings.CurrentStoreAccessor = new SingleSettingsStoreAccessor(settingsStore);
 

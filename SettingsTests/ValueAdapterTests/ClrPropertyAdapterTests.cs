@@ -3,12 +3,12 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TheSettings;
-using TheSettings.Binding.ValueAdapters;
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TheSettings;
+using TheSettings.Binding.ValueAdapters;
 
 namespace TheSettingsTests.ValueAdapterTests
 {
@@ -63,7 +63,7 @@ namespace TheSettingsTests.ValueAdapterTests
         }
 
         [TestMethod]
-        public void ShouldReturNoValueWhenReadingWriteOnlyProperty()
+        public void ShouldReturnNoValueWhenReadingWriteOnlyProperty()
         {
             var entity = new Entity();
             var adapter = new ClrPropertyAdapter(entity, Entity.WriteOnlyPropertyInfo);
@@ -78,7 +78,9 @@ namespace TheSettingsTests.ValueAdapterTests
             var adapter = new ClrPropertyAdapter(entity, NotifyingEntity.PropertyInfo);
             var callbackCalled = false;
             adapter.ValueChangedCallback = newValue => callbackCalled = true;
-            adapter.SetValue(5);
+
+            entity.Property = 5;
+
             Assert.IsTrue(callbackCalled);
         }
 
@@ -148,6 +150,19 @@ namespace TheSettingsTests.ValueAdapterTests
             adapter.Dispose();
             entity.Property = 3;
             Assert.AreEqual(0, callbackCallCount);
+        }
+
+        [TestMethod]
+        public void ShouldNotCallValueChangedCallbackWhenSettingValue()
+        {
+            var entity = new NotifyingEntity();
+            var adapter = new ClrPropertyAdapter(entity, NotifyingEntity.PropertyInfo);
+            bool callbackCalled = false;
+            adapter.ValueChangedCallback = newValue => { callbackCalled = true; };
+
+            adapter.SetValue(5);
+
+            Assert.IsFalse(callbackCalled);
         }
 
         private class Entity

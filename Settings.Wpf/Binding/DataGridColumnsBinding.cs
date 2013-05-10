@@ -17,10 +17,12 @@ namespace TheSettings.Wpf.Binding
 {
     public class DataGridColumnsBinding : ISettingBindingsProvider
     {
-        private const string DefaultColumnSettingFormat = "Column{0}{1}";
+        public static readonly IDictionary<string, ColumnSettingNameFactory> ColumnSettingNameFactories = new Dictionary<string, ColumnSettingNameFactory>();
 
-        private static readonly IEnumerable<DependencyProperty> StoredProperties =
-            new[]
+        public static readonly string DefaultSettingNameFactoryKey = string.Empty;
+
+        public static readonly List<DependencyProperty> DefaultStoredProperties =
+            new List<DependencyProperty>
             {
                 DataGridColumn.DisplayIndexProperty,
                 DataGridColumn.SortDirectionProperty,
@@ -30,10 +32,18 @@ namespace TheSettings.Wpf.Binding
 
         public DataGridColumnsBinding()
         {
-            ColumnSettingFormat = DefaultColumnSettingFormat;
+            SettingNameFactoryKey = DefaultSettingNameFactoryKey;
         }
 
-        public string ColumnSettingFormat { get; set; }
+        public delegate string ColumnSettingNameFactory(string settingName, DataGridColumn column, int columnIndex, DependencyProperty property);
+
+        public ColumnSettingNameFactory SettingNameFactory { get; set; }
+
+        public IEnumerable<DependencyProperty> StoredProperties { get; set; }
+
+        public string SettingNameFactoryKey { get; set; }
+
+        public string Setting { get; set; }
 
         public object Store { get; set; }
 
@@ -53,10 +63,15 @@ namespace TheSettings.Wpf.Binding
             SettingsNamespace @namespace,
             ValueBindingBuilder builder)
         {
+            var nameFactory = GetColumnSettingNameFactory();
+            if (nameFactory == null)
+            {
+                return Enumerable.Empty<ISettingBinding>();
+            }
             var accessor = Settings.CurrentStoreAccessor;
             return
-                from storedProperty in StoredProperties
-                let name = string.Format(ColumnSettingFormat, index, storedProperty.Name)
+                from storedProperty in GetStoredProperties()
+                let name = nameFactory(Setting, column, index, storedProperty)
                 let targetAdapter = CreateTargetAdapter(column, storedProperty)
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
@@ -65,10 +80,37 @@ namespace TheSettings.Wpf.Binding
                 select binding;
         }
 
-        private IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty)
+        private IEnumerable<DependencyProperty> GetStoredProperties()
+        {
+            return StoredProperties
+                ?? DefaultStoredProperties
+                ?? Enumerable.Empty<DependencyProperty>();
+        }
+
+        private ColumnSettingNameFactory GetColumnSettingNameFactory()
+        {
+            if (SettingNameFactory != null)
+            {
+                return SettingNameFactory;
+            }
+            if (SettingNameFactoryKey == null)
+            {
+                return null;
+            }
+            ColumnSettingNameFactory factory;
+            ColumnSettingNameFactories.TryGetValue(SettingNameFactoryKey, out factory);
+            return factory;
+        }
+
+        private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty)
         {
             var propertyType = storedProperty.PropertyType;
             var propertyAdapter = new DependencyPropertyAdapter(column, storedProperty);
+            return WrapInTypeConverterIfNecessary(propertyAdapter, propertyType);
+        }
+
+        private static IValueAdapter WrapInTypeConverterIfNecessary(IValueAdapter propertyAdapter, Type propertyType)
+        {
             var typeConverter = GetTypeConverterIfAny(propertyType);
             if (typeConverter != null)
             {
@@ -80,17 +122,20 @@ namespace TheSettings.Wpf.Binding
 
         private static TypeConverter GetTypeConverterIfAny(Type propertyType)
         {
-            if (!propertyType.IsDefined(typeof(TypeConverterAttribute), false))
+            if (IsApplicableForTypeConversion(propertyType))
             {
-                return null;
+                var converter = TypeDescriptor.GetConverter(propertyType);
+                return converter;
             }
-            var converterAttribute = propertyType.GetCustomAttributes(typeof(TypeConverterAttribute), false).OfType<TypeConverterAttribute>().First();
-            var converterType = Type.GetType(converterAttribute.ConverterTypeName, false);
-            if (converterType == null || !typeof(TypeConverter).IsAssignableFrom(converterType))
-            {
-                return null;
-            }
-            return (TypeConverter)Activator.CreateInstance(converterType);
+            return null;
+        }
+
+        private static bool IsApplicableForTypeConversion(Type propertyType)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(propertyType);
+            var isEnum = propertyType.IsEnum || (underlyingType != null && underlyingType.IsEnum);
+            var hasTypeConverterAttribute = propertyType.IsDefined(typeof(TypeConverterAttribute), false);
+            return isEnum || hasTypeConverterAttribute;
         }
     }
 }
