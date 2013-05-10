@@ -72,13 +72,19 @@ namespace TheSettings.Wpf.Binding
             var accessor = Settings.CurrentStoreAccessor;
             return
                 from storedProperty in GetStoredProperties()
-                let name = GetSettingName(Setting, column, index, storedProperty)
+                let settingName = GetSettingName(Setting, column, index, storedProperty)
                 let targetAdapter = CreateTargetAdapter(column, storedProperty)
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
-                    .SetSourceAdapter(accessor, Store, @namespace, name)
+                    .SetSourceAdapter(accessor, Store, @namespace, settingName)
                     .Build()
                 select binding;
+        }
+
+        private IEnumerable<DependencyProperty> GetStoredProperties()
+        {
+            return StoredProperties
+                ?? DefaultStoredProperties;
         }
 
         private string GetSettingName(string settingName, DataGridColumn column, int columnIndex, DependencyProperty storedProperty)
@@ -88,13 +94,6 @@ namespace TheSettings.Wpf.Binding
                 return SettingNameFactory(settingName, column, columnIndex, storedProperty);
             }
             return _columnSettingNameFactories.CreateValue<string>(SettingNameFactoryKey, factory => factory(settingName, column, columnIndex, storedProperty));
-        }
-
-        private IEnumerable<DependencyProperty> GetStoredProperties()
-        {
-            return StoredProperties
-                ?? DefaultStoredProperties
-                ?? Enumerable.Empty<DependencyProperty>();
         }
 
         private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty)
