@@ -55,6 +55,18 @@ namespace TheSettingsTests.Infrastructure.Factories
         }
 
         [TestMethod]
+        public void ShouldPassFactoryToCreatorWhenCreatingValue()
+        {
+            var chain = new FactoryChain<int>();
+            chain.RegisterFactory(5);
+            var someFactory = 0;
+
+            chain.CreateValue<object>(factory => { someFactory = factory; return null; });
+
+            Assert.AreEqual(5, someFactory);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ShouldThrowIfCreatorIsNullWhenCreatingValue()
         {
