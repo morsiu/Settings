@@ -53,6 +53,7 @@
     <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\Factories\FactoryChain.cs" />
+    <Compile Include="Infrastructure\Factories\KeyedFactoryContainer.cs" />
     <Compile Include="Infrastructure\ITreeWalker.cs" />
     <Compile Include="Infrastructure\ITree.cs" />
     <Compile Include="Infrastructure\SettingNamespaceKeyComparer.cs" />

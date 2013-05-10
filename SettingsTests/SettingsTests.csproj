@@ -61,6 +61,7 @@
     <Compile Include="BindingTests\SetBindingTests.cs" />
     <Compile Include="BindingTests\ValueBindingTests.cs" />
     <Compile Include="Infrastructure\Factories\FactoryChainTests.cs" />
+    <Compile Include="Infrastructure\Factories\KeyedFactoryContainerTests.cs" />
     <Compile Include="Infrastructure\GuiTests.cs" />
     <Compile Include="MarkupTests\NamespaceExtensionTests\ControlTemplatingNamespaceExtensionTests.cs" />
     <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlTemplating.xaml.cs">
