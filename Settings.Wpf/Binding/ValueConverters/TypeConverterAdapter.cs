@@ -5,6 +5,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using TheSettings.Binding;
 
 namespace TheSettings.Wpf.Binding.ValueConverters
@@ -18,6 +19,7 @@ namespace TheSettings.Wpf.Binding.ValueConverters
     {
         private readonly TypeConverter _converter;
         private readonly Type _targetType;
+        private static readonly CultureInfo _culture = CultureInfo.InvariantCulture;
 
         /// <param name="converter">Converter that is used for converting values.</param>
         /// <param name="targetType">Type of desired type when converting from source value to target value.</param>
@@ -43,7 +45,7 @@ namespace TheSettings.Wpf.Binding.ValueConverters
             var targetType = target.GetType();
             var canConvertToSource = _converter.CanConvertFrom(null, targetType);
             var source = canConvertToSource
-                ? _converter.ConvertFrom(target)
+                ? _converter.ConvertFrom(null, _culture, target)
                 : SettingsConstants.NoValue;
             return source;
         }
@@ -53,7 +55,7 @@ namespace TheSettings.Wpf.Binding.ValueConverters
             object target;
             try
             {
-                target = _converter.ConvertTo(source, _targetType);
+                target = _converter.ConvertTo(null, _culture, source, _targetType);
             }
             catch (Exception)
             {
