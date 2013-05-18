@@ -15,6 +15,7 @@ namespace TheSettings.Binding
     {
         private IValueAdapter _targetAdapter;
         private IValueAdapter _sourceAdapter;
+        private ExceptionHandlingAdapter.ExceptionHandler _exceptionHandler;
 
         public ValueBindingBuilder SetTargetAdapter(
             object target,
@@ -53,9 +54,20 @@ namespace TheSettings.Binding
             return this;
         }
 
+        public ValueBindingBuilder SetExceptionHandler(ExceptionHandlingAdapter.ExceptionHandler exceptionHandler)
+        {
+            _exceptionHandler = exceptionHandler;
+            return this;
+        }
+
         public ISettingBinding Build()
         {
-            return new ValueBinding(_targetAdapter, _sourceAdapter);
+            var targetAdapter = _targetAdapter;
+            if (_exceptionHandler != null)
+            {
+                targetAdapter = new ExceptionHandlingAdapter(targetAdapter, _exceptionHandler);
+            }
+            return new ValueBinding(targetAdapter, _sourceAdapter);
         }
 
         private static SettingAdapter CreateSettingAdapter(ISettingsStoreAccessor storeAccessor, object storeKey, SettingsNamespace @namespace, string settingName)

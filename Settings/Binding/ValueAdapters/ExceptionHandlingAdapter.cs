@@ -8,15 +8,22 @@ using System.Diagnostics;
 
 namespace TheSettings.Binding.ValueAdapters
 {
-    public class IgnoreExceptionsAdapter : IValueAdapter
+    public class ExceptionHandlingAdapter : IValueAdapter
     {
         private readonly IValueAdapter _sourceAdapter;
+        private readonly ExceptionHandler _exceptionHandler;
 
-        public IgnoreExceptionsAdapter(IValueAdapter sourceAdapter)
+        public ExceptionHandlingAdapter(IValueAdapter sourceAdapter, ExceptionHandler exceptionHandler)
         {
             if (sourceAdapter == null) throw new ArgumentNullException("sourceAdapter");
+            if (exceptionHandler == null) throw new ArgumentNullException("exceptionHandler");
             _sourceAdapter = sourceAdapter;
+            _exceptionHandler = exceptionHandler;
         }
+
+        public enum Action { GetValue, SetValue }
+
+        public delegate bool ExceptionHandler(Action action, Exception exception);
 
         public Action<object> ValueChangedCallback
         {
@@ -31,7 +38,10 @@ namespace TheSettings.Binding.ValueAdapters
             }
             catch (Exception e)
             {
-                HandleException(e, true);
+                if (!_exceptionHandler(Action.GetValue, e))
+                {
+                    throw;
+                }
             }
             return SettingsConstants.NoValue;
         }
@@ -44,14 +54,11 @@ namespace TheSettings.Binding.ValueAdapters
             }
             catch (Exception e)
             {
-                HandleException(e, false);
+                if (!_exceptionHandler(Action.SetValue, e))
+                {
+                    throw;
+                }
             }
-        }
-
-        [Conditional("DEBUG")]
-        private void HandleException(Exception exception, bool isReading)
-        {
-            Debug.Write(string.Format("Exception occured while {0} value from/to settings value adapter.", isReading ? "reading" : "writing"), "Settings Bindings");
         }
     }
 }

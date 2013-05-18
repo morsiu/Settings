@@ -99,6 +99,7 @@
     <Compile Include="ValueAdapterTests\ClrPropertyAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\ConvertingAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\DependencyPropertyAdapterTests.cs" />
+    <Compile Include="ValueAdapterTests\ExceptionHandlingAdapterTests\ExceptionHandlingAdapterTests.cs" />
     <Compile Include="ValueAdapterTests\SettingAdapterTests.cs" />
     <Compile Include="Mocks\ValueConverter.cs" />
     <Compile Include="ValueConverterTests\TypeConverterAdapterTests.cs" />
