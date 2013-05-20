@@ -12,7 +12,9 @@ using System.Windows.Controls;
 using TheSettings.Binding;
 using TheSettings.Binding.ValueAdapters;
 using TheSettings.Infrastructure.Factories;
+using TheSettings.Wpf.Binding.Adapters;
 using TheSettings.Wpf.Binding.ValueConverters;
+using TheSettings.Wpf.Infrastructure;
 
 namespace TheSettings.Wpf.Binding
 {
@@ -74,9 +76,11 @@ namespace TheSettings.Wpf.Binding
                 from storedProperty in GetStoredProperties()
                 let settingName = GetSettingName(Setting, column, index, storedProperty)
                 let targetAdapter = CreateTargetAdapter(column, storedProperty)
+                let exceptionHandler = new DebugValueAdapterExceptionHandler(storedProperty.Name, column, Store, settingName, @namespace)
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
                     .SetSourceAdapter(accessor, Store, @namespace, settingName)
+                    .SetExceptionHandler(exceptionHandler.HandleException)
                     .Build()
                 select binding;
         }
