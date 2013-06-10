@@ -24,6 +24,8 @@ namespace TheSettings.Wpf.Binding.Adapters
             MultiSelector control,
             Func<object, object> itemKeySelector)
         {
+            if (control == null) throw new ArgumentNullException("control");
+            if (itemKeySelector == null) throw new ArgumentNullException("itemKeySelector");
             _control = control;
             _control.SelectionChanged += OnControlSelectionChanged;
             _itemKeySelector = itemKeySelector;
@@ -31,27 +33,30 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         public CollectionChangedCallbackHandler CollectionChangedCallback { private get; set; }
 
-        public static ICollectionAdapter Create(DependencyObject target, Func<object, object> keySelector)
+        public static ICollectionAdapter Create(DependencyObject control, Func<object, object> itemKeySelector)
         {
-            var multiSelector = target as MultiSelector;
-            return multiSelector != null
-                ? new MultiSelectorSelectedItemsAdapter(multiSelector, keySelector)
+            if (itemKeySelector == null) throw new ArgumentNullException("itemKeySelector");
+            var multiSelectorControl = control as MultiSelector;
+            return multiSelectorControl != null
+                ? new MultiSelectorSelectedItemsAdapter(multiSelectorControl, itemKeySelector)
                 : null;
         }
 
-        public IEnumerable GetItems()
+        IEnumerable ICollectionAdapter.GetItems()
         {
-            return _control.SelectedItems.OfType<object>().Select(_itemKeySelector);
+            var selectedItems = GetControlSelectedItems();
+            var selectedItemsKeys = ConvertToKeys(selectedItems);
+            return selectedItemsKeys;
         }
 
-        public void SetItems(IEnumerable keysOfItemsToSelect)
+        void ICollectionAdapter.SetItems(IEnumerable newItems)
         {
+            if (newItems == null) throw new ArgumentNullException("newItems");
+            var keysOfSelectedItems = newItems;
             _isControlSelectionChangedCallbackDisabled = true;
             try
             {
-                var keyList = keysOfItemsToSelect.OfType<object>().ToList();
-                SelectControlItems(keyList);
-                DeselectControlItems(keyList);
+                SynchronizeControlSelectedItems(keysOfSelectedItems);
             }
             finally
             {
@@ -59,25 +64,56 @@ namespace TheSettings.Wpf.Binding.Adapters
             }
         }
 
-        private void DeselectControlItems(IEnumerable<object> keysOfSelected)
+        private void SynchronizeControlSelectedItems(IEnumerable keysOfSelectedItems)
         {
-            var itemsToDeselect = _control.SelectedItems.OfType<object>()
-                .Where(item => !keysOfSelected.Contains(_itemKeySelector(item)))
-                .ToList();
-            foreach (var item in itemsToDeselect)
+            var controlItems = GetControlItems();
+            var keysOfSelectedItemsSet = new HashSet<object>(keysOfSelectedItems.OfType<object>());
+            foreach (var item in controlItems)
             {
-                _control.SelectedItems.Remove(item);
+                if (ShouldBeSelected(item, keysOfSelectedItemsSet))
+                {
+                    SelectItem(item);
+                }
+                else if (ShouldBeDeselected(item, keysOfSelectedItemsSet))
+                {
+                    DeselectItem(item);
+                }
             }
         }
 
-        private IEnumerable GetControlItems()
+        private void SelectItem(object item)
         {
-            return _control.ItemsSource ?? _control.Items;
+            _control.SelectedItems.Add(item);
         }
 
-        private IEnumerable<object> GetKeys(IEnumerable source)
+        private void DeselectItem(object item)
         {
-            return source.OfType<object>().Select(item => _itemKeySelector(item));
+            _control.SelectedItems.Remove(item);
+        }
+
+        private bool ShouldBeSelected(object item, ISet<object> keysOfItemsToSelect)
+        {
+            var itemKey = ConvertToKey(item);
+            return keysOfItemsToSelect.Contains(itemKey);
+        }
+
+        private bool ShouldBeDeselected(object item, ISet<object> keysOfItemsToSelect)
+        {
+            var itemKey = ConvertToKey(item);
+            return GetControlSelectedItems().Contains(item) &&
+                !keysOfItemsToSelect.Contains(itemKey);
+        }
+
+        private IEnumerable<object> GetControlItems()
+        {
+            var items = _control.ItemsSource ?? _control.Items;
+            return items.OfType<object>();
+        }
+
+        private IEnumerable<object> GetControlSelectedItems()
+        {
+            var selectedItems = _control.SelectedItems;
+            return selectedItems.OfType<object>();
         }
 
         private void OnControlSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -91,20 +127,19 @@ namespace TheSettings.Wpf.Binding.Adapters
             {
                 return;
             }
-            var keysOfAdded = GetKeys(e.AddedItems).ToArray();
-            var keysOfRemoved = GetKeys(e.RemovedItems).ToArray();
-            callback(keysOfAdded, keysOfRemoved);
+            var keysOfSelectedItems = ConvertToKeys(e.AddedItems);
+            var keysOfDeselectedItems = ConvertToKeys(e.RemovedItems);
+            callback(keysOfSelectedItems, keysOfDeselectedItems);
         }
 
-        private void SelectControlItems(IEnumerable<object> keysOfSelected)
+        private object[] ConvertToKeys(IEnumerable source)
         {
-            var itemsToSelect = GetControlItems().OfType<object>()
-                .Where(item => keysOfSelected.Contains(_itemKeySelector(item)))
-                .ToList();
-            foreach (var item in itemsToSelect)
-            {
-                _control.SelectedItems.Add(item);
-            }
+            return source.OfType<object>().Select(ConvertToKey).ToArray();
+        }
+
+        private object ConvertToKey(object item)
+        {
+            return _itemKeySelector(item);
         }
     }
 }
