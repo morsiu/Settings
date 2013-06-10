@@ -42,14 +42,14 @@ namespace TheSettings.Wpf.Binding.Adapters
                 : null;
         }
 
-        IEnumerable ICollectionAdapter.GetItems()
+        public IEnumerable GetItems()
         {
             var selectedItems = GetControlSelectedItems();
-            var selectedItemsKeys = ConvertToKeys(selectedItems);
-            return selectedItemsKeys;
+            var keysOfSelectedItems = ConvertToKeys(selectedItems);
+            return keysOfSelectedItems;
         }
 
-        void ICollectionAdapter.SetItems(IEnumerable newItems)
+        public void SetItems(IEnumerable newItems)
         {
             if (newItems == null) throw new ArgumentNullException("newItems");
             var keysOfSelectedItems = newItems;
