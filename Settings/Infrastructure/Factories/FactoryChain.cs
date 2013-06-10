@@ -11,14 +11,24 @@ namespace TheSettings.Infrastructure.Factories
 {
     public class FactoryChain<TFactory>
     {
-        private readonly ICollection<TFactory> _factories = new HashSet<TFactory>();
+        private readonly ICollection<TFactory> _factories = new List<TFactory>();
 
+        /// <summary>
+        /// Adds specified factory to the end of factory chain.
+        /// </summary>
+        /// <param name="factory"></param>
         public void RegisterFactory(TFactory factory)
         {
             if (factory == null) throw new ArgumentNullException("factory");
             _factories.Add(factory);
         }
 
+        /// <summary>
+        /// Returns first non-null value obtained from specified creator
+        /// called for each factory in their registration order.
+        /// </summary>
+        /// <typeparam name="TValue">Type of created value.</typeparam>
+        /// <param name="creator">Function that given a factory creates a value by using it.</param>
         public TValue CreateValue<TValue>(Func<TFactory, TValue> creator)
         {
             if (creator == null) throw new ArgumentNullException("creator");
