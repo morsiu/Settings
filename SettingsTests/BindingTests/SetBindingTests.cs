@@ -15,15 +15,15 @@ namespace TheSettingsTests.BindingTests
     [TestClass]
     public class SetBindingTests
     {
-        private ValueAdapter _valueAdapter;
-        private CollectionAdapter _collectionAdapter;
+        private ValueAdapter _sourceAdapter;
+        private CollectionAdapter _targetAdapter;
         private IEqualityComparer<object> _comparer;
 
         [TestInitialize]
         public void Initialize()
         {
-            _collectionAdapter = new CollectionAdapter();
-            _valueAdapter = new ValueAdapter();
+            _targetAdapter = new CollectionAdapter();
+            _sourceAdapter = new ValueAdapter();
             _comparer = EqualityComparer<object>.Default;
         }
 
@@ -31,86 +31,114 @@ namespace TheSettingsTests.BindingTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ShouldNotConstructWithoutCollectionAdapter()
         {
-            new SetBinding(null, _valueAdapter, _comparer);
+            new SetBinding(null, _sourceAdapter, _comparer);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ShouldNotConstructWithoutSettingAdapter()
         {
-            new SetBinding(_collectionAdapter, null, _comparer);
+            new SetBinding(_targetAdapter, null, _comparer);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ShouldNotConstructWithoutComparer()
         {
-            new SetBinding(_collectionAdapter, _valueAdapter, null);
+            new SetBinding(_targetAdapter, _sourceAdapter, null);
         }
 
         [TestMethod]
-        public void ShouldPassToSourceUnchangedSetWhenNoChangesWereMade()
+        public void WhenTargetCollectionChangedAndNoChangesWereMadeToItThenItShouldBePassedUnchangedToSource()
         {
             var expectedItems = new List<object> { 1, 2 };
-            _valueAdapter.Value = expectedItems;
-            var binding = new SetBinding(_collectionAdapter, _valueAdapter, _comparer);
+            _sourceAdapter.Value = expectedItems;
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
-            _collectionAdapter.CollectionChangedCallback(Enumerable.Empty<object>(), Enumerable.Empty<object>());
-            CollectionAssert.AreEqual(expectedItems, _valueAdapter.ValueAsCollection);
+            _targetAdapter.CollectionChangedCallback(Enumerable.Empty<object>(), Enumerable.Empty<object>());
+
+            CollectionAssert.AreEquivalent(expectedItems, _sourceAdapter.ValueAsCollection);
         }
 
         [TestMethod]
-        public void ShouldPassToSourceSetWithAddedItems()
+        public void WhenTargetCollectionChangedAndItemsWhereAddedThenTheyShouldBePassedToSource()
         {
             var expectedItems = new List<object> { 1, 2 };
-            _valueAdapter.Value = new List<object>();
-            var binding = new SetBinding(_collectionAdapter, _valueAdapter, _comparer);
+            _sourceAdapter.Value = new List<object>();
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
-            _collectionAdapter.CollectionChangedCallback(new List<object> { 1, 2 }, Enumerable.Empty<object>());
-            CollectionAssert.AreEqual(expectedItems, _valueAdapter.ValueAsCollection);
+            _targetAdapter.CollectionChangedCallback(new List<object> { 1, 2 }, Enumerable.Empty<object>());
+
+            CollectionAssert.AreEquivalent(expectedItems, _sourceAdapter.ValueAsCollection);
         }
 
         [TestMethod]
-        public void ShouldPassToSourceSetWithoutRemovedItems()
+        public void WhenTargetCollectionChangedAndItemsWereRemovedThenTheyShouldNotBePassedToSource()
         {
             var expectedItems = new List<object>();
-            _valueAdapter.Value = new List<object> { 1, 2 };
-            var binding = new SetBinding(_collectionAdapter, _valueAdapter, _comparer);
+            _sourceAdapter.Value = new List<object> { 1, 2 };
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
-            _collectionAdapter.CollectionChangedCallback(Enumerable.Empty<object>(), new List<object> { 1, 2 });
-            CollectionAssert.AreEqual(expectedItems, _valueAdapter.ValueAsCollection);
+            _targetAdapter.CollectionChangedCallback(Enumerable.Empty<object>(), new List<object> { 1, 2 });
+
+            CollectionAssert.AreEquivalent(expectedItems, _sourceAdapter.ValueAsCollection);
         }
 
         [TestMethod]
-        public void ShouldPassToTargetNewItems()
+        public void WhenSourceValueChangedAndItIsAnEnumerableItShouldBePassedToTarget()
         {
             var expectedItems = new List<object> { 1, 2 };
-            var binding = new SetBinding(_collectionAdapter, _valueAdapter, _comparer);
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
-            _valueAdapter.ValueChangedCallback(new List<object> { 1, 2 });
-            CollectionAssert.AreEqual(expectedItems, _collectionAdapter.Items);
+            _sourceAdapter.ValueChangedCallback(new List<object> { 1, 1, 2, 2 });
+
+            CollectionAssert.AreEquivalent(expectedItems, _targetAdapter.Items);
         }
 
         [TestMethod]
-        public void UpdateTargetShouldPassItemsToTarget()
+        public void WhenSourceValueChangedAndItIsNotAnEnumerableThenEmptySetShouldBePassedToTarget()
+        {
+            var expectedItems = new List<object>();
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
+
+            _sourceAdapter.ValueChangedCallback(new object());
+
+            CollectionAssert.AreEquivalent(expectedItems, _targetAdapter.Items);
+        }
+
+        [TestMethod]
+        public void WhenSourceItemsIsAnEnumerableThenUpdateTargetShouldPassItAsSetToTarget()
         {
             var expectedItems = new List<object> { 1, 2 };
-            _valueAdapter.Value = new List<object> { 1, 2 };
-            var binding = new SetBinding(_collectionAdapter, _valueAdapter, _comparer);
+            _sourceAdapter.Value = new List<object> { 1, 1, 2, 2 };
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
             binding.UpdateTarget();
-            CollectionAssert.AreEqual(expectedItems, _collectionAdapter.Items);
+
+            CollectionAssert.AreEqual(expectedItems, _targetAdapter.Items);
         }
 
         [TestMethod]
-        public void UpdateSourceShouldPassItemsToSource()
+        public void WhenSourceItemsIsNotAnEnumerableThenUpdateTargetShouldPassEmptySetToTarget()
+        {
+            var expectedItems = new List<object>();
+            _sourceAdapter.Value = new object();
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
+
+            binding.UpdateTarget();
+
+            CollectionAssert.AreEqual(expectedItems, _targetAdapter.Items);
+        }
+
+        [TestMethod]
+        public void UpdateSourceShouldPassTargetItemsAsSetToSource()
         {
             var expectedItems = new List<object> { 1, 2 };
-            _collectionAdapter.Items = new List<object> { 1, 2 };
-            var binding = new SetBinding(_collectionAdapter, _valueAdapter, _comparer);
+            _targetAdapter.Items = new List<object> { 1, 1, 2, 2 };
+            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
             binding.UpdateSource();
-            CollectionAssert.AreEqual(expectedItems, _valueAdapter.ValueAsCollection);
+            CollectionAssert.AreEqual(expectedItems, _sourceAdapter.ValueAsCollection);
         }
     }
 }

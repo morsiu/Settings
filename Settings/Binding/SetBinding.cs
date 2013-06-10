@@ -11,94 +11,121 @@ using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding
 {
+    /// <summary>
+    /// Binds source set to target collection.
+    /// </summary>
+    /// <remarks>
+    /// Supports any object as source value.
+    /// Objects of type IEnumerable are converted to ISet instance that uses specified comparer.
+    /// Objects of other types are converted to empty set.
+    /// </remarks>
     public class SetBinding : Disposable, ISettingBinding
     {
-        private readonly ICollectionAdapter _collectionAdapter;
-        private readonly IValueAdapter _settingAdapter;
-        private readonly IEqualityComparer<object> _comparer;
+        private readonly ICollectionAdapter _targetAdapter;
+        private readonly IValueAdapter _sourceAdapter;
+        private readonly IEqualityComparer<object> _itemComparer;
 
+        /// <summary>
+        /// Constructs new instance that binds source set with target collection
+        /// and uses comparer to determine items equality.
+        /// </summary>
+        /// <param name="targetAdapter">Adapter for target collection.</param>
+        /// <param name="sourceAdapter">Adapter for source set.</param>
+        /// <param name="itemComparer">Comparer that is used for determing items equality.</param>
         public SetBinding(
-            ICollectionAdapter collectionAdapter,
-            IValueAdapter settingAdapter,
-            IEqualityComparer<object> comparer)
+            ICollectionAdapter targetAdapter,
+            IValueAdapter sourceAdapter,
+            IEqualityComparer<object> itemComparer)
         {
-            if (collectionAdapter == null) throw new ArgumentNullException("collectionAdapter");
-            if (settingAdapter == null) throw new ArgumentNullException("settingAdapter");
-            if (comparer == null) throw new ArgumentNullException("comparer");
-            _collectionAdapter = collectionAdapter;
-            _settingAdapter = settingAdapter;
-            _comparer = comparer;
-            _settingAdapter.ValueChangedCallback = OnStoredItemsChangedCallback;
-            _collectionAdapter.CollectionChangedCallback = OnCollectionChangedCallback;
+            if (targetAdapter == null) throw new ArgumentNullException("targetAdapter");
+            if (sourceAdapter == null) throw new ArgumentNullException("sourceAdapter");
+            if (itemComparer == null) throw new ArgumentNullException("itemComparer");
+            _targetAdapter = targetAdapter;
+            _sourceAdapter = sourceAdapter;
+            _itemComparer = itemComparer;
+            _sourceAdapter.ValueChangedCallback = OnSourceValueChangedCallback;
+            _targetAdapter.CollectionChangedCallback = OnTargetCollectionChangedCallback;
         }
 
         public void UpdateSource()
         {
             FailIfDisposed();
-            var items = _collectionAdapter.GetItems();
-            var itemsToStore = new HashSet<object>(items.OfType<object>(), _comparer);
-            _settingAdapter.SetValue(itemsToStore);
+            var targetItemsSet = GetTargetItemsAsSet();
+            _sourceAdapter.SetValue(targetItemsSet);
         }
 
         public void UpdateTarget()
         {
             FailIfDisposed();
-            var storedItems = GetSourceItems();
-            if (storedItems != null)
+            var sourceItemsSet = GetSourceItemsAsSet();
+            if (sourceItemsSet != null)
             {
-                _collectionAdapter.SetItems(storedItems);
+                _targetAdapter.SetItems(sourceItemsSet);
             }
         }
 
-        protected override void DisposeManaged()
+        private void OnSourceValueChangedCallback(object newSourceItemsObject)
         {
-            Dispose(_collectionAdapter);
-            Dispose(_settingAdapter);
+            var newSourceItemsSet = ConvertToSet(newSourceItemsObject);
+            _targetAdapter.SetItems(newSourceItemsSet);
         }
 
-        private void OnCollectionChangedCallback(
+        private void OnTargetCollectionChangedCallback(
             IEnumerable added,
             IEnumerable removed)
         {
-            var storedItems = GetSourceItemsAsSet();
+            var sourceItemsSet = GetSourceItemsAsSet();
             foreach (var item in added)
             {
-                storedItems.Add(item);
+                sourceItemsSet.Add(item);
             }
             foreach (var item in removed)
             {
-                storedItems.Remove(item);
+                sourceItemsSet.Remove(item);
             }
-            _settingAdapter.SetValue(storedItems);
-        }
-
-        private void OnStoredItemsChangedCallback(object value)
-        {
-            var items = value as IEnumerable;
-            if (items != null)
-            {
-                _collectionAdapter.SetItems(items);
-            }
-        }
-
-        private IEnumerable GetSourceItems()
-        {
-            var value = _settingAdapter.GetValue();
-            return value as IEnumerable;
+            _sourceAdapter.SetValue(sourceItemsSet);
         }
 
         private ISet<object> GetSourceItemsAsSet()
         {
-            var value = _settingAdapter.GetValue();
-            var storedItems = value as HashSet<object>;
-            if ((value != null && value == storedItems) ||
-                (storedItems != null && Equals(storedItems.Comparer, _comparer)))
+            var sourceItemsObject = _sourceAdapter.GetValue();
+            var sourceItemsSet = ConvertToSet(sourceItemsObject);
+            return sourceItemsSet;
+        }
+
+        private ISet<object> GetTargetItemsAsSet()
+        {
+            var targetItems = _targetAdapter.GetItems();
+            var targetItemsSet = CreateSet(targetItems);
+            return targetItemsSet;
+        }
+
+        private ISet<object> ConvertToSet(object itemsObject)
+        {
+            if (IsSetCompatible(itemsObject))
             {
-                return storedItems;
+                return (ISet<object>)itemsObject;
             }
 
-            var sourceItems = value as IEnumerable ?? Enumerable.Empty<object>();
-            return new HashSet<object>(sourceItems.OfType<object>(), _comparer);
+            var items = itemsObject as IEnumerable ?? Enumerable.Empty<object>();
+            return CreateSet(items);
+        }
+
+        private bool IsSetCompatible(object setObject)
+        {
+            var set = setObject as HashSet<object>;
+            return set != null && Equals(set.Comparer, _itemComparer);
+        }
+
+        private ISet<object> CreateSet(IEnumerable items)
+        {
+            return new HashSet<object>(items.OfType<object>(), _itemComparer);
+        }
+
+        protected override void DisposeManaged()
+        {
+            Dispose(_targetAdapter);
+            Dispose(_sourceAdapter);
         }
     }
 }
