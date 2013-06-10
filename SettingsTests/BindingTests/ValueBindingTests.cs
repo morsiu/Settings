@@ -16,20 +16,20 @@ namespace TheSettingsTests.BindingTests
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShouldNotCreateWithoutSourceAdapter()
+        public void ShouldNotConstructWithoutSourceAdapter()
         {
             new ValueBinding(null, new ValueAdapter());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShouldNotCreateWithoutTargetAdapter()
+        public void ShouldNotConstructWithoutTargetAdapter()
         {
             new ValueBinding(new ValueAdapter(), null);
         }
 
         [TestMethod]
-        public void ShouldPassValueFromSourceToTargetWhenChangedInSource()
+        public void WhenSourceValueChangesItShouldBePassedToTarget()
         {
             var sourceAdapter = new ValueAdapter();
             var targetAdapter = new ValueAdapter();
@@ -41,7 +41,7 @@ namespace TheSettingsTests.BindingTests
         }
 
         [TestMethod]
-        public void ShouldPassValueFromTargetToSourceWhenChangedInTarget()
+        public void WhenTargetValueChangesItShouldBePassedToSource()
         {
             var sourceAdapter = new ValueAdapter();
             var targetAdapter = new ValueAdapter();
@@ -53,7 +53,7 @@ namespace TheSettingsTests.BindingTests
         }
 
         [TestMethod]
-        public void ShouldPassValueFromSourceToTargetWhenUpdatingTarget()
+        public void UpdateTargetShouldPassValueFromSourceToTarget()
         {
             var sourceAdapter = new ValueAdapter();
             var targetAdapter = new ValueAdapter();
@@ -66,7 +66,7 @@ namespace TheSettingsTests.BindingTests
         }
 
         [TestMethod]
-        public void ShouldNotPassNoValueToTargetWhenSourceValueChanged()
+        public void WhenSourceValueChangedAndIsNoValueThenTargetValueShouldNotBeChanged()
         {
             var sourceAdapter = new ValueAdapter();
             var targetAdapter = new ValueAdapter();
@@ -78,31 +78,7 @@ namespace TheSettingsTests.BindingTests
         }
 
         [TestMethod]
-        public void ShouldPassValueToTargetWhenSourceValueChanged()
-        {
-            var sourceAdapter = new ValueAdapter();
-            var targetAdapter = new ValueAdapter();
-            var binding = new ValueBinding(targetAdapter, sourceAdapter);
-
-            sourceAdapter.ValueChangedCallback(6);
-
-            Assert.AreEqual(6, targetAdapter.Value);
-        }
-
-        [TestMethod]
-        public void ShouldPassValueToTargetWhenTargetValueChanged()
-        {
-            var sourceAdapter = new ValueAdapter();
-            var targetAdapter = new ValueAdapter();
-            var binding = new ValueBinding(targetAdapter, sourceAdapter);
-
-            targetAdapter.ValueChangedCallback(6);
-
-            Assert.AreEqual(6, sourceAdapter.Value);
-        }
-
-        [TestMethod]
-        public void ShouldNotPassNoValueToTargetWhenUpdatingTarget()
+        public void UpdateTargetShouldNotPassNoValueFromSourceToTarget()
         {
             var sourceAdapter = new ValueAdapter();
             var targetAdapter = new ValueAdapter();
