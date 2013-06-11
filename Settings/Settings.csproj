@@ -57,7 +57,7 @@
     <Compile Include="Infrastructure\Factories\KeyedFactoryContainer.cs" />
     <Compile Include="Infrastructure\ITreeWalker.cs" />
     <Compile Include="Infrastructure\ITree.cs" />
-    <Compile Include="Infrastructure\SettingNamespaceKeyComparer.cs" />
+    <Compile Include="Infrastructure\SettingNameNamespaceEqualityComparer.cs" />
     <Compile Include="Infrastructure\TreeWalker.cs" />
     <Compile Include="ISettingsStore.cs" />
     <Compile Include="Setting.cs" />
