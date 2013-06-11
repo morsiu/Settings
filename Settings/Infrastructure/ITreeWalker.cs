@@ -15,9 +15,9 @@ namespace TheSettings.Infrastructure
 
         ITreeWalker<TElement> ClimbDown(params int[] ladderIndexes);
 
-        IEnumerable<TElement> GetDepthFirstUpwards(TElement element);
+        IEnumerable<TElement> GetAncestorsDepthFirst(TElement element);
 
-        IEnumerable<TElement> GetDepthFirstDownards(TElement element);
+        IEnumerable<TElement> GetDescendantsDepthFirst(TElement element);
 
         TElement Current { get; }
 

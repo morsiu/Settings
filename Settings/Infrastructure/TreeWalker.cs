@@ -33,19 +33,19 @@ namespace TheSettings.Infrastructure
             return this;
         }
 
-        public IEnumerable<TElement> GetDepthFirstDownards(TElement element)
+        public IEnumerable<TElement> GetDescendantsDepthFirst(TElement element)
         {
             foreach (var child in _tree.GetChildren(element))
             {
                 yield return child;
-                foreach (var childOfChild in GetDepthFirstDownards(child))
+                foreach (var childOfChild in GetDescendantsDepthFirst(child))
                 {
                     yield return childOfChild;
                 }
             }
         }
 
-        public IEnumerable<TElement> GetDepthFirstUpwards(TElement element)
+        public IEnumerable<TElement> GetAncestorsDepthFirst(TElement element)
         {
             var parent = _tree.GetParent(element);
             var previousParent = element;
@@ -53,9 +53,9 @@ namespace TheSettings.Infrastructure
             {
                 foreach (var children in _tree.GetChildren(parent))
                 {
-                    if (children.Equals(previousParent)) continue;
+                    if (Equals(children, previousParent)) continue;
                     yield return children;
-                    foreach (var childOfChild in GetDepthFirstDownards(children))
+                    foreach (var childOfChild in GetDescendantsDepthFirst(children))
                     {
                         yield return childOfChild;
                     }
@@ -66,19 +66,19 @@ namespace TheSettings.Infrastructure
             }
         }
 
-        public ITreeWalker<TElement> ClimbUp(int ladderCount)
+        public ITreeWalker<TElement> ClimbUp(int levelCount)
         {
-            while (ladderCount > 0)
+            while (levelCount > 0)
             {
                 _current = _tree.GetParent(_current);
-                --ladderCount;
+                --levelCount;
             }
             return this;
         }
 
-        public ITreeWalker<TElement> ClimbDown(params int[] ladderIndexes)
+        public ITreeWalker<TElement> ClimbDown(params int[] childrenIndexes)
         {
-            foreach (var index in ladderIndexes)
+            foreach (var index in childrenIndexes)
             {
                 _current = _tree.GetChild(_current, index);
             }

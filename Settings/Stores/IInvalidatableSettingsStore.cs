@@ -5,8 +5,14 @@
 
 namespace TheSettings.Stores
 {
+    /// <summary>
+    /// Represents storage for settings that can be invalidated.
+    /// </summary>
     public interface IInvalidatableSettingsStore : ISettingsStore
     {
+        /// <summary>
+        /// Invalidates contents of the store.
+        /// </summary>
         void Invalidate();
     }
 }

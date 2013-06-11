@@ -20,13 +20,13 @@ namespace TheSettings.Stores
             Func<ISettingsStore, ISettingsStore> invalidator)
         {
             if (invalidator == null) throw new ArgumentNullException("invalidator");
-            _store = store;
+            _store = store ?? SettingsConstants.NullStore;
             _invalidator = invalidator;
         }
 
         public void Invalidate()
         {
-            _store = _invalidator(_store);
+            _store = _invalidator(_store) ?? SettingsConstants.NullStore;
         }
 
         public object GetSetting(SettingsNamespace @namespace, string name)

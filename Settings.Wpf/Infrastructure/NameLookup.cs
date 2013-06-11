@@ -24,9 +24,9 @@ namespace TheSettings.Wpf.Infrastructure
             // checking all FrameworkElement nodes Name property.
             var walker = new WpfLogicalTreeWalker(_startingElement);
             var nodesToSearch =
-                walker.GetDepthFirstDownards(_startingElement)
+                walker.GetDescendantsDepthFirst(_startingElement)
                 .Concat(new[] { _startingElement })
-                .Concat(walker.GetDepthFirstUpwards(_startingElement));
+                .Concat(walker.GetAncestorsDepthFirst(_startingElement));
             var found = nodesToSearch.FirstOrDefault(
                 node =>
                 {

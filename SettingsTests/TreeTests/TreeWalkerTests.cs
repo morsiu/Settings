@@ -68,7 +68,7 @@ namespace TheSettingsTests.TreeTests
         [TestMethod]
         public void ShouldGetDepthFirstDownards()
         {
-            var actual = _treeWalker.GetDepthFirstDownards(16).Select(i => i.Value).ToList();
+            var actual = _treeWalker.GetDescendantsDepthFirst(16).Select(i => i.Value).ToList();
             CollectionAssert.AreEqual(new List<int> { 32, 64, 65, 33, 66, 67 }, actual);
         }
 
@@ -76,7 +76,7 @@ namespace TheSettingsTests.TreeTests
         public void ShouldGetDepthFirstUpwards()
         {
             _treeWalker = new TreeWalker<TreeNode>(5, new Tree(3));
-            var actual = _treeWalker.GetDepthFirstUpwards(5).Select(i => i.Value).ToList();
+            var actual = _treeWalker.GetAncestorsDepthFirst(5).Select(i => i.Value).ToList();
             CollectionAssert.AreEqual(
                 new List<int> { 
                     4, 8, 9, 2, 3, 6, 12, 13, 7, 14, 15, 1
