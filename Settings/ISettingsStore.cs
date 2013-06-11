@@ -5,10 +5,25 @@
 
 namespace TheSettings
 {
+    /// <summary>
+    /// Represents storage for settings.
+    /// </summary>
     public interface ISettingsStore
     {
+        /// <summary>
+        /// Gets value of setting with given name placed in given namespace.
+        /// </summary>
+        /// <param name="namespace">Setting namespace.</param>
+        /// <param name="name">Setting name.</param>
+        /// <returns>Returns value of the setting, if exists in store, otherwise SettingContants.NoValue</returns>
         object GetSetting(SettingsNamespace @namespace, string name);
 
+        /// <summary>
+        /// Sets value of setting with givan name placed in given namespace.
+        /// </summary>
+        /// <param name="namespace">Setting namespace.</param>
+        /// <param name="name">Setting name.</param>
+        /// <param name="value">New setting value.</param>
         void SetSetting(SettingsNamespace @namespace, string name, object value);
     }
 }
