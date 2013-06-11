@@ -13,7 +13,7 @@ namespace TheSettings.Binding.Accessors
 
         public SingleSettingsStoreAccessor(ISettingsStore store)
         {
-            if (_store == null) throw new ArgumentNullException("store");
+            if (store == null) throw new ArgumentNullException("store");
             _store = store;
         }
 
