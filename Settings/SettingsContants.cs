@@ -9,6 +9,9 @@ namespace TheSettings
 {
     public static class SettingsConstants
     {
+        /// <summary>
+        /// Represents absence of meaningful value.
+        /// </summary>
         public static readonly object NoValue = new object();
 
         public static readonly ISettingsStore NullStore = new NullSettingsStore();
