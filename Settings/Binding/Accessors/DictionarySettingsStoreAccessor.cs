@@ -23,15 +23,15 @@ namespace TheSettings.Binding.Accessors
             return store.GetSetting(@namespace, setting);
         }
 
-        public void Set(object key, ISettingsStore store)
+        public void Set(object storeKey, ISettingsStore store)
         {
-            var normalizedKey = NormalizeStoreKey(key);
+            var normalizedKey = NormalizeStoreKey(storeKey);
             _stores[normalizedKey] = store;
         }
 
-        public void Clear(object key)
+        public void Clear(object storeKey)
         {
-            var normalizedKey = NormalizeStoreKey(key);
+            var normalizedKey = NormalizeStoreKey(storeKey);
             _stores.Remove(normalizedKey);
         }
 
@@ -41,10 +41,10 @@ namespace TheSettings.Binding.Accessors
             store.SetSetting(@namespace, setting, value);
         }
 
-        private ISettingsStore GetEffectiveStore(object key)
+        private ISettingsStore GetEffectiveStore(object storeKey)
         {
             ISettingsStore store;
-            var normalizedKey = NormalizeStoreKey(key);
+            var normalizedKey = NormalizeStoreKey(storeKey);
             if (_stores.TryGetValue(normalizedKey, out store))
             {
                 return store;
@@ -52,9 +52,9 @@ namespace TheSettings.Binding.Accessors
             return SettingsConstants.NullStore;
         }
 
-        private object NormalizeStoreKey(object key)
+        private object NormalizeStoreKey(object storeKey)
         {
-            return key ?? NullStoreKey;
+            return storeKey ?? NullStoreKey;
         }
     }
 }
