@@ -28,12 +28,6 @@ namespace TheSettings.Wpf.Binding.Adapters
             _descriptor.AddValueChanged(source, OnSourceValueChanged);
         }
 
-        private void OnSourceValueChanged(object sender, EventArgs e)
-        {
-            var newValue = GetValue();
-            _valueChangedCallback(newValue);
-        }
-
         public Action<object> ValueChangedCallback
         {
             set
@@ -54,6 +48,12 @@ namespace TheSettings.Wpf.Binding.Adapters
         {
             FailIfDisposed();
             _source.ItemsSource = value as IEnumerable;
+        }
+
+        private void OnSourceValueChanged(object sender, EventArgs e)
+        {
+            var newValue = GetValue();
+            _valueChangedCallback(newValue);
         }
 
         protected override void DisposeManaged()

@@ -29,20 +29,62 @@ namespace TheSettings.Wpf.Binding.Adapters
             RefreshCollectionView();
         }
 
+        public CollectionChangedCallbackHandler CollectionChangedCallback
+        {
+            set
+            {
+                FailIfDisposed();
+                _collectionChangedCallback = value ?? (_ => { });
+            }
+        }
+
+        public IEnumerable GetItems()
+        {
+            FailIfDisposed();
+            return _collectionView.SortDescriptions;
+        }
+
+        public void SetItems(IEnumerable items)
+        {
+            FailIfDisposed();
+            _isUpdatingSortDescriptions = true;
+            try
+            {
+                _collectionView.SortDescriptions.Clear();
+                foreach (var sortDescription in items.OfType<SortDescription>())
+                {
+                    _collectionView.SortDescriptions.Add(sortDescription);
+                }
+            }
+            finally
+            {
+                _isUpdatingSortDescriptions = false;
+            }
+        }
+
         private void RefreshCollectionView()
         {
             UnbindFromCollectionView();
-
             _collectionView = (ICollectionView)_collectionViewAdapter.GetValue();
+            BindToCollectionView();
+        }
+
+        private void BindToCollectionView()
+        {
+            if (_collectionView == null)
+            {
+                return;
+            }
             ((INotifyCollectionChanged)_collectionView.SortDescriptions).CollectionChanged += OnSortDescriptionsChanged;
         }
 
         private void UnbindFromCollectionView()
         {
-            if (_collectionView != null)
+            if (_collectionView == null)
             {
-                ((INotifyCollectionChanged)_collectionView.SortDescriptions).CollectionChanged -= OnSortDescriptionsChanged;
+                return;
             }
+            ((INotifyCollectionChanged)_collectionView.SortDescriptions).CollectionChanged -= OnSortDescriptionsChanged;
         }
 
         private void OnSortDescriptionsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -57,33 +99,6 @@ namespace TheSettings.Wpf.Binding.Adapters
         private void OnCollectionViewChanged(object newValue)
         {
             RefreshCollectionView();
-        }
-
-        public CollectionChangedCallbackHandler CollectionChangedCallback
-        {
-            set { _collectionChangedCallback = value ?? (_ => { }); }
-        }
-
-        public IEnumerable GetItems()
-        {
-            return _collectionView.SortDescriptions;
-        }
-
-        public void SetItems(IEnumerable items)
-        {
-            _isUpdatingSortDescriptions = true;
-            try
-            {
-                _collectionView.SortDescriptions.Clear();
-                foreach (var sortDescription in items.OfType<SortDescription>())
-                {
-                    _collectionView.SortDescriptions.Add(sortDescription);
-                }
-            }
-            finally
-            {
-                _isUpdatingSortDescriptions = false;
-            }
         }
 
         protected override void DisposeManaged()
