@@ -18,6 +18,7 @@ namespace TheSettings.Wpf.Binding.Adapters
         private readonly IValueAdapter _collectionViewAdapter;
         private ICollectionView _collectionView;
         private CollectionChangedCallbackHandler _collectionChangedCallback;
+        private bool _isUpdatingSortDescriptions;
 
         public SelectorSortDescriptionsAdapter(IValueAdapter collectionViewAdapter)
         {
@@ -46,6 +47,10 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         private void OnSortDescriptionsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (_isUpdatingSortDescriptions)
+            {
+                return;
+            }
             _collectionChangedCallback(e);
         }
 
@@ -66,10 +71,18 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         public void SetItems(IEnumerable items)
         {
-            _collectionView.SortDescriptions.Clear();
-            foreach (var sortDescription in items.OfType<SortDescription>())
+            _isUpdatingSortDescriptions = true;
+            try
             {
-                _collectionView.SortDescriptions.Add(sortDescription);
+                _collectionView.SortDescriptions.Clear();
+                foreach (var sortDescription in items.OfType<SortDescription>())
+                {
+                    _collectionView.SortDescriptions.Add(sortDescription);
+                }
+            }
+            finally
+            {
+                _isUpdatingSortDescriptions = false;
             }
         }
 
