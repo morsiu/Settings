@@ -37,6 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binding\Accessors\DictionarySettingsStoreAccessor.cs" />
+    <Compile Include="Binding\CollectionBinding.cs" />
+    <Compile Include="Binding\CollectionBindingBase.cs" />
     <Compile Include="Binding\ISettingBinding.cs" />
     <Compile Include="Binding\ISettingBindingsProvider.cs" />
     <Compile Include="Binding\ISettingsStoreAccessor.cs" />

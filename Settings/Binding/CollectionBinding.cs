@@ -3,51 +3,29 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace TheSettings.Binding
 {
-    /// <summary>
-    /// Binds source set to target collection.
-    /// </summary>
-    /// <remarks>
-    /// Supports any object as source value.
-    /// Objects of type IEnumerable are converted to ISet instance that uses specified comparer.
-    /// Objects of other types are converted to empty set.
-    /// </remarks>
-    public class SetBinding : CollectionBindingBase
+    public class CollectionBinding : CollectionBindingBase
     {
-        private readonly IEqualityComparer<object> _itemComparer;
-
-        /// <summary>
-        /// Constructs new instance that binds source set with target collection
-        /// and uses comparer to determine items equality.
-        /// </summary>
-        /// <param name="targetAdapter">Adapter for target collection.</param>
-        /// <param name="sourceAdapter">Adapter for source set.</param>
-        /// <param name="itemComparer">Comparer that is used for determing items equality.</param>
-        public SetBinding(
+        public CollectionBinding(
             ICollectionAdapter targetAdapter,
-            IValueAdapter sourceAdapter,
-            IEqualityComparer<object> itemComparer)
+            IValueAdapter sourceAdapter)
             : base(targetAdapter, sourceAdapter)
         {
-            if (itemComparer == null) throw new ArgumentNullException("itemComparer");
-            _itemComparer = itemComparer;
         }
 
-        protected override bool IsCollectionCompatible(object setObject)
+        protected override bool IsCollectionCompatible(object collectionObject)
         {
-            var set = setObject as HashSet<object>;
-            return set != null && Equals(set.Comparer, _itemComparer);
+            return collectionObject as List<object> != null;
         }
 
         protected override ICollection<object> CreateCollection(IEnumerable items)
         {
-            return new HashSet<object>(items.OfType<object>(), _itemComparer);
+            return new List<object>(items.OfType<object>());
         }
     }
 }
