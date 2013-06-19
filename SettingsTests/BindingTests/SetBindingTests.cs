@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheSettings.Binding;
@@ -49,25 +50,13 @@ namespace TheSettingsTests.BindingTests
         }
 
         [TestMethod]
-        public void WhenTargetCollectionChangedAndNoChangesWereMadeToItThenItShouldBePassedUnchangedToSource()
-        {
-            var expectedItems = new List<object> { 1, 2 };
-            _sourceAdapter.Value = expectedItems;
-            var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
-
-            _targetAdapter.CollectionChangedCallback(Enumerable.Empty<object>(), Enumerable.Empty<object>());
-
-            CollectionAssert.AreEquivalent(expectedItems, _sourceAdapter.ValueAsCollection);
-        }
-
-        [TestMethod]
         public void WhenTargetCollectionChangedAndItemsWhereAddedThenTheyShouldBePassedToSource()
         {
             var expectedItems = new List<object> { 1, 2 };
             _sourceAdapter.Value = new List<object>();
             var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
-            _targetAdapter.CollectionChangedCallback(new List<object> { 1, 2 }, Enumerable.Empty<object>());
+            _targetAdapter.CollectionChangedCallback(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<object> { 1, 2 }));
 
             CollectionAssert.AreEquivalent(expectedItems, _sourceAdapter.ValueAsCollection);
         }
@@ -79,7 +68,7 @@ namespace TheSettingsTests.BindingTests
             _sourceAdapter.Value = new List<object> { 1, 2 };
             var binding = new SetBinding(_targetAdapter, _sourceAdapter, _comparer);
 
-            _targetAdapter.CollectionChangedCallback(Enumerable.Empty<object>(), new List<object> { 1, 2 });
+            _targetAdapter.CollectionChangedCallback(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new List<object> { 1, 2 }));
 
             CollectionAssert.AreEquivalent(expectedItems, _sourceAdapter.ValueAsCollection);
         }

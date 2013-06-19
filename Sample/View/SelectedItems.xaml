@@ -21,6 +21,7 @@
                   SelectionMode="Extended"
                   SelectionUnit="FullRow">
             <s:Settings.Settings>
+                <s:SelectorSortBinding Setting="SortDescriptions" />
                 <s:SelectedItemsBinding ItemKeyProperty="Id"
                                         Setting="SelectedItems" />
             </s:Settings.Settings>

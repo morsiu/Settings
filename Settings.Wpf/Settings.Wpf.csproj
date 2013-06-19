@@ -40,7 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binding\Adapters\MultiSelectorSelectedItemsAdapter.cs" />
+    <Compile Include="Binding\Adapters\SelectorItemsSourceViewAdapter.cs" />
+    <Compile Include="Binding\Adapters\SelectorSortDescriptionsAdapter.cs" />
     <Compile Include="Binding\SelectedItemsBinding.cs" />
+    <Compile Include="Binding\SelectorSortBinding.cs" />
     <Compile Include="Binding\ValueConverters\TypeConverterAdapter.cs" />
     <Compile Include="Binding\Adapters\DebugValueAdapterExceptionHandler.cs" />
     <Compile Include="Initialization\InitializerLookup.cs" />

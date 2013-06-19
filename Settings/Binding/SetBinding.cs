@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TheSettings.Binding.Infrastructure;
+using TheSettings.Infrastructure.Collections;
 
 namespace TheSettings.Binding
 {
@@ -44,6 +45,11 @@ namespace TheSettings.Binding
         {
             var set = setObject as HashSet<object>;
             return set != null && Equals(set.Comparer, _itemComparer);
+        }
+
+        protected override ICollectionUpdater GetUpdaterFor(ICollection<object> collection)
+        {
+            return new CollectionUpdater<object>(collection);
         }
 
         protected override ICollection<object> CreateCollection(IEnumerable items)

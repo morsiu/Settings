@@ -3,36 +3,37 @@
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TheSettings.Binding.Infrastructure;
-using TheSettings.Infrastructure.Collections;
+using System.Windows;
+using System.Windows.Controls.Primitives;
+using TheSettings.Binding;
+using TheSettings.Binding.ValueAdapters;
+using TheSettings.Wpf.Binding.Adapters;
 
-namespace TheSettings.Binding
+namespace TheSettings.Wpf.Binding
 {
-    public class ListBinding : CollectionBindingBase
+    public class SelectorSortBinding : ISettingBindingsProvider
     {
-        public ListBinding(
-            ICollectionAdapter targetAdapter,
-            IValueAdapter sourceAdapter)
-            : base(targetAdapter, sourceAdapter)
-        {
-        }
+        public object Store { get; set; }
 
-        protected override bool IsCollectionCompatible(object collectionObject)
-        {
-            return collectionObject as List<object> != null;
-        }
+        public string Setting { get; set; }
 
-        protected override ICollectionUpdater GetUpdaterFor(ICollection<object> collection)
+        public IEnumerable<ISettingBinding> ProvideBindings(DependencyObject target)
         {
-            return new ListUpdater((IList)collection);
-        }
+            var selector = target as Selector;
+            if (selector == null || Setting == null)
+            {
+                return Enumerable.Empty<ISettingBinding>();
+            }
 
-        protected override ICollection<object> CreateCollection(IEnumerable items)
-        {
-            return new List<object>(items.OfType<object>());
+            var settingAdapter = new SettingAdapter(Settings.CurrentStoreAccessor, Store, Settings.GetNamespace(selector), Setting);
+            var binding =
+                new ListBinding(
+                    new SelectorSortDescriptionsAdapter(
+                        new SelectorItemsSourceViewAdapter(selector)),
+                    settingAdapter);
+            return new[] { binding };
         }
     }
 }

@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -129,7 +130,8 @@ namespace TheSettings.Wpf.Binding.Adapters
             }
             var keysOfSelectedItems = ConvertToKeys(e.AddedItems);
             var keysOfDeselectedItems = ConvertToKeys(e.RemovedItems);
-            callback(keysOfSelectedItems, keysOfDeselectedItems);
+            callback(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, keysOfSelectedItems));
+            callback(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, keysOfDeselectedItems));
         }
 
         private object[] ConvertToKeys(IEnumerable source)

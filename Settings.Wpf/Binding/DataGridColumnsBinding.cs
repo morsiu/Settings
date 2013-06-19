@@ -14,7 +14,6 @@ using TheSettings.Binding.ValueAdapters;
 using TheSettings.Infrastructure.Factories;
 using TheSettings.Wpf.Binding.Adapters;
 using TheSettings.Wpf.Binding.ValueConverters;
-using TheSettings.Wpf.Infrastructure;
 
 namespace TheSettings.Wpf.Binding
 {

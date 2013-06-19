@@ -54,6 +54,9 @@
     <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />
     <Compile Include="Binding\ICollectionAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
+    <Compile Include="Infrastructure\Collections\CollectionUpdater.cs" />
+    <Compile Include="Infrastructure\Collections\ICollectionUpdater.cs" />
+    <Compile Include="Infrastructure\Collections\ListUpdater.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\Factories\FactoryChain.cs" />
     <Compile Include="Infrastructure\Factories\KeyedFactoryContainer.cs" />

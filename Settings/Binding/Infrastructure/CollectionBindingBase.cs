@@ -6,8 +6,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using TheSettings.Infrastructure;
+using TheSettings.Infrastructure.Collections;
 
 namespace TheSettings.Binding.Infrastructure
 {
@@ -49,18 +51,20 @@ namespace TheSettings.Binding.Infrastructure
 
         protected abstract bool IsCollectionCompatible(object collectionObject);
 
+        protected abstract ICollectionUpdater GetUpdaterFor(ICollection<object> collection);
+
         private ICollection<object> GetSourceItemsAsCollection()
         {
             var sourceItemsObject = _sourceAdapter.GetValue();
-            var sourceItemsSet = ConvertToCollection(sourceItemsObject);
-            return sourceItemsSet;
+            var sourceItemsCollection = ConvertToCollection(sourceItemsObject);
+            return sourceItemsCollection;
         }
 
         private ICollection<object> GetTargetItemsAsCollection()
         {
             var targetItems = _targetAdapter.GetItems();
-            var targetItemsSet = CreateCollection(targetItems);
-            return targetItemsSet;
+            var targetItemsCollection = CreateCollection(targetItems);
+            return targetItemsCollection;
         }
 
         private ICollection<object> ConvertToCollection(object itemsObject)
@@ -80,20 +84,12 @@ namespace TheSettings.Binding.Infrastructure
             _targetAdapter.SetItems(newSourceItemsSet);
         }
 
-        private void OnTargetCollectionChangedCallback(
-            IEnumerable added,
-            IEnumerable removed)
+        private void OnTargetCollectionChangedCallback(NotifyCollectionChangedEventArgs instructions)
         {
-            var sourceItemsSet = GetSourceItemsAsCollection();
-            foreach (var item in added)
-            {
-                sourceItemsSet.Add(item);
-            }
-            foreach (var item in removed)
-            {
-                sourceItemsSet.Remove(item);
-            }
-            _sourceAdapter.SetValue(sourceItemsSet);
+            var sourceItemsCollection = GetSourceItemsAsCollection();
+            var collectionUpdater = GetUpdaterFor(sourceItemsCollection);
+            collectionUpdater.Update(instructions);
+            _sourceAdapter.SetValue(sourceItemsCollection);
         }
 
         protected override void DisposeManaged()
