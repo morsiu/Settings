@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TheSettings.Infrastructure;
 
-namespace TheSettings.Binding
+namespace TheSettings.Binding.Infrastructure
 {
     public abstract class CollectionBindingBase : Disposable, ISettingBinding
     {

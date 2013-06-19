@@ -6,12 +6,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TheSettings.Binding.Infrastructure;
 
 namespace TheSettings.Binding
 {
-    public class CollectionBinding : CollectionBindingBase
+    public class ListBinding : CollectionBindingBase
     {
-        public CollectionBinding(
+        public ListBinding(
             ICollectionAdapter targetAdapter,
             IValueAdapter sourceAdapter)
             : base(targetAdapter, sourceAdapter)
