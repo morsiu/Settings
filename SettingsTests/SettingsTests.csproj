@@ -60,6 +60,7 @@
     <Compile Include="AccessorTests\DictionarySettingsStoreAccessorTests.cs" />
     <Compile Include="BindingTests\SetBindingTests.cs" />
     <Compile Include="BindingTests\ValueBindingTests.cs" />
+    <Compile Include="Infrastructure\Collections\ListUpdaterTests.cs" />
     <Compile Include="Infrastructure\Factories\FactoryChainTests.cs" />
     <Compile Include="Infrastructure\Factories\KeyedFactoryContainerTests.cs" />
     <Compile Include="Infrastructure\GuiTests.cs" />

@@ -22,6 +22,7 @@ namespace TheSettings.Infrastructure.Collections
 
         public void Update(NotifyCollectionChangedEventArgs instructions)
         {
+            if (instructions == null) throw new ArgumentNullException("instructions");
             switch (instructions.Action)
             {
                 case NotifyCollectionChangedAction.Add:
