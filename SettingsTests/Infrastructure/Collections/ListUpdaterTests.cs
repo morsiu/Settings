@@ -230,6 +230,43 @@ namespace TheSettingsTests.Infrastructure.Collections
             test.AssertEqual(1, 6, 3, 7, 5);
         }
 
+        [TestMethod]
+        public void ShouldHandleMoveOfItemsBetweenIndexesByMovingThemInTargetList()
+        {
+            var test = new TestCase(1, 2, 3, 4, 5, 6, 7);
+            var instructions = new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Move,
+                new[] { 3, 4 }, 4, 2);
+
+            test.Update(instructions);
+
+            test.AssertEqual(1, 2, 5, 6, 3, 4, 7);
+        }
+
+        [TestMethod]
+        public void ShouldHandleMoveOfItemBetweenIndexesByMovingItInTargetList()
+        {
+            var test = new TestCase(1, 2, 3, 4, 5);
+            var instructions = new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Move, 4, 0, 3);
+
+            test.Update(instructions);
+
+            test.AssertEqual(4, 1, 2, 3, 5);
+        }
+
+        [TestMethod]
+        public void ShouldHandleReplaceOfItemWithNewOneAtIndexByReplacingItInTargetList()
+        {
+            var test = new TestCase(1, 2, 3, 4, 5);
+            var instructions = new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Replace, 6, (object)3, 2);
+
+            test.Update(instructions);
+
+            test.AssertEqual(1, 2, 6, 4, 5);
+        }
+
         private class TestCase
         {
             private readonly List<int> _items;
