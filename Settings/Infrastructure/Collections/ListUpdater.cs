@@ -76,11 +76,7 @@ namespace TheSettings.Infrastructure.Collections
 
         private void InsertItems(IEnumerable newItems, int startingIndex)
         {
-            if (startingIndex >= _targetList.Count)
-            {
-                AddItems(newItems);
-                return;
-            }
+            startingIndex = Math.Min(startingIndex, _targetList.Count - 1);
             foreach (var item in newItems.OfType<object>().Reverse())
             {
                 _targetList.Insert(startingIndex, item);
