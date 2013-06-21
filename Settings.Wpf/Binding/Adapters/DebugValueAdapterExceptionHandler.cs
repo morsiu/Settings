@@ -21,7 +21,7 @@ namespace TheSettings.Wpf.Binding.Adapters
                 { ExceptionHandlingAdapter.Action.SetValue, "setting" }
             };
 
-        private string _context;
+        private readonly string _context;
 
         public DebugValueAdapterExceptionHandler(string propertyName, object target, object settingsStoreKey, string settingName, SettingsNamespace settingsNamespace)
         {
