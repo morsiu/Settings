@@ -47,6 +47,10 @@ namespace TheSettings.Wpf.Binding.Adapters
         public void SetItems(IEnumerable items)
         {
             FailIfDisposed();
+            if (_collectionView == null)
+            {
+                return;
+            }
             _isUpdatingSortDescriptions = true;
             try
             {
