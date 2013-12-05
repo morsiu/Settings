@@ -18,7 +18,7 @@ namespace Sample
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            SelectedItemsBinding.RegisterAdapterFactory(MultiSelectorSelectedItemsAdapter.Create);
+            SelectedItemsBinding.RegisterAdapterFactory(DataGridSelectedItemsAdapter.Create);
             DataGridColumnsBinding.RegisterColumnSettingNameFactory(
                 DataGridColumnsBinding.DefaultSettingNameFactoryKey,
                 (settingName, column, columnIndex, storedProperty) => string.Format("Column{0}{1}", columnIndex, storedProperty.Name));
