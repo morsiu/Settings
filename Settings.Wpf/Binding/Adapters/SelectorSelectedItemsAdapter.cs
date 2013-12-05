@@ -10,14 +10,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using TheSettings.Binding;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Wpf.Binding.Adapters
 {
-    public class SelectorSelectedItemsAdapter : IValueAdapter
+    public class SelectorSelectedItemsAdapter : Disposable, IValueAdapter
     {
         private readonly Selector _control;
         private readonly Func<object, object> _itemKeySelector;
         private bool _isControlSelectionChangedCallbackDisabled;
+        private Action<object> _valueChangedCallback;
 
         public SelectorSelectedItemsAdapter(
             Selector control,
@@ -39,10 +41,18 @@ namespace TheSettings.Wpf.Binding.Adapters
                 : null;
         }
 
-        public Action<object> ValueChangedCallback { private get; set; }
+        public Action<object> ValueChangedCallback
+        {
+            set
+            {
+                FailIfDisposed();
+                _valueChangedCallback = value;
+            }
+        }
 
         public object GetValue()
         {
+            FailIfDisposed();
             var selectedItem = GetControlSelectedItem();
             var keyOfSelectedItem = ConvertToKey(selectedItem);
             return keyOfSelectedItem;
@@ -50,6 +60,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         public void SetValue(object newValue)
         {
+            FailIfDisposed();
             var keyOfSelectedItem = newValue;
             _isControlSelectionChangedCallbackDisabled = true;
             try
@@ -98,11 +109,11 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         private void OnControlSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_isControlSelectionChangedCallbackDisabled)
+            if (IsDisposed || _isControlSelectionChangedCallbackDisabled)
             {
                 return;
             }
-            var callback = ValueChangedCallback;
+            var callback = _valueChangedCallback;
             if (callback == null)
             {
                 return;
@@ -115,6 +126,11 @@ namespace TheSettings.Wpf.Binding.Adapters
         private object ConvertToKey(object item)
         {
             return _itemKeySelector(item);
+        }
+
+        protected override void DisposeManaged()
+        {
+            _control.SelectionChanged -= OnControlSelectionChanged;
         }
     }
 }

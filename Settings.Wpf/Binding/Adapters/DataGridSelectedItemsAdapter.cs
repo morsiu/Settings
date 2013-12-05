@@ -11,19 +11,22 @@ using System.Windows;
 using System.Windows.Controls;
 using TheSettings.Binding;
 using TheSettings.Binding.ValueAdapters;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Wpf.Binding.Adapters
 {
-    public class DataGridSelectedItemsAdapter : ICollectionAdapter
+    public class DataGridSelectedItemsAdapter : Disposable, ICollectionAdapter
     {
         private readonly DataGrid _control;
         private readonly ICollectionAdapter _selectorAdapter;
         private readonly ICollectionAdapter _multiSelectorAdapter;
+        private CollectionChangedCallbackHandler _collectionChangedCallback;
 
         public DataGridSelectedItemsAdapter(DataGrid control, Func<object, object> itemKeySelector)
         {
             if (control == null) throw new ArgumentNullException("control");
             if (itemKeySelector == null) throw new ArgumentNullException("itemKeySelector");
+            _collectionChangedCallback = instructions => { };
             _control = control;
             _selectorAdapter = new ValueToCollectionAdapter(new SelectorSelectedItemsAdapter(control, itemKeySelector));
             _multiSelectorAdapter = new MultiSelectorSelectedItemsAdapter(control, itemKeySelector);
@@ -31,7 +34,14 @@ namespace TheSettings.Wpf.Binding.Adapters
             _multiSelectorAdapter.CollectionChangedCallback = OnMultiSelectorCollectionChanged;
         }
 
-        public CollectionChangedCallbackHandler CollectionChangedCallback { private get; set; }
+        public CollectionChangedCallbackHandler CollectionChangedCallback 
+        {
+            set
+            {
+                FailIfDisposed();
+                _collectionChangedCallback = value ?? (instructions => { });
+            }
+        }
 
         public static ICollectionAdapter Create(DependencyObject control, Func<object, object> itemKeySelector)
         {
@@ -44,6 +54,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         public IEnumerable GetItems()
         {
+            FailIfDisposed();
             var activeAdapter = ActiveAdapter;
             var items = activeAdapter.GetItems();
             return items;
@@ -51,6 +62,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         public void SetItems(IEnumerable items)
         {
+            FailIfDisposed();
             var activeAdapter = ActiveAdapter;
             activeAdapter.SetItems(items);
         }
@@ -72,28 +84,28 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         private void OnMultiSelectorCollectionChanged(NotifyCollectionChangedEventArgs instructions)
         {
-            if (IsSelectorAdapterActive)
+            if (IsDisposed || IsSelectorAdapterActive)
             {
                 return;
             }
-            var callback = CollectionChangedCallback;
-            if (callback != null)
-            {
-                callback(instructions);
-            }
+            var callback = _collectionChangedCallback;
+            callback(instructions);
         }
 
         private void OnSelectorCollectionChanged(NotifyCollectionChangedEventArgs instructions)
         {
-            if (IsMultiSelectorAdapterActive)
+            if (IsDisposed || IsMultiSelectorAdapterActive)
             {
                 return;
             }
-            var callback = CollectionChangedCallback;
-            if (callback != null)
-            {
-                callback(instructions);
-            }
+            var callback = _collectionChangedCallback;
+            callback(instructions);
+        }
+
+        protected override void DisposeManaged()
+        {
+            Dispose(_multiSelectorAdapter);
+            Dispose(_selectorAdapter);
         }
     }
 }

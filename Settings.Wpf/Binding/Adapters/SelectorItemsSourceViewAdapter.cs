@@ -52,6 +52,10 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         private void OnSourceValueChanged(object sender, EventArgs e)
         {
+            if (IsDisposed)
+            {
+                return;
+            }
             var newValue = GetValue();
             _valueChangedCallback(newValue);
         }

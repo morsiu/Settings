@@ -10,10 +10,11 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
 {
-    public class ValueToCollectionAdapter : ICollectionAdapter
+    public class ValueToCollectionAdapter : Disposable, ICollectionAdapter
     {
         private readonly IValueAdapter _valueAdapter;
 
@@ -26,6 +27,10 @@ namespace TheSettings.Binding.ValueAdapters
 
         private void OnValueChanged(object newValue)
         {
+            if (IsDisposed)
+            {
+                return;
+            }
             var callback = CollectionChangedCallback;
             if (callback == null)
             {
@@ -39,12 +44,19 @@ namespace TheSettings.Binding.ValueAdapters
 
         public IEnumerable GetItems()
         {
+            FailIfDisposed();
             return new[] { _valueAdapter.GetValue() };
         }
 
         public void SetItems(IEnumerable items)
         {
+            FailIfDisposed();
             _valueAdapter.SetValue(items.OfType<object>().FirstOrDefault());
+        }
+     
+        protected override void DisposeManaged()
+        {
+            Dispose(_valueAdapter);
         }
     }
 }

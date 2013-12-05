@@ -9,16 +9,16 @@ namespace TheSettings.Infrastructure
 {
     public abstract class Disposable : IDisposable
     {
-        protected bool IsDiposed { get; private set; }
+        protected bool IsDisposed { get; private set; }
 
         public void Dispose()
         {
-            if (IsDiposed)
+            if (IsDisposed)
             {
                 return;
             }
             Dispose(true);
-            IsDiposed = true;
+            IsDisposed = true;
         }
 
         protected virtual void Dispose(bool isDisposingManaged)
@@ -40,7 +40,7 @@ namespace TheSettings.Infrastructure
 
         protected void FailIfDisposed()
         {
-            if (IsDiposed)
+            if (IsDisposed)
             {
                 throw new ObjectDisposedException(null);
             }

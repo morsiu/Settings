@@ -12,14 +12,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using TheSettings.Binding;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Wpf.Binding.Adapters
 {
-    public class MultiSelectorSelectedItemsAdapter : ICollectionAdapter
+    public class MultiSelectorSelectedItemsAdapter : Disposable, ICollectionAdapter
     {
         private readonly MultiSelector _control;
         private readonly Func<object, object> _itemKeySelector;
         private bool _isControlSelectionChangedCallbackDisabled;
+        private CollectionChangedCallbackHandler _collectionChangedCallback;
 
         public MultiSelectorSelectedItemsAdapter(
             MultiSelector control,
@@ -32,7 +34,15 @@ namespace TheSettings.Wpf.Binding.Adapters
             _itemKeySelector = itemKeySelector;
         }
 
-        public CollectionChangedCallbackHandler CollectionChangedCallback { private get; set; }
+        public CollectionChangedCallbackHandler CollectionChangedCallback 
+        {
+            get { return _collectionChangedCallback; }
+            set
+            {
+                FailIfDisposed();
+                _collectionChangedCallback = value;
+            }
+        }
 
         public static ICollectionAdapter Create(DependencyObject control, Func<object, object> itemKeySelector)
         {
@@ -45,6 +55,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         public IEnumerable GetItems()
         {
+            FailIfDisposed();
             var selectedItems = GetControlSelectedItems();
             var keysOfSelectedItems = ConvertToKeys(selectedItems);
             return keysOfSelectedItems;
@@ -52,6 +63,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         public void SetItems(IEnumerable newItems)
         {
+            FailIfDisposed();
             if (newItems == null) throw new ArgumentNullException("newItems");
             var keysOfSelectedItems = newItems;
             _isControlSelectionChangedCallbackDisabled = true;
@@ -119,7 +131,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         private void OnControlSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_isControlSelectionChangedCallbackDisabled)
+            if (IsDisposed || _isControlSelectionChangedCallbackDisabled)
             {
                 return;
             }
@@ -142,6 +154,11 @@ namespace TheSettings.Wpf.Binding.Adapters
         private object ConvertToKey(object item)
         {
             return _itemKeySelector(item);
+        }
+
+        protected override void DisposeManaged()
+        {
+            _control.SelectionChanged -= OnControlSelectionChanged;
         }
     }
 }
