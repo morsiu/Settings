@@ -40,10 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binding\Adapters\DataGridSelectedItemsAdapter.cs" />
+    <Compile Include="Binding\Adapters\DataContextPropertyAdapter.cs" />
     <Compile Include="Binding\Adapters\MultiSelectorSelectedItemsAdapter.cs" />
     <Compile Include="Binding\Adapters\SelectorItemsSourceViewAdapter.cs" />
     <Compile Include="Binding\Adapters\SelectorSelectedItemsAdapter.cs" />
     <Compile Include="Binding\Adapters\SelectorSortDescriptionsAdapter.cs" />
+    <Compile Include="Binding\DataBinding.cs" />
     <Compile Include="Binding\SelectedItemsBinding.cs" />
     <Compile Include="Binding\SelectorSortBinding.cs" />
     <Compile Include="Binding\ValueConverters\TypeConverterAdapter.cs" />
@@ -74,7 +76,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Settings.Wpf.nuspec" />
+    <None Include="Settings.Wpf.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
