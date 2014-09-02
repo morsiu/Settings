@@ -1,5 +1,6 @@
 syntax: glob
 TestResults
+packages
 syntax: regexp
 bin/.*
 obj/.*
