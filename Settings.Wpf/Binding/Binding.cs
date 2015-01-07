@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using TheSettings.Binding;
+using TheSettings.Wpf.Binding.Adapters;
 
 namespace TheSettings.Wpf.Binding
 {
@@ -24,9 +25,11 @@ namespace TheSettings.Wpf.Binding
             var @namespace = Settings.GetNamespace(target);
             var descriptor = TypeDescriptor.GetProperties(target)[Property];
             var accessor = Settings.CurrentStoreAccessor;
+            var exceptionHandler = new DebugValueAdapterExceptionHandler(Property, target, Store, Setting, @namespace);
             var binding = builder
                 .SetTargetAdapter(target, descriptor)
                 .SetSourceAdapter(accessor, Store, @namespace, Setting)
+                .SetExceptionHandler(exceptionHandler.LogAndSwallowException)
                 .Build();
             return new[] { binding };
         }

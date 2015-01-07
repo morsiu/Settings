@@ -24,11 +24,13 @@ namespace TheSettings.Wpf.Binding
             var @namespace = Settings.GetNamespace(target);
             var accessor = Settings.CurrentStoreAccessor;
             var targetAdapter = new DataContextPropertyAdapter((FrameworkElement)target, Property);
+            var exceptionHandler = new DebugValueAdapterExceptionHandler(Property, target, Store, Setting, @namespace);
             var binding = builder
                 .SetTargetAdapter(targetAdapter)
                 .SetSourceAdapter(accessor, Store, @namespace, Setting)
+                .SetExceptionHandler(exceptionHandler.LogAndSwallowException)
                 .Build();
             return new[] { binding };
-        } 
+        }
     }
 }
