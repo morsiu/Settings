@@ -35,7 +35,7 @@ namespace TheSettings.Wpf.Binding.Adapters
                 settingsStoreKey);
         }
 
-        public ExceptionHandlerResult HandleException(
+        public ExceptionHandlerResult LogAndSwallowException(
             ValueAdapterAction action,
             Exception exception)
         {

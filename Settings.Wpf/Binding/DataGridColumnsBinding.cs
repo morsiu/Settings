@@ -79,7 +79,7 @@ namespace TheSettings.Wpf.Binding
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
                     .SetSourceAdapter(accessor, Store, @namespace, settingName)
-                    .SetExceptionHandler(exceptionHandler.HandleException)
+                    .SetExceptionHandler(exceptionHandler.LogAndSwallowException)
                     .Build()
                 select binding;
         }
