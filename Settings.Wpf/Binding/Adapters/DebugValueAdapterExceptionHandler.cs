@@ -14,11 +14,11 @@ namespace TheSettings.Wpf.Binding.Adapters
     {
         private const string ContextFormat = "The target property is `{0}`, of object `{1}` ({2}). The setting is `{3}`, with namespace `{4}` and store with key `{5}`";
 
-        private static readonly IDictionary<ExceptionHandlingAdapter.ValueAdapterAction, string> ActionNames =
-            new Dictionary<ExceptionHandlingAdapter.ValueAdapterAction, string>
+        private static readonly IDictionary<ValueAdapterAction, string> ActionNames =
+            new Dictionary<ValueAdapterAction, string>
             {
-                { ExceptionHandlingAdapter.ValueAdapterAction.GetValue, "getting" },
-                { ExceptionHandlingAdapter.ValueAdapterAction.SetValue, "setting" }
+                { ValueAdapterAction.GetValue, "getting" },
+                { ValueAdapterAction.SetValue, "setting" }
             };
 
         private readonly string _context;
@@ -35,15 +35,15 @@ namespace TheSettings.Wpf.Binding.Adapters
                 settingsStoreKey);
         }
 
-        public ExceptionHandlingAdapter.ExceptionHandlerResult HandleException(
-            ExceptionHandlingAdapter.ValueAdapterAction action,
+        public ExceptionHandlerResult HandleException(
+            ValueAdapterAction action,
             Exception exception)
         {
             WriteExceptionToDebug(action, exception);
-            return ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException;
+            return ExceptionHandlerResult.SwallowException;
         }
 
-        private void WriteExceptionToDebug(ExceptionHandlingAdapter.ValueAdapterAction action, Exception exception)
+        private void WriteExceptionToDebug(ValueAdapterAction action, Exception exception)
         {
             Debug.WriteLine(
                 string.Format(

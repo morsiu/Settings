@@ -20,10 +20,6 @@ namespace TheSettings.Binding.ValueAdapters
             _exceptionHandler = exceptionHandler;
         }
 
-        public enum ValueAdapterAction { GetValue, SetValue }
-
-        public enum ExceptionHandlerResult { SwallowException, RethrowException }
-
         public delegate ExceptionHandlerResult ExceptionHandler(ValueAdapterAction action, Exception exception);
 
         public Action<object> ValueChangedCallback
