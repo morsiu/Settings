@@ -19,7 +19,7 @@ namespace TheSettingsTests.ValueAdapterTests
     [TestClass]
     public class ExceptionHandlingAdapterTests
     {
-        private static readonly ExceptionHandlingAdapter.ExceptionHandler IgnoreException = (action, exception) => true;
+        private static readonly ExceptionHandlingAdapter.ExceptionHandler IgnoreException = (action, exception) => ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException;
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -89,7 +89,7 @@ namespace TheSettingsTests.ValueAdapterTests
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
             var wasCalled = false;
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { wasCalled = true; return true; });
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { wasCalled = true; return ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException; });
 
             try
             {
@@ -108,7 +108,7 @@ namespace TheSettingsTests.ValueAdapterTests
             var expectedException = new Exception();
             var sourceAdapter = GetThrowingValueAdapter(expectedException);
             Exception actualException = null;
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualException = exception; return true; });
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualException = exception; return ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException; });
 
             try
             {
@@ -125,8 +125,8 @@ namespace TheSettingsTests.ValueAdapterTests
         public void ShouldPassGetValueActionToExceptionHandlerOnExceptionWhileGettingValue()
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
-            ExceptionHandlingAdapter.Action? actualAction = null;
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualAction = action; return true; });
+            ExceptionHandlingAdapter.ValueAdapterAction? actualAction = null;
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualAction = action; return ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException; });
 
             try
             {
@@ -136,14 +136,14 @@ namespace TheSettingsTests.ValueAdapterTests
             {
             };
 
-            Assert.AreEqual(ExceptionHandlingAdapter.Action.GetValue, actualAction);
+            Assert.AreEqual(ExceptionHandlingAdapter.ValueAdapterAction.GetValue, actualAction);
         }
 
         [TestMethod]
         public void ShouldNotRethrowExceptionIfHandlerReturnsTrueOnExceptionWhileGettingValue()
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => true);
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException);
 
             try
             {
@@ -160,7 +160,7 @@ namespace TheSettingsTests.ValueAdapterTests
         public void ShouldRethrowExceptionIfHandlerReturnsFalseOnExceptionWhileGettingValue()
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => false);
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => ExceptionHandlingAdapter.ExceptionHandlerResult.RethrowException);
 
             adapter.GetValue();
         }
@@ -170,7 +170,7 @@ namespace TheSettingsTests.ValueAdapterTests
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
             var wasCalled = false;
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { wasCalled = true; return true; });
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { wasCalled = true; return ExceptionHandlingAdapter.ExceptionHandlerResult.RethrowException; });
 
             try
             {
@@ -189,7 +189,7 @@ namespace TheSettingsTests.ValueAdapterTests
             var expectedException = new Exception();
             var sourceAdapter = GetThrowingValueAdapter(expectedException);
             Exception actualException = null;
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualException = exception; return true; });
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualException = exception; return ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException; });
 
             try
             {
@@ -206,8 +206,8 @@ namespace TheSettingsTests.ValueAdapterTests
         public void ShouldPassSetValueActionToExceptionHandlerOnExceptionWhileSettingValue()
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
-            ExceptionHandlingAdapter.Action? actualAction = null;
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualAction = action; return true; });
+            ExceptionHandlingAdapter.ValueAdapterAction? actualAction = null;
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => { actualAction = action; return ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException; });
 
             try
             {
@@ -217,14 +217,14 @@ namespace TheSettingsTests.ValueAdapterTests
             {
             };
 
-            Assert.AreEqual(ExceptionHandlingAdapter.Action.SetValue, actualAction);
+            Assert.AreEqual(ExceptionHandlingAdapter.ValueAdapterAction.SetValue, actualAction);
         }
 
         [TestMethod]
         public void ShouldNotRethrowExceptionIfHandlerReturnsTrueOnExceptionWhileSettingValue()
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => true);
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => ExceptionHandlingAdapter.ExceptionHandlerResult.SwallowException);
 
             try
             {
@@ -241,7 +241,7 @@ namespace TheSettingsTests.ValueAdapterTests
         public void ShouldRethrowExceptionIfHandlerReturnsFalseOnExceptionWhileSettingValue()
         {
             var sourceAdapter = GetThrowingValueAdapter(new Exception());
-            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => false);
+            var adapter = new ExceptionHandlingAdapter(sourceAdapter, (action, exception) => ExceptionHandlingAdapter.ExceptionHandlerResult.RethrowException);
 
             adapter.SetValue(null);
         }

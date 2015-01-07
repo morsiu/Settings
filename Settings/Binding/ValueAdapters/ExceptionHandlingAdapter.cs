@@ -20,9 +20,11 @@ namespace TheSettings.Binding.ValueAdapters
             _exceptionHandler = exceptionHandler;
         }
 
-        public enum Action { GetValue, SetValue }
+        public enum ValueAdapterAction { GetValue, SetValue }
 
-        public delegate bool ExceptionHandler(Action action, Exception exception);
+        public enum ExceptionHandlerResult { SwallowException, RethrowException }
+
+        public delegate ExceptionHandlerResult ExceptionHandler(ValueAdapterAction action, Exception exception);
 
         public Action<object> ValueChangedCallback
         {
@@ -37,9 +39,14 @@ namespace TheSettings.Binding.ValueAdapters
             }
             catch (Exception e)
             {
-                if (!_exceptionHandler(Action.GetValue, e))
+                switch (_exceptionHandler(ValueAdapterAction.GetValue, e))
                 {
-                    throw;
+                    case ExceptionHandlerResult.SwallowException:
+                        break;
+                    case ExceptionHandlerResult.RethrowException:
+                        throw;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
             return SettingsConstants.NoValue;
@@ -53,9 +60,14 @@ namespace TheSettings.Binding.ValueAdapters
             }
             catch (Exception e)
             {
-                if (!_exceptionHandler(Action.SetValue, e))
+                switch (_exceptionHandler(ValueAdapterAction.SetValue, e))
                 {
-                    throw;
+                    case ExceptionHandlerResult.SwallowException:
+                        break;
+                    case ExceptionHandlerResult.RethrowException:
+                        throw;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
         }
