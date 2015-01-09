@@ -44,7 +44,7 @@ namespace TheSettingsTests.ValueAdapterTests
         [TestMethod]
         public void ShouldForwardConvertedValueFromSourceValueChangedCallback()
         {
-            var converter = new ValueConverter { ReturnedTarget = 5 };
+            var converter = new ValueConverter { ReturnedSource = 5 };
             var sourceAdapter = new ValueAdapter();
             var adapter = new ConvertingAdapter(sourceAdapter, converter);
             object actualValue = null;

@@ -42,7 +42,7 @@ namespace TheSettings.Binding.ValueAdapters
 
         private void OnSourceAdapterValueChanged(object value)
         {
-            var convertedValue = _converter.ConvertSource(value);
+            var convertedValue = _converter.ConvertTarget(value);
             _valueChangedCallback(convertedValue);
         }
     }
