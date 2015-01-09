@@ -17,13 +17,13 @@ namespace TheSettingsTests.Mocks
 
         public object ReceivedTarget { get; set; }
 
-        public object ConvertToSource(object target)
+        public object ConvertTarget(object target)
         {
             ReceivedTarget = target;
             return ReturnedSource;
         }
 
-        public object ConvertToTarget(object source)
+        public object ConvertSource(object source)
         {
             ReceivedSource = source;
             return ReturnedTarget;

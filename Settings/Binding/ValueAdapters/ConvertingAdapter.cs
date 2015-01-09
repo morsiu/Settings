@@ -9,17 +9,17 @@ namespace TheSettings.Binding.ValueAdapters
 {
     public class ConvertingAdapter : IValueAdapter
     {
-        private readonly IValueAdapter _sourceAdapter;
+        private readonly IValueAdapter _targetAdapter;
         private readonly IValueConverter _converter;
         private Action<object> _valueChangedCallback = value => { };
 
-        public ConvertingAdapter(IValueAdapter sourceAdapter, IValueConverter converter)
+        public ConvertingAdapter(IValueAdapter targetAdapter, IValueConverter converter)
         {
             if (converter == null) throw new ArgumentNullException("converter");
-            if (sourceAdapter == null) throw new ArgumentNullException("sourceAdapter");
+            if (targetAdapter == null) throw new ArgumentNullException("targetAdapter");
             _converter = converter;
-            _sourceAdapter = sourceAdapter;
-            _sourceAdapter.ValueChangedCallback = OnSourceAdapterValueChanged;
+            _targetAdapter = targetAdapter;
+            _targetAdapter.ValueChangedCallback = OnSourceAdapterValueChanged;
         }
 
         public Action<object> ValueChangedCallback
@@ -29,20 +29,20 @@ namespace TheSettings.Binding.ValueAdapters
 
         public object GetValue()
         {
-            var value = _sourceAdapter.GetValue();
-            var convertedValue = _converter.ConvertToTarget(value);
-            return convertedValue;
+            var target = _targetAdapter.GetValue();
+            var convertedTarget = _converter.ConvertTarget(target);
+            return convertedTarget;
         }
 
-        public void SetValue(object value)
+        public void SetValue(object source)
         {
-            var convertedValue = _converter.ConvertToSource(value);
-            _sourceAdapter.SetValue(convertedValue);
+            var convertedSource = _converter.ConvertSource(source);
+            _targetAdapter.SetValue(convertedSource);
         }
 
         private void OnSourceAdapterValueChanged(object value)
         {
-            var convertedValue = _converter.ConvertToTarget(value);
+            var convertedValue = _converter.ConvertSource(value);
             _valueChangedCallback(convertedValue);
         }
     }

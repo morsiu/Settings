@@ -54,7 +54,7 @@ namespace TheSettingsTests.ValueConverterTests
             var targetType = typeof(int);
             var converter = new TypeConverterAdapter(_typeConverter.Object, targetType);
 
-            converter.ConvertToTarget(5);
+            converter.ConvertSource(5);
 
             _typeConverter.Verify(
                 c => c.ConvertTo(
@@ -72,7 +72,7 @@ namespace TheSettingsTests.ValueConverterTests
             _typeConverter.Setup(c => c.ConvertTo(It.IsAny<ITypeDescriptorContext>(), It.IsAny<CultureInfo>(), It.IsAny<object>(), It.IsAny<Type>()))
                 .Throws<Exception>();
 
-            var actualValue = converter.ConvertToTarget(5);
+            var actualValue = converter.ConvertSource(5);
 
             Assert.AreEqual(SettingsConstants.NoValue, actualValue);
         }
@@ -83,7 +83,7 @@ namespace TheSettingsTests.ValueConverterTests
             SetupTypeConverterToConversion(true, 10);
             var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
 
-            var actualValue = converter.ConvertToTarget(5);
+            var actualValue = converter.ConvertSource(5);
 
             Assert.AreEqual(10, actualValue);
         }
@@ -94,7 +94,7 @@ namespace TheSettingsTests.ValueConverterTests
             SetupTypeConverterToConversion(true);
             var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
 
-            var actualValue = converter.ConvertToSource(null);
+            var actualValue = converter.ConvertTarget(null);
             Assert.IsNull(actualValue);
         }
 
@@ -105,7 +105,7 @@ namespace TheSettingsTests.ValueConverterTests
             SetupTypeConverterFromConversion(true, 10);
             var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
 
-            var actualValue = converter.ConvertToSource(5);
+            var actualValue = converter.ConvertTarget(5);
 
             Assert.AreEqual(10, actualValue);
         }

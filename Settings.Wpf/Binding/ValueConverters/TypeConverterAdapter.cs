@@ -35,7 +35,7 @@ namespace TheSettings.Wpf.Binding.ValueConverters
             _targetType = targetType;
         }
 
-        public object ConvertToSource(object target)
+        public object ConvertTarget(object target)
         {
             if (target == null)
             {
@@ -50,7 +50,7 @@ namespace TheSettings.Wpf.Binding.ValueConverters
             return source;
         }
 
-        public object ConvertToTarget(object source)
+        public object ConvertSource(object source)
         {
             object target;
             try

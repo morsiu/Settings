@@ -7,8 +7,8 @@ namespace TheSettings.Binding
 {
     public interface IValueConverter
     {
-        object ConvertToSource(object target);
+        object ConvertTarget(object target);
 
-        object ConvertToTarget(object source);
+        object ConvertSource(object source);
     }
 }

@@ -16,12 +16,12 @@ namespace TheSettings.Binding.ValueConverters
             _type = type;
         }
 
-        public object ConvertToSource(object target)
+        public object ConvertTarget(object target)
         {
             return target;
         }
 
-        public object ConvertToTarget(object source)
+        public object ConvertSource(object source)
         {
             return Convert(source);
         }

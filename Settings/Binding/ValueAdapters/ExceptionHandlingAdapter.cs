@@ -9,14 +9,14 @@ namespace TheSettings.Binding.ValueAdapters
 {
     public class ExceptionHandlingAdapter : IValueAdapter
     {
-        private readonly IValueAdapter _sourceAdapter;
+        private readonly IValueAdapter _targetAdapter;
         private readonly ExceptionHandler _exceptionHandler;
 
-        public ExceptionHandlingAdapter(IValueAdapter sourceAdapter, ExceptionHandler exceptionHandler)
+        public ExceptionHandlingAdapter(IValueAdapter targetAdapter, ExceptionHandler exceptionHandler)
         {
-            if (sourceAdapter == null) throw new ArgumentNullException("sourceAdapter");
+            if (targetAdapter == null) throw new ArgumentNullException("targetAdapter");
             if (exceptionHandler == null) throw new ArgumentNullException("exceptionHandler");
-            _sourceAdapter = sourceAdapter;
+            _targetAdapter = targetAdapter;
             _exceptionHandler = exceptionHandler;
         }
 
@@ -24,14 +24,14 @@ namespace TheSettings.Binding.ValueAdapters
 
         public Action<object> ValueChangedCallback
         {
-            set { _sourceAdapter.ValueChangedCallback = value; }
+            set { _targetAdapter.ValueChangedCallback = value; }
         }
 
         public object GetValue()
         {
             try
             {
-                return _sourceAdapter.GetValue();
+                return _targetAdapter.GetValue();
             }
             catch (Exception e)
             {
@@ -52,7 +52,7 @@ namespace TheSettings.Binding.ValueAdapters
         {
             try
             {
-                _sourceAdapter.SetValue(value);
+                _targetAdapter.SetValue(value);
             }
             catch (Exception e)
             {
