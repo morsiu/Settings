@@ -26,14 +26,14 @@ namespace TheSettingsTests.ValueConverterTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShouldNotCreateWithoutTypeConverter()
+        public void ConstructorShouldThrowGivenNullTypeConverter()
         {
             new TypeConverterAdapter(null, typeof(int));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ShouldNotCreateWithoutTargetType()
+        public void ConstructorShouldThrowGivenNullSourceType()
         {
             SetupTypeConverterToConversion(true);
             new TypeConverterAdapter(_typeConverter.Object, null);
@@ -41,73 +41,63 @@ namespace TheSettingsTests.ValueConverterTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void ShouldNotCreateIfConversionIsNotSupportedToTargetType()
+        public void ConstructorShouldThrowWhenTypeConverterDoesNotConvertToSourceType()
         {
             SetupTypeConverterToConversion(false);
             new TypeConverterAdapter(_typeConverter.Object, typeof(int));
         }
 
         [TestMethod]
-        public void ShouldPassTargetTypeToConverterWhenConvertingToTarget()
+        public void ConvertSourceShouldUseTypeConverterConvertFromForSourceConversion()
         {
             SetupTypeConverterToConversion(true);
-            var targetType = typeof(int);
-            var converter = new TypeConverterAdapter(_typeConverter.Object, targetType);
+            SetupTypeConverterFromConversion(true);
+            var sourceType = typeof(int);
+            var converter = new TypeConverterAdapter(_typeConverter.Object, sourceType);
 
             converter.ConvertSource(5);
 
             _typeConverter.Verify(
-                c => c.ConvertTo(
+                c => c.ConvertFrom(
                     It.IsAny<ITypeDescriptorContext>(),
                     It.IsAny<CultureInfo>(),
-                    It.IsAny<object>(),
-                    targetType));
+                    It.IsAny<object>()));
         }
 
         [TestMethod]
-        public void ShouldConvertToNoValueIfConversionFailsWhenConvertingToTarget()
+        public void ConvertTargetShouldReturnNoValueWhenTypeConverterConvertToThrows()
         {
             SetupTypeConverterToConversion(true);
             var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
             _typeConverter.Setup(c => c.ConvertTo(It.IsAny<ITypeDescriptorContext>(), It.IsAny<CultureInfo>(), It.IsAny<object>(), It.IsAny<Type>()))
                 .Throws<Exception>();
 
-            var actualValue = converter.ConvertSource(5);
+            var source = converter.ConvertTarget(5);
 
-            Assert.AreEqual(SettingsConstants.NoValue, actualValue);
+            Assert.AreEqual(SettingsConstants.NoValue, source);
         }
 
         [TestMethod]
-        public void ShouldConvertIfConversionIsSupportedWhenConvertingToTarget()
-        {
-            SetupTypeConverterToConversion(true, 10);
-            var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
-
-            var actualValue = converter.ConvertSource(5);
-
-            Assert.AreEqual(10, actualValue);
-        }
-
-        [TestMethod]
-        public void ShouldConvertNullToNullWhenConvertingToSource()
-        {
-            SetupTypeConverterToConversion(true);
-            var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
-
-            var actualValue = converter.ConvertTarget(null);
-            Assert.IsNull(actualValue);
-        }
-
-        [TestMethod]
-        public void ShouldConvertIfConversionIsSupportedWhenConvertingToSource()
+        public void ConvertSourceShouldReturnTypeConverterConvertFromResult()
         {
             SetupTypeConverterToConversion(true);
             SetupTypeConverterFromConversion(true, 10);
             var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
 
-            var actualValue = converter.ConvertTarget(5);
+            var target = converter.ConvertSource(5);
 
-            Assert.AreEqual(10, actualValue);
+            Assert.AreEqual(10, target);
+        }
+
+        [TestMethod]
+        public void ConvertTargetShouldReturnTypeConverterConvertToResult()
+        {
+            SetupTypeConverterToConversion(true, 10);
+            var converter = new TypeConverterAdapter(_typeConverter.Object, typeof(int));
+
+            var source = converter.ConvertTarget(5);
+
+            Assert.AreEqual(10, source);
         }
 
         private void SetupTypeConverterToConversion(bool canConvert, object targetValue = null)
