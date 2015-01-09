@@ -57,6 +57,7 @@
     <Compile Include="Binding\ValueAdapters\DescriptorAdapter.cs" />
     <Compile Include="Binding\ICollectionAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\SettingAdapter.cs" />
+    <Compile Include="Binding\ValueConverters\SourceValueConverter.cs" />
     <Compile Include="Infrastructure\Collections\CollectionUpdater.cs" />
     <Compile Include="Infrastructure\Collections\ICollectionUpdater.cs" />
     <Compile Include="Infrastructure\Collections\ListUpdater.cs" />
@@ -83,9 +84,7 @@
   <ItemGroup>
     <None Include="Settings.nuspec" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Binding\ValueConverters\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using TheSettings.Binding.ValueAdapters;
+using TheSettings.Binding.ValueConverters;
 
 namespace TheSettings.Binding
 {
@@ -87,7 +88,9 @@ namespace TheSettings.Binding
             var descriptor = propertyInfo as PropertyDescriptor;
             if (descriptor != null)
             {
-                return new DescriptorAdapter(target, descriptor);
+                return new ConvertingAdapter(
+                    new DescriptorAdapter(target, descriptor),
+                    new SourceValueConverter(descriptor.PropertyType));
             }
             return null;
         }
@@ -97,7 +100,9 @@ namespace TheSettings.Binding
             var clrProperty = propertyInfo as PropertyInfo;
             if (clrProperty != null)
             {
-                return new ClrPropertyAdapter(target, clrProperty);
+                return new ConvertingAdapter(
+                    new ClrPropertyAdapter(target, clrProperty),
+                    new SourceValueConverter(clrProperty.PropertyType));
             }
             return null;
         }
@@ -108,7 +113,9 @@ namespace TheSettings.Binding
             var dependencyProperty = propertyInfo as DependencyProperty;
             if (dependencyTarget != null && dependencyProperty != null)
             {
-                return new DependencyPropertyAdapter(dependencyTarget, dependencyProperty);
+                return new ConvertingAdapter(
+                    new DependencyPropertyAdapter(dependencyTarget, dependencyProperty),
+                    new SourceValueConverter(dependencyProperty.PropertyType));
             }
             return null;
         }
