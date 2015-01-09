@@ -14,7 +14,7 @@
         <copyright>Copyright Łukasz Mrozek 2013</copyright>
         <tags>settings wpf</tags>
         <dependencies>
-            <dependency id="Settings" version="1.0.8.0" />
+            <dependency id="Settings" version="1.0.8.2" />
         </dependencies>
     </metadata>
 </package>
