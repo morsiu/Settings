@@ -12,56 +12,50 @@ namespace TheSettings.Wpf.Binding.ValueConverters
 {
     /// <summary>
     /// Value converter that uses TypeConverter instance for converting values.
-    /// For conversion to source values the TypeConverter.ConvertFrom method is used.
-    /// For conversion to target values the TypeConverter.ConvertTo method is used.
+    /// For conversion to source values the TypeConverter.ConvertTo method is used.
+    /// For conversion to target values the TypeConverter.ConvertFrom method is used.
     /// </summary>
     public class TypeConverterAdapter : IValueConverter
     {
         private readonly TypeConverter _converter;
-        private readonly Type _targetType;
+        private readonly Type _sourceType;
         private static readonly CultureInfo _culture = CultureInfo.InvariantCulture;
 
         /// <param name="converter">Converter that is used for converting values.</param>
-        /// <param name="targetType">Type of desired type when converting from source value to target value.</param>
-        public TypeConverterAdapter(TypeConverter converter, Type targetType)
+        /// <param name="sourceType">The desired type of source values.</param>
+        public TypeConverterAdapter(TypeConverter converter, Type sourceType)
         {
             if (converter == null) throw new ArgumentNullException("converter");
-            if (targetType == null) throw new ArgumentNullException("targetType");
-            if (!converter.CanConvertTo(targetType))
+            if (sourceType == null) throw new ArgumentNullException("sourceType");
+            if (!converter.CanConvertTo(sourceType))
             {
-                throw new ArgumentException("targetType", "Provided converter does not support conversion to given targetType.");
+                throw new ArgumentException("sourceType", "Provided converter does not support conversion to given sourceType.");
             }
             _converter = converter;
-            _targetType = targetType;
-        }
-
-        public object ConvertTarget(object target)
-        {
-            if (target == null)
-            {
-                return null;
-            }
-
-            var targetType = target.GetType();
-            var canConvertToSource = _converter.CanConvertFrom(null, targetType);
-            var source = canConvertToSource
-                ? _converter.ConvertFrom(null, _culture, target)
-                : SettingsConstants.NoValue;
-            return source;
+            _sourceType = sourceType;
         }
 
         public object ConvertSource(object source)
         {
-            object target;
+            var canConvertFromSource = _converter.CanConvertFrom(null, source == null ? _sourceType : source.GetType());
+            var target = canConvertFromSource
+                ? _converter.ConvertFrom(null, _culture, source)
+                : SettingsConstants.NoValue;
+            return target;
+        }
+
+        public object ConvertTarget(object target)
+        {
+            object source;
             try
             {
-                target = _converter.ConvertTo(null, _culture, source, _targetType);
+                source = _converter.ConvertTo(null, _culture, target, _sourceType);
             }
             catch (Exception)
             {
-                target = SettingsConstants.NoValue;
+                source = SettingsConstants.NoValue;
             }
-            return target;
+            return source;
         }
     }
 }
