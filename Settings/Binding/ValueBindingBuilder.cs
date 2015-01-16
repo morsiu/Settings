@@ -110,7 +110,10 @@ namespace TheSettings.Binding
         private static IValueAdapter TryDependencyProperty(object target, object propertyInfo)
         {
             var dependencyTarget = target as DependencyObject;
-            var dependencyProperty = propertyInfo as DependencyProperty;
+            var dependencyProperty = propertyInfo as DependencyProperty
+                ?? (propertyInfo is DependencyPropertyDescriptor
+                    ? ((DependencyPropertyDescriptor)propertyInfo).DependencyProperty
+                    : null);
             if (dependencyTarget != null && dependencyProperty != null)
             {
                 return new ConvertingAdapter(
