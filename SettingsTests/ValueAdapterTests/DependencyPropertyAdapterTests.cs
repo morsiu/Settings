@@ -152,6 +152,25 @@ namespace TheSettingsTests.ValueAdapterTests
             Assert.IsFalse(callbackCalled);
         }
 
+        [TestMethod]
+        public void UnreachableTargetShouldBeCollectedAfterGC()
+        {
+            WeakReference targetReference = null;
+            DependencyPropertyAdapter adapter = null;
+            new Action(
+                () =>
+                {
+                    var target = new Entity();
+                    targetReference = new WeakReference(target);
+                    adapter = new DependencyPropertyAdapter(target, Entity.SampleProperty);
+                })();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            Assert.IsNull(targetReference.Target);
+        }
+
         private class Entity : DependencyObject
         {
             public static readonly DependencyProperty SampleProperty =

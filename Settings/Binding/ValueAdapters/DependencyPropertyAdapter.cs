@@ -4,9 +4,8 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.ComponentModel;
 using System.Windows;
-using TheSettings.Binding.ValueAdapters.Infrastructure;
+using System.Windows.Data;
 using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
@@ -14,30 +13,19 @@ namespace TheSettings.Binding.ValueAdapters
     public sealed class DependencyPropertyAdapter : Disposable, IValueAdapter
     {
         private readonly DependencyProperty _property;
-        private readonly DependencyPropertyDescriptor _descriptor;
-        private readonly DependencyObject _target;
+        private readonly TargetAdapter _targetAdapter;
         private bool _isSettingValue;
         private Action<object> _valueChangedCallback;
 
         public DependencyPropertyAdapter(DependencyObject target, DependencyProperty property)
         {
-            if (target == null) throw new ArgumentNullException("target");
-            if (property == null) throw new ArgumentNullException("property");
-            _target = target;
             _property = property;
-            _descriptor = DependencyPropertyDescriptor.FromProperty(property, property.OwnerType);
+            if (target == null)
+                throw new ArgumentNullException("target");
+            if (property == null)
+                throw new ArgumentNullException("property");
             _valueChangedCallback = newValue => { };
-            PropertyDescriptorValueChangedEventManager.AddHandler(target, PropertyChangedHandler, _descriptor);
-        }
-
-        private void PropertyChangedHandler(object sender, EventArgs e)
-        {
-            if (_isSettingValue)
-            {
-                return;
-            }
-            var value = GetValue();
-            _valueChangedCallback(value);
+            _targetAdapter = new TargetAdapter(target, property, PropertyChangedHandler);
         }
 
         public Action<object> ValueChangedCallback
@@ -52,7 +40,7 @@ namespace TheSettings.Binding.ValueAdapters
         public object GetValue()
         {
             FailIfDisposed();
-            return _target.GetValue(_property);
+            return _targetAdapter.Value;
         }
 
         public void SetValue(object value)
@@ -63,7 +51,7 @@ namespace TheSettings.Binding.ValueAdapters
                 _isSettingValue = true;
                 try
                 {
-                    _target.SetValue(_property, value);
+                    _targetAdapter.Value = value;
                 }
                 finally
                 {
@@ -74,7 +62,73 @@ namespace TheSettings.Binding.ValueAdapters
 
         protected override void DisposeManaged()
         {
-            PropertyDescriptorValueChangedEventManager.RemoveHandler(_target, PropertyChangedHandler, _descriptor);
+            _targetAdapter.Disable();
+        }
+
+        private void PropertyChangedHandler()
+        {
+            if (_isSettingValue)
+            {
+                return;
+            }
+            var value = GetValue();
+            _valueChangedCallback(value);
+        }
+
+        private sealed class TargetAdapter : DependencyObject
+        {
+            public static readonly DependencyProperty ValueProperty
+                = DependencyProperty.Register("Value", typeof(object), typeof(TargetAdapter), new PropertyMetadata(OnValueChanged));
+
+            private readonly Action _changeCallback;
+            private bool _isChangeCallbackActive;
+
+            public TargetAdapter(DependencyObject target, DependencyProperty property, Action changeCallback)
+            {
+                if (target == null) throw new ArgumentNullException("target");
+                if (property == null) throw new ArgumentNullException("property");
+                if (changeCallback == null) throw new ArgumentNullException("changeCallback");
+                Enable(target, property);
+                _changeCallback = changeCallback;
+                _isChangeCallbackActive = true;
+            }
+
+            public object Value
+            {
+                get { return GetValue(ValueProperty); }
+                set { SetValue(ValueProperty, value); }
+            }
+
+            public void Disable()
+            {
+                _isChangeCallbackActive = false;
+                BindingOperations.ClearBinding(this, ValueProperty);
+            }
+
+            private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            {
+                var self = (TargetAdapter)d;
+                if (self != null && self._isChangeCallbackActive && self._changeCallback != null)
+                {
+                    self._changeCallback();
+                }
+            }
+
+            private void Enable(DependencyObject target, DependencyProperty property)
+            {
+                Value = target.GetValue(property);
+                var bindingMode = property.ReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+                BindingOperations.SetBinding(
+                    this,
+                    ValueProperty,
+                    new System.Windows.Data.Binding(property.Name)
+                    {
+                        Source = target,
+                        Mode = bindingMode,
+                        BindsDirectlyToSource = true,
+                        FallbackValue = property.DefaultMetadata.DefaultValue,
+                    });
+            }
         }
     }
 }

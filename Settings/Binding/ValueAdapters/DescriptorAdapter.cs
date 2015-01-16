@@ -5,7 +5,6 @@
 
 using System;
 using System.ComponentModel;
-using TheSettings.Binding.ValueAdapters.Infrastructure;
 using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
@@ -22,7 +21,7 @@ namespace TheSettings.Binding.ValueAdapters
             _target = target;
             _descriptor = descriptor;
             _valueChangedCallback = newValue => { };
-            PropertyDescriptorValueChangedEventManager.AddHandler(target, OnValueChanged, descriptor);
+            _descriptor.AddValueChanged(target, OnValueChanged);
         }
 
         private void OnValueChanged(object sender, EventArgs e)
@@ -67,7 +66,7 @@ namespace TheSettings.Binding.ValueAdapters
 
         protected override void DisposeManaged()
         {
-            PropertyDescriptorValueChangedEventManager.RemoveHandler(_target, OnValueChanged, _descriptor);
+            _descriptor.RemoveValueChanged(_target, OnValueChanged);
         }
     }
 }
