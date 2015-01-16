@@ -6,6 +6,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using TheSettings.Binding.ValueAdapters.Infrastructure;
 using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
@@ -26,8 +27,7 @@ namespace TheSettings.Binding.ValueAdapters
             _property = property;
             _descriptor = DependencyPropertyDescriptor.FromProperty(property, property.OwnerType);
             _valueChangedCallback = newValue => { };
-            // TODO: Use weak event pattern here
-            _descriptor.AddValueChanged(target, PropertyChangedHandler);
+            PropertyDescriptorValueChangedEventManager.AddHandler(target, PropertyChangedHandler, _descriptor);
         }
 
         private void PropertyChangedHandler(object sender, EventArgs e)
@@ -74,7 +74,7 @@ namespace TheSettings.Binding.ValueAdapters
 
         protected override void DisposeManaged()
         {
-            _descriptor.RemoveValueChanged(_target, PropertyChangedHandler);
+            PropertyDescriptorValueChangedEventManager.RemoveHandler(_target, PropertyChangedHandler, _descriptor);
         }
     }
 }
