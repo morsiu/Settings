@@ -38,8 +38,10 @@ namespace TheSettings.Binding
             return new ConvertingAdapter(adapter, new SourceValueConverter(sourceTargetType));
         }
 
-        private static IValueAdapter CreateAdapterForDependencyProperty(DependencyObject target, DependencyProperty property)
+        public static IValueAdapter CreateAdapterForDependencyProperty(DependencyObject target, DependencyProperty property)
         {
+            if (target == null) throw new ArgumentNullException("target");
+            if (property == null) throw new ArgumentNullException("property");
             return ConvertSourceToType(
                 new DependencyPropertyAdapter(target, property),
                 property.PropertyType);

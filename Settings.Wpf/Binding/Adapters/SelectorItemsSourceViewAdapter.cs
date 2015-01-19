@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using TheSettings.Binding;
@@ -15,17 +16,15 @@ namespace TheSettings.Wpf.Binding.Adapters
 {
     public class SelectorItemsSourceViewAdapter : Disposable, IValueAdapter
     {
-        private readonly Selector _source;
-        private readonly DependencyPropertyDescriptor _descriptor;
+        private readonly IValueAdapter _sourceItemsSourceAdapter;
         private Action<object> _valueChangedCallback;
 
         public SelectorItemsSourceViewAdapter(Selector source)
         {
             if (source == null) throw new ArgumentNullException("source");
-            _source = source;
             _valueChangedCallback = _ => { };
-            _descriptor = DependencyPropertyDescriptor.FromProperty(Selector.ItemsSourceProperty, typeof(Selector));
-            _descriptor.AddValueChanged(source, OnSourceValueChanged);
+            _sourceItemsSourceAdapter = ValueAdapterFactory.CreateAdapterForDependencyProperty(source, ItemsControl.ItemsSourceProperty);
+            _sourceItemsSourceAdapter.ValueChangedCallback = OnSourceValueChanged;
         }
 
         public Action<object> ValueChangedCallback
@@ -40,17 +39,18 @@ namespace TheSettings.Wpf.Binding.Adapters
         public object GetValue()
         {
             FailIfDisposed();
-            return _source.ItemsSource as ICollectionView
-                ?? CollectionViewSource.GetDefaultView(_source.ItemsSource);
+            var sourceItemsSource = _sourceItemsSourceAdapter.GetValue();
+            return sourceItemsSource as ICollectionView
+                ?? CollectionViewSource.GetDefaultView(sourceItemsSource);
         }
 
         public void SetValue(object value)
         {
             FailIfDisposed();
-            _source.ItemsSource = value as IEnumerable;
+            _sourceItemsSourceAdapter.SetValue(value as IEnumerable);
         }
 
-        private void OnSourceValueChanged(object sender, EventArgs e)
+        private void OnSourceValueChanged(object chan)
         {
             if (IsDisposed)
             {
@@ -62,8 +62,7 @@ namespace TheSettings.Wpf.Binding.Adapters
 
         protected override void DisposeManaged()
         {
-            _descriptor.RemoveValueChanged(_source, OnSourceValueChanged);
-            Dispose(_descriptor);
+            Dispose(_sourceItemsSourceAdapter);
         }
     }
 }
