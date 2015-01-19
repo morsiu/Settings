@@ -47,6 +47,7 @@
     <Compile Include="Binding\IValueAdapter.cs" />
     <Compile Include="Binding\IValueConverter.cs" />
     <Compile Include="Binding\SetBinding.cs" />
+    <Compile Include="Binding\ValueAdapterFactory.cs" />
     <Compile Include="Binding\ValueAdapters\ConvertingAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\ExceptionHandlerResult.cs" />
     <Compile Include="Binding\ValueAdapters\ExceptionHandlingAdapter.cs" />

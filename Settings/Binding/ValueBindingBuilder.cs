@@ -4,11 +4,8 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.ComponentModel;
-using System.Reflection;
 using System.Windows;
 using TheSettings.Binding.ValueAdapters;
-using TheSettings.Binding.ValueConverters;
 
 namespace TheSettings.Binding
 {
@@ -20,9 +17,9 @@ namespace TheSettings.Binding
 
         public ValueBindingBuilder SetTargetAdapter(
             object target,
-            object propertyInfo)
+            object property)
         {
-            var targetAdapter = GetPropertyAdapter(target, propertyInfo);
+            var targetAdapter = GetPropertyAdapter(target, property);
             if (targetAdapter == null)
             {
                 throw new ArgumentException("Unsupported type of target and property");
@@ -76,51 +73,9 @@ namespace TheSettings.Binding
             return new SettingAdapter(storeAccessor, storeKey, @namespace, settingName);
         }
 
-        private static IValueAdapter GetPropertyAdapter(object target, object propertyInfo)
+        private static IValueAdapter GetPropertyAdapter(object target, object property)
         {
-            return TryDependencyProperty(target, propertyInfo)
-                ?? TryClrProperty(target, propertyInfo)
-                ?? TryDescriptorAdapter(target, propertyInfo);
-        }
-
-        private static IValueAdapter TryDescriptorAdapter(object target, object propertyInfo)
-        {
-            var descriptor = propertyInfo as PropertyDescriptor;
-            if (descriptor != null)
-            {
-                return new ConvertingAdapter(
-                    new DescriptorAdapter(target, descriptor),
-                    new SourceValueConverter(descriptor.PropertyType));
-            }
-            return null;
-        }
-
-        private static IValueAdapter TryClrProperty(object target, object propertyInfo)
-        {
-            var clrProperty = propertyInfo as PropertyInfo;
-            if (clrProperty != null)
-            {
-                return new ConvertingAdapter(
-                    new ClrPropertyAdapter(target, clrProperty),
-                    new SourceValueConverter(clrProperty.PropertyType));
-            }
-            return null;
-        }
-
-        private static IValueAdapter TryDependencyProperty(object target, object propertyInfo)
-        {
-            var dependencyTarget = target as DependencyObject;
-            var dependencyProperty = propertyInfo as DependencyProperty
-                ?? (propertyInfo is DependencyPropertyDescriptor
-                    ? ((DependencyPropertyDescriptor)propertyInfo).DependencyProperty
-                    : null);
-            if (dependencyTarget != null && dependencyProperty != null)
-            {
-                return new ConvertingAdapter(
-                    new DependencyPropertyAdapter(dependencyTarget, dependencyProperty),
-                    new SourceValueConverter(dependencyProperty.PropertyType));
-            }
-            return null;
+            return ValueAdapterFactory.CreateAdapter(target, property);
         }
     }
 }

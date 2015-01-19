@@ -7,6 +7,7 @@ using System;
 using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheSettings.Binding.ValueAdapters;
+using TheSettingsTests.Infrastructure;
 
 namespace TheSettingsTests.ValueAdapterTests
 {
@@ -153,22 +154,11 @@ namespace TheSettingsTests.ValueAdapterTests
         }
 
         [TestMethod]
-        public void UnreachableTargetShouldBeCollectedAfterGC()
+        public void UnreachableTargetShouldNotBeLeaked()
         {
-            WeakReference targetReference = null;
-            DependencyPropertyAdapter adapter = null;
-            new Action(
-                () =>
-                {
-                    var target = new Entity();
-                    targetReference = new WeakReference(target);
-                    adapter = new DependencyPropertyAdapter(target, Entity.SampleProperty);
-                })();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            Assert.IsNull(targetReference.Target);
+            AssertLifetime.UnreachableInstanceIsNotLeaked(
+                () => new Entity(),
+                entity => new DependencyPropertyAdapter(entity, Entity.SampleProperty));
         }
 
         private class Entity : DependencyObject

@@ -12,7 +12,7 @@ namespace TheSettings.Binding.ValueAdapters
 {
     public sealed class ClrPropertyAdapter : Disposable, IValueAdapter
     {
-        private readonly object _target;
+        private readonly WeakReference<object> _target;
         private readonly PropertyInfo _propertyInfo;
         private Action<object> _valueChangedCallback;
         private bool _isSettingValue;
@@ -22,8 +22,8 @@ namespace TheSettings.Binding.ValueAdapters
             if (target == null) throw new ArgumentNullException("target");
             if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
             _propertyInfo = propertyInfo;
-            _target = target;
-            var notifyingTarget = _target as INotifyPropertyChanged;
+            _target =  new WeakReference<object>(target);
+            var notifyingTarget = target as INotifyPropertyChanged;
             if (notifyingTarget != null)
             {
                 _valueChangedCallback = newValue => { };
@@ -43,20 +43,22 @@ namespace TheSettings.Binding.ValueAdapters
         public object GetValue()
         {
             FailIfDisposed();
-            return _propertyInfo.CanRead
-                ? _propertyInfo.GetValue(_target)
+            object target;
+            return _propertyInfo.CanRead && _target.TryGetTarget(out target)
+                ? _propertyInfo.GetValue(target)
                 : SettingsConstants.NoValue;
         }
 
         public void SetValue(object value)
         {
             FailIfDisposed();
-            if (_propertyInfo.CanWrite)
+            object target;
+            if (_propertyInfo.CanWrite && _target.TryGetTarget(out target))
             {
                 _isSettingValue = true;
                 try
                 {
-                    _propertyInfo.SetValue(_target, value);
+                    _propertyInfo.SetValue(target, value);
                 }
                 finally
                 {
@@ -67,7 +69,12 @@ namespace TheSettings.Binding.ValueAdapters
 
         protected override void DisposeManaged()
         {
-            var notifyingTarget = _target as INotifyPropertyChanged;
+            object target;
+            if (!_target.TryGetTarget(out target))
+            {
+                return;
+            }
+            var notifyingTarget = target as INotifyPropertyChanged;
             if (notifyingTarget != null)
             {
                 PropertyChangedEventManager.RemoveHandler(notifyingTarget, PropertyChangedHandler, _propertyInfo.Name);
