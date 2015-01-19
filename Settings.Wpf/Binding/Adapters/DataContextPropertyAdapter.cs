@@ -6,14 +6,13 @@
 using System;
 using System.Windows;
 using TheSettings.Binding;
-using TheSettings.Binding.ValueAdapters;
 using TheSettings.Infrastructure;
 
 namespace TheSettings.Wpf.Binding.Adapters
 {
     public class DataContextPropertyAdapter : Disposable, IValueAdapter
     {
-        private readonly DependencyPropertyAdapter _dataContextAdapter;
+        private readonly IValueAdapter _dataContextAdapter;
         private readonly string _propertyInDataContext;
         private IValueAdapter _valueAdapter;
         private Action<object> _valueChangedCallback;
@@ -23,7 +22,7 @@ namespace TheSettings.Wpf.Binding.Adapters
             if (target == null) throw new ArgumentNullException("target");
             if (propertyInDataContext == null) throw new ArgumentNullException("propertyInDataContext");
             _propertyInDataContext = propertyInDataContext;
-            _dataContextAdapter = new DependencyPropertyAdapter(target, FrameworkElement.DataContextProperty);
+            _dataContextAdapter = ValueAdapterFactory.CreateAdapterForDependencyProperty(target, FrameworkElement.DataContextProperty);
             _dataContextAdapter.ValueChangedCallback = OnDataContextChanged;
             _valueChangedCallback = newValue => { };
             _valueAdapter = CreateValueAdapter();
@@ -73,11 +72,9 @@ namespace TheSettings.Wpf.Binding.Adapters
             var dataContext = _dataContextAdapter.GetValue();
             if (dataContext == null)
                 return null;
-            var propertyInfo = dataContext.GetType().GetProperty(_propertyInDataContext);
-            if (propertyInfo == null)
-                return null;
-            var valueAdapter = new ClrPropertyAdapter(dataContext, propertyInfo);
-            valueAdapter.ValueChangedCallback = _valueChangedCallback;
+            var valueAdapter = ValueAdapterFactory.CreateAdapter(dataContext, _propertyInDataContext);
+            if (valueAdapter != null)
+                valueAdapter.ValueChangedCallback = _valueChangedCallback;
             return valueAdapter;
         }
 
@@ -92,7 +89,7 @@ namespace TheSettings.Wpf.Binding.Adapters
         protected override void DisposeManaged()
         {
             Dispose(_valueAdapter);
-            _dataContextAdapter.Dispose();
+            Dispose(_dataContextAdapter);
             _valueChangedCallback = null;
         }
     }
