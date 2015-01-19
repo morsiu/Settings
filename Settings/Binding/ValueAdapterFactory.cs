@@ -66,7 +66,7 @@ namespace TheSettings.Binding
             var dependencyTarget = target as DependencyObject;
             if (dependencyTarget == null)
                 return null;
-            var dependencyPropertyFieldInfo = target.GetType().GetField(propertyName + "Property", BindingFlags.Public | BindingFlags.Static);
+            var dependencyPropertyFieldInfo = target.GetType().GetField(propertyName + "Property", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
             if (dependencyPropertyFieldInfo == null)
                 return null;
             var dependencyProperty = dependencyPropertyFieldInfo.GetValue(target) as DependencyProperty;

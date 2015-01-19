@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheSettings.Binding;
 using TheSettingsTests.Infrastructure;
@@ -65,6 +66,14 @@ namespace TheSettingsTests.BindingTests
             AssertLifetime.UnreachableInstanceIsNotLeaked(
                 () => new DependencyObjectTarget(),
                 target => ValueAdapterFactory.CreateAdapterFromPropertyName(target, "Value"));
+        }
+
+        [TestMethod]
+        public void ReturnedAdapterShouldNotLeakTargetGivenTargetWithDependencyPropertyInheritedFromBaseClass()
+        {
+            AssertLifetime.UnreachableInstanceIsNotLeaked(
+                () => new Control(),
+                target => ValueAdapterFactory.CreateAdapterFromPropertyName(target, "DataContext"));
         }
 
         [TestMethod]
