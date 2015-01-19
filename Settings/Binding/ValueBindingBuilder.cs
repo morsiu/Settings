@@ -22,7 +22,7 @@ namespace TheSettings.Binding
             var targetAdapter = GetPropertyAdapter(target, property);
             if (targetAdapter == null)
             {
-                throw new ArgumentException("Unsupported type of target and property");
+                throw new ArgumentException(string.Format("Unsupported type of target `{0}` and property `{1}`", target, property));
             }
             _targetAdapter = targetAdapter;
             return this;
