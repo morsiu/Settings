@@ -154,6 +154,18 @@ namespace TheSettingsTests.ValueAdapterTests
         }
 
         [TestMethod]
+        public void ShouldGetValueFromAttachedProperty()
+        {
+            var entity = new Entity();
+            var adapter = new DependencyPropertyAdapter(entity, Other.AttachedProperty);
+            Other.SetAttached(entity, 5);
+
+            var value = adapter.GetValue();
+
+            Assert.AreEqual(5, value);
+        }
+
+        [TestMethod]
         public void UnreachableTargetShouldNotBeLeaked()
         {
             AssertLifetime.UnreachableInstanceIsNotLeaked(
@@ -193,6 +205,25 @@ namespace TheSettingsTests.ValueAdapterTests
             public int SampleReadOnly
             {
                 get { return (int)GetValue(SampleReadOnlyProperty); }
+            }
+        }
+
+        private sealed class Other : DependencyObject
+        {
+            public static readonly DependencyProperty AttachedProperty =
+                DependencyProperty.RegisterAttached(
+                    "Attached",
+                    typeof(int),
+                    typeof(Other));
+
+            public static int GetAttached(DependencyObject target)
+            {
+                return (int)target.GetValue(AttachedProperty);
+            }
+
+            public static void SetAttached(DependencyObject target, int value)
+            {
+                target.SetValue(AttachedProperty, value);
             }
         }
     }

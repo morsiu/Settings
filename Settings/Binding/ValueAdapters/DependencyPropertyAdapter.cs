@@ -121,12 +121,13 @@ namespace TheSettings.Binding.ValueAdapters
                 BindingOperations.SetBinding(
                     this,
                     ValueProperty,
-                    new System.Windows.Data.Binding(property.Name)
+                    new System.Windows.Data.Binding
                     {
                         Source = target,
                         Mode = bindingMode,
                         BindsDirectlyToSource = true,
                         FallbackValue = property.DefaultMetadata.DefaultValue,
+                        Path = new PropertyPath(property)
                     });
             }
         }
