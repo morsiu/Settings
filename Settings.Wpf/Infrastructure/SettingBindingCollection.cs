@@ -61,7 +61,7 @@ namespace TheSettings.Wpf.Infrastructure
             else
             {
                 var newBindings = bindingsProvider.ProvideBindings(_owner);
-                UpdateBindings(newBindings);
+                AddAndUpdateBindings(newBindings);
             }
         }
 
@@ -100,7 +100,16 @@ namespace TheSettings.Wpf.Infrastructure
             return initializer;
         }
 
-        private void UpdateBindings(IEnumerable<ISettingBinding> bindings)
+        private void AddAndUpdateBindings(IEnumerable<ISettingBinding> bindings)
+        {
+            foreach (var binding in bindings)
+            {
+                _bindings.Add(binding);
+                binding.UpdateTarget();
+            }
+        }
+
+        private static void UpdateBindings(IEnumerable<ISettingBinding> bindings)
         {
             foreach (var binding in bindings)
             {
