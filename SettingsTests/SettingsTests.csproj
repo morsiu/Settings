@@ -58,9 +58,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AccessorTests\DictionarySettingsStoreAccessorTests.cs" />
+    <Compile Include="BindingTests\DataGridColumnsBindingInitializationTest.cs" />
     <Compile Include="BindingTests\SetBindingTests.cs" />
     <Compile Include="BindingTests\ValueAdapterFactoryTests.cs" />
     <Compile Include="BindingTests\ValueBindingTests.cs" />
+    <Compile Include="BindingTests\Windows\DataGridColumnsBindingInitialization.xaml.cs">
+      <DependentUpon>DataGridColumnsBindingInitialization.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\Collections\ListUpdaterTests.cs" />
     <Compile Include="Infrastructure\Factories\FactoryChainTests.cs" />
     <Compile Include="Infrastructure\Factories\KeyedFactoryContainerTests.cs" />
@@ -122,6 +126,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="BindingTests\Windows\DataGridColumnsBindingInitialization.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MarkupTests\NamespaceExtensionTests\Windows\ControlTemplating.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

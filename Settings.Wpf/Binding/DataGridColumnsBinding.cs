@@ -59,7 +59,8 @@ namespace TheSettings.Wpf.Binding
             var builder = new ValueBindingBuilder();
             var dataGrid = (DataGrid)target;
             var @namespace = Settings.GetNamespace(target);
-            var bindings = dataGrid.Columns.SelectMany(
+            var columns = GetColumnsInInitializationOrder(dataGrid, @namespace);
+            var bindings = columns.SelectMany(
                 (column, index) => BindColumn(column, index, @namespace, builder));
             return bindings;
         }
@@ -82,6 +83,28 @@ namespace TheSettings.Wpf.Binding
                     .SetExceptionHandler(exceptionHandler.LogAndSwallowException)
                     .Build()
                 select binding;
+        }
+
+        private IEnumerable<DataGridColumn> GetColumnsInInitializationOrder(DataGrid dataGrid, SettingsNamespace settingsNamespace)
+        {
+            // When columns' DisplayIndex is used, columns need to be initialized in ascending order of target display index.
+            // This way the initialization of bindings of column displayed after previously initialized column won't change the display index of the latter.
+            if (GetStoredProperties().Contains(DataGridColumn.DisplayIndexProperty))
+            {
+                var columnsInInitializationOrder =
+                    from column in dataGrid.Columns
+                    let columnIndex = dataGrid.Columns.IndexOf(column)
+                    let displayIndexSettingName = GetSettingName(Setting, column, columnIndex, DataGridColumn.DisplayIndexProperty)
+                    let displayIndexSettingValue = Settings.CurrentStoreAccessor.GetSetting(Store, settingsNamespace, displayIndexSettingName)
+                    let displayIndex =
+                        displayIndexSettingValue == SettingsConstants.NoValue
+                            ? dataGrid.Columns.Count + columnIndex // initialize columns without display index stored after the ones that have it
+                            : displayIndexSettingValue
+                    orderby displayIndex
+                    select column;
+                return columnsInInitializationOrder;
+            }
+            return dataGrid.Columns;
         }
 
         private IEnumerable<DependencyProperty> GetStoredProperties()
