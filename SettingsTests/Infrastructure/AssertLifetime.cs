@@ -10,20 +10,20 @@ namespace TheSettingsTests.Infrastructure
             Func<T, object> potentiallyLeakingCode)
             where T : class
         {
-            WeakReference instanceReferece = null;
+            WeakReference instanceReference = null;
             object potentiallyLeakingObject = null;
             new Action(
                 () =>
                 {
                     var instance = instanceGetter();
-                    instanceReferece = new WeakReference(instance);
+                    instanceReference = new WeakReference(instance);
                     potentiallyLeakingObject = potentiallyLeakingCode(instance);
                 })();
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
-            Assert.IsNull(instanceReferece.Target, "The instance was still alive after GC.");
+            Assert.IsNull(instanceReference.Target, "The instance was still alive after GC.");
         }
     }
 }
