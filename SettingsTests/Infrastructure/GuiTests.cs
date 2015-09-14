@@ -49,6 +49,8 @@ namespace TheSettingsTests.Infrastructure
 
         private static void WaitForLoadedEvent(Window window)
         {
+            if (window.IsLoaded)
+                return;
             var loadedEventTask = new TaskCompletionSource<object>();
             var dispatcherFrame = new DispatcherFrame();
             RoutedEventHandler onWindowLoaded =
