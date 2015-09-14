@@ -91,18 +91,22 @@ namespace TheSettings.Wpf.Binding
             // This way the initialization of bindings of column displayed after previously initialized column won't change the display index of the latter.
             if (GetStoredProperties().Contains(DataGridColumn.DisplayIndexProperty))
             {
-                var columnsInInitializationOrder =
-                    from column in dataGrid.Columns
-                    let columnIndex = dataGrid.Columns.IndexOf(column)
-                    let displayIndexSettingName = GetSettingName(Setting, column, columnIndex, DataGridColumn.DisplayIndexProperty)
-                    let displayIndexSettingValue = Settings.CurrentStoreAccessor.GetSetting(Store, settingsNamespace, displayIndexSettingName)
-                    let displayIndex =
-                        displayIndexSettingValue == SettingsConstants.NoValue
-                            ? dataGrid.Columns.Count + columnIndex // initialize columns without display index stored after the ones that have it
-                            : displayIndexSettingValue
-                    orderby displayIndex
-                    select column;
-                return columnsInInitializationOrder;
+                var orderedColumns = dataGrid.Columns.ToList();
+                for (int columnIndex = 0; columnIndex < dataGrid.Columns.Count; columnIndex++)
+                {
+                    var column = dataGrid.Columns[columnIndex];
+                    var displayIndex =
+                        Settings.CurrentStoreAccessor.GetSetting(
+                            Store,
+                            settingsNamespace,
+                            GetSettingName(Setting, column, columnIndex, DataGridColumn.DisplayIndexProperty));
+                    if (displayIndex != SettingsConstants.NoValue)
+                    {
+                        orderedColumns.Remove(column);
+                        orderedColumns.Insert((int)displayIndex, column);
+                    }
+                }
+                return orderedColumns;
             }
             return dataGrid.Columns;
         }
