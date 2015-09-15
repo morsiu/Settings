@@ -51,6 +51,8 @@
     <Compile Include="Binding\ValueAdapters\ConvertingAdapter.cs" />
     <Compile Include="Binding\ValueAdapters\ExceptionHandlerResult.cs" />
     <Compile Include="Binding\ValueAdapters\ExceptionHandlingAdapter.cs" />
+    <Compile Include="Binding\ValueAdapters\SynchronizationAdapter.cs" />
+    <Compile Include="Binding\ValueAdapters\SynchronizationGroup.cs" />
     <Compile Include="Binding\ValueAdapters\ValueAdapterAction.cs" />
     <Compile Include="Binding\ValueAdapters\ValueToCollectionAdapter.cs" />
     <Compile Include="Binding\ValueBinding.cs" />

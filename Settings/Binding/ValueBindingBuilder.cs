@@ -14,6 +14,7 @@ namespace TheSettings.Binding
         private IValueAdapter _targetAdapter;
         private IValueAdapter _sourceAdapter;
         private ExceptionHandlingAdapter.ExceptionHandler _exceptionHandler;
+        private SynchronizationGroup _synchronizationGroup;
 
         public ValueBindingBuilder SetTargetAdapter(
             object target,
@@ -58,12 +59,22 @@ namespace TheSettings.Binding
             return this;
         }
 
+        public ValueBindingBuilder UseSynchronizationGroup(SynchronizationGroup synchronizationGroup)
+        {
+            _synchronizationGroup = synchronizationGroup;
+            return this;
+        }
+
         public ISettingBinding Build()
         {
             var targetAdapter = _targetAdapter;
             if (_exceptionHandler != null)
             {
                 targetAdapter = new ExceptionHandlingAdapter(targetAdapter, _exceptionHandler);
+            }
+            if (_synchronizationGroup != null)
+            {
+                targetAdapter = new SynchronizationAdapter(targetAdapter, _synchronizationGroup);
             }
             return new ValueBinding(targetAdapter, _sourceAdapter);
         }
