@@ -64,7 +64,7 @@ namespace TheSettings.Wpf.Binding
             var columns = GetColumnsInInitializationOrder(dataGrid, @namespace);
             var bindings = GetStoredProperties()
                 .SelectMany(
-                    property => columns.Select((c, i) => new { Column = c, ColumnIndex = i }),
+                    property => columns.Select((c, i) => new { Column = c, ColumnIndex = dataGrid.Columns.IndexOf(c) }),
                     (property, c) => BindColumn(c.Column, c.ColumnIndex, property, @namespace, builder));
             return bindings;
         }
@@ -94,21 +94,21 @@ namespace TheSettings.Wpf.Binding
             // This way the initialization of bindings of column displayed after previously initialized column won't change the display index of the latter.
             if (GetStoredProperties().Contains(DataGridColumn.DisplayIndexProperty))
             {
-                var orderedColumns = dataGrid.Columns.ToList();
-                for (int columnIndex = 0; columnIndex < dataGrid.Columns.Count; columnIndex++)
-                {
-                    var column = dataGrid.Columns[columnIndex];
-                    var displayIndex =
+                var orderedColumns = (
+                    from c in dataGrid.Columns.Select((c, i) => new { Column = c, Index = i })
+                    let column = c.Column
+                    let index = c.Index
+                    let displayIndexSetting =
                         Settings.CurrentStoreAccessor.GetSetting(
                             Store,
                             settingsNamespace,
-                            GetSettingName(Setting, column, columnIndex, DataGridColumn.DisplayIndexProperty));
-                    if (displayIndex != SettingsConstants.NoValue)
-                    {
-                        orderedColumns.Remove(column);
-                        orderedColumns.Insert((int)displayIndex, column);
-                    }
-                }
+                            GetSettingName(Setting, column, index, DataGridColumn.DisplayIndexProperty))
+                    where displayIndexSetting != SettingsConstants.NoValue
+                    orderby (int)displayIndexSetting ascending
+                    select column)
+                    .ToList();
+
+                orderedColumns.AddRange(dataGrid.Columns.Except(orderedColumns).ToList());
                 return orderedColumns;
             }
             return dataGrid.Columns;
