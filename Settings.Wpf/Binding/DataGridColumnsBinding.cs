@@ -132,7 +132,7 @@ namespace TheSettings.Wpf.Binding
         private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty)
         {
             var propertyType = storedProperty.PropertyType;
-            var propertyAdapter =  new DependencyPropertyAdapter(column, storedProperty);
+            var propertyAdapter = new DependencyPropertyAdapter(column, storedProperty);
             return WrapInTypeConverterIfNecessary(propertyAdapter, propertyType);
         }
 
