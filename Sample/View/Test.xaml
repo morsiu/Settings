@@ -13,10 +13,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Text="Settings namespaces:" />
+        <Button Content="DataGrid window" Click="OnDataGridWindowButtonClick"/>
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal">
             <TextBlock Text="TextBox inside Window: " />

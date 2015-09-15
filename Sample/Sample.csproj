@@ -63,6 +63,9 @@
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="ViewModel\OrdersViewModel.cs" />
+    <Compile Include="View\DataGridWindow.xaml.cs">
+      <DependentUpon>DataGridWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SelectedItems.xaml.cs">
       <DependentUpon>SelectedItems.xaml</DependentUpon>
     </Compile>
@@ -76,6 +79,10 @@
     <Compile Include="View\UserControl2.xaml.cs">
       <DependentUpon>UserControl2.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\DataGridWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
