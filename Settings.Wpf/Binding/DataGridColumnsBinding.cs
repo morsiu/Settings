@@ -72,11 +72,11 @@ namespace TheSettings.Wpf.Binding
             ValueBindingBuilder builder)
         {
             var accessor = Settings.CurrentStoreAccessor;
-            var displayIndexSyncGroup = new SynchronizationGroup();
+            var synchronizationGroup = new SynchronizationGroup();
             return
                 from storedProperty in GetStoredProperties()
                 let settingName = GetSettingName(Setting, column, index, storedProperty)
-                let targetAdapter = CreateTargetAdapter(column, storedProperty, displayIndexSyncGroup)
+                let targetAdapter = CreateTargetAdapter(column, storedProperty, synchronizationGroup)
                 let exceptionHandler = new DebugValueAdapterExceptionHandler(storedProperty.Name, column, Store, settingName, @namespace)
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
@@ -127,14 +127,11 @@ namespace TheSettings.Wpf.Binding
             return _columnSettingNameFactories.CreateValue<string>(SettingNameFactoryKey, factory => factory(settingName, column, columnIndex, storedProperty));
         }
 
-        private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty, SynchronizationGroup displayIndexSyncGroup)
+        private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty, SynchronizationGroup synchronizationGroup)
         {
             var propertyType = storedProperty.PropertyType;
-            var propertyAdapter = new DependencyPropertyAdapter(column, storedProperty);
-            var valueAdapter = storedProperty == DataGridColumn.DisplayIndexProperty
-                ? new SynchronizationAdapter(propertyAdapter, displayIndexSyncGroup)
-                : (IValueAdapter)propertyAdapter;
-            return WrapInTypeConverterIfNecessary(valueAdapter, propertyType);
+            var propertyAdapter =  new DependencyPropertyAdapter(column, storedProperty);
+            return new SynchronizationAdapter(WrapInTypeConverterIfNecessary(propertyAdapter, propertyType), synchronizationGroup);
         }
 
         private static IValueAdapter WrapInTypeConverterIfNecessary(IValueAdapter propertyAdapter, Type propertyType)
