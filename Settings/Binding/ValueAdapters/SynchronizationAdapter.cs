@@ -42,8 +42,9 @@ namespace TheSettings.Binding.ValueAdapters
         {
             if (_synchronizationGroup.AreValueChangeCallbacksDisabled)
             {
-                _valueChangedAdapter(newValue);
+                return;
             }
+            _valueChangedAdapter(newValue);
         }
     }
 }
