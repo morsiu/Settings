@@ -26,10 +26,10 @@ namespace TheSettings.Wpf.Binding
         public static readonly List<DependencyProperty> DefaultStoredProperties =
             new List<DependencyProperty>
             {
+                DataGridColumn.VisibilityProperty,
                 DataGridColumn.DisplayIndexProperty,
                 DataGridColumn.SortDirectionProperty,
-                DataGridColumn.WidthProperty,
-                DataGridColumn.VisibilityProperty
+                DataGridColumn.WidthProperty
             };
 
         public DataGridColumnsBinding()
@@ -62,29 +62,30 @@ namespace TheSettings.Wpf.Binding
             var dataGrid = (DataGrid)target;
             var @namespace = Settings.GetNamespace(target);
             var columns = GetColumnsInInitializationOrder(dataGrid, @namespace);
-            var bindings = columns.SelectMany(
-                (column, index) => BindColumn(column, index, @namespace, builder));
+            var bindings = GetStoredProperties()
+                .SelectMany(
+                    property => columns.Select((c, i) => new { Column = c, ColumnIndex = i }),
+                    (property, c) => BindColumn(c.Column, c.ColumnIndex, property, @namespace, builder));
             return bindings;
         }
 
-        private IEnumerable<ISettingBinding> BindColumn(
+        private ISettingBinding BindColumn(
             DataGridColumn column,
-            int index,
+            int columnIndex,
+            DependencyProperty storedProperty,
             SettingsNamespace @namespace,
             ValueBindingBuilder builder)
         {
             var accessor = Settings.CurrentStoreAccessor;
-            return
-                from storedProperty in GetStoredProperties()
-                let settingName = GetSettingName(Setting, column, index, storedProperty)
-                let targetAdapter = CreateTargetAdapter(column, storedProperty)
-                let exceptionHandler = new DebugValueAdapterExceptionHandler(storedProperty.Name, column, Store, settingName, @namespace)
-                let binding = builder
-                    .SetTargetAdapter(targetAdapter)
-                    .SetSourceAdapter(accessor, Store, @namespace, settingName)
-                    .SetExceptionHandler(exceptionHandler.LogAndSwallowException)
-                    .Build()
-                select binding;
+            var settingName = GetSettingName(Setting, column, columnIndex, storedProperty);
+            var targetAdapter = CreateTargetAdapter(column, storedProperty);
+            var exceptionHandler = new DebugValueAdapterExceptionHandler(storedProperty.Name, column, Store, settingName, @namespace);
+            var binding = builder
+                .SetTargetAdapter(targetAdapter)
+                .SetSourceAdapter(accessor, Store, @namespace, settingName)
+                .SetExceptionHandler(exceptionHandler.LogAndSwallowException)
+                .Build();
+            return binding;
         }
 
         private IEnumerable<DataGridColumn> GetColumnsInInitializationOrder(DataGrid dataGrid, SettingsNamespace settingsNamespace)
