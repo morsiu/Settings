@@ -14,7 +14,7 @@ namespace TheSettings.Binding.ValueAdapters
 
         public bool AreValueChangeCallbacksDisabled
         {
-            get { return _valueChangeCallbacksDisableCount == 0; }
+            get { return _valueChangeCallbacksDisableCount > 0; }
         }
 
         public IDisposable DisableValueChangedCallbacks()
