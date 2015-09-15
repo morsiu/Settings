@@ -72,10 +72,11 @@ namespace TheSettings.Wpf.Binding
             ValueBindingBuilder builder)
         {
             var accessor = Settings.CurrentStoreAccessor;
+            var displayIndexSyncGroup = new SynchronizationGroup();
             return
                 from storedProperty in GetStoredProperties()
                 let settingName = GetSettingName(Setting, column, index, storedProperty)
-                let targetAdapter = CreateTargetAdapter(column, storedProperty)
+                let targetAdapter = CreateTargetAdapter(column, storedProperty, displayIndexSyncGroup)
                 let exceptionHandler = new DebugValueAdapterExceptionHandler(storedProperty.Name, column, Store, settingName, @namespace)
                 let binding = builder
                     .SetTargetAdapter(targetAdapter)
@@ -126,11 +127,14 @@ namespace TheSettings.Wpf.Binding
             return _columnSettingNameFactories.CreateValue<string>(SettingNameFactoryKey, factory => factory(settingName, column, columnIndex, storedProperty));
         }
 
-        private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty)
+        private static IValueAdapter CreateTargetAdapter(DataGridColumn column, DependencyProperty storedProperty, SynchronizationGroup displayIndexSyncGroup)
         {
             var propertyType = storedProperty.PropertyType;
             var propertyAdapter = new DependencyPropertyAdapter(column, storedProperty);
-            return WrapInTypeConverterIfNecessary(propertyAdapter, propertyType);
+            var valueAdapter = storedProperty == DataGridColumn.DisplayIndexProperty
+                ? new SynchronizationAdapter(propertyAdapter, displayIndexSyncGroup)
+                : (IValueAdapter)propertyAdapter;
+            return WrapInTypeConverterIfNecessary(valueAdapter, propertyType);
         }
 
         private static IValueAdapter WrapInTypeConverterIfNecessary(IValueAdapter propertyAdapter, Type propertyType)
