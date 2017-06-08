@@ -44,7 +44,15 @@ namespace TheSettings.Wpf.Binding
 
         public delegate string ColumnSettingNameFactory(string settingName, DataGridColumn column, int columnIndex, DependencyProperty property);
 
+        public delegate IValueAdapter ValueAdapterDecorator(
+            IValueAdapter valueAdapter,
+            DataGridColumn column,
+            int columnIndex,
+            DependencyProperty property);
+
         public ColumnSettingNameFactory SettingNameFactory { get; set; }
+
+        public ValueAdapterDecorator TargetAdapterDecorator { get; set; }
 
         public IEnumerable<DependencyProperty> StoredProperties { get; set; }
 
@@ -78,7 +86,12 @@ namespace TheSettings.Wpf.Binding
         {
             var accessor = Settings.CurrentStoreAccessor;
             var settingName = GetSettingName(Setting, column, columnIndex, storedProperty);
-            var targetAdapter = CreateTargetAdapter(column, storedProperty);
+            var targetAdapter = 
+                DecorateTargetAdapter(
+                    CreateTargetAdapter(column, storedProperty),
+                    column,
+                    columnIndex,
+                    storedProperty);
             var exceptionHandler = new DebugValueAdapterExceptionHandler(storedProperty.Name, column, Store, settingName, @namespace);
             var binding = builder
                 .SetTargetAdapter(targetAdapter)
@@ -86,6 +99,13 @@ namespace TheSettings.Wpf.Binding
                 .SetExceptionHandler(exceptionHandler.LogAndSwallowException)
                 .Build();
             return binding;
+        }
+
+        private IValueAdapter DecorateTargetAdapter(IValueAdapter targetAdapter, DataGridColumn column, int columnIndex, DependencyProperty property)
+        {
+            return TargetAdapterDecorator == null
+                ? targetAdapter
+                : TargetAdapterDecorator(targetAdapter, column, columnIndex, property);
         }
 
         private IEnumerable<DataGridColumn> GetColumnsInInitializationOrder(DataGrid dataGrid, SettingsNamespace settingsNamespace)
