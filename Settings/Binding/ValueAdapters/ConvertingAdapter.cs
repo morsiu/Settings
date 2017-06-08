@@ -4,10 +4,11 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using TheSettings.Infrastructure;
 
 namespace TheSettings.Binding.ValueAdapters
 {
-    public class ConvertingAdapter : IValueAdapter
+    public class ConvertingAdapter : Disposable, IValueAdapter
     {
         private readonly IValueAdapter _targetAdapter;
         private readonly IValueConverter _converter;
@@ -44,6 +45,11 @@ namespace TheSettings.Binding.ValueAdapters
         {
             var convertedValue = _converter.ConvertTarget(value);
             _valueChangedCallback(convertedValue);
+        }
+
+        protected override void DisposeManaged()
+        {
+            Dispose(_targetAdapter);
         }
     }
 }
