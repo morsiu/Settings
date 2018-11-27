@@ -1,10 +1,11 @@
 syntax: glob
 TestResults
 packages
+.vs
 syntax: regexp
 bin/.*
 obj/.*
 .*\.suo
 .*\.user
-.*Settings\.(Wpf\.)?(\d+\.){4}(symbols\.)?nupkg
+.*Settings\.(Wpf\.)?(\d+\.){3,4}(symbols\.)?nupkg
 .*\.DotSettings
