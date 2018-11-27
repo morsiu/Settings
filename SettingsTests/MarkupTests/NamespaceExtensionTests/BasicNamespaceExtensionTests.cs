@@ -27,7 +27,7 @@ namespace TheSettingsTests.MarkupTests.NamespaceExtensionTests
         }
 
         [TestMethod]
-        public void ShouldInheritNamespaceAlongVisualwindow()
+        public void ShouldInheritNamespaceAlongVisualTree()
         {
             Assert.AreEqual("\\Root", _window.Level1Namespace.Path);
         }

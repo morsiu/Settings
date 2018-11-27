@@ -45,8 +45,8 @@ namespace TheSettings.Wpf.Initialization
             {
                 if (_creationInfo.UseParentSource)
                 {
-                    var nameLokup = new NameLookup(_node);
-                    var parent = nameLokup.Find(_creationInfo.ParentSourceName);
+                    var nameLookup = new NameLookup(_node);
+                    var parent = nameLookup.Find(_creationInfo.ParentSourceName);
                     parentNamespace = parent == null
                                           ? SettingsNamespace.None
                                           : Settings.GetNamespace(parent);
