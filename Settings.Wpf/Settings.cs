@@ -22,9 +22,9 @@ namespace TheSettings.Wpf
 
         public static readonly DependencyProperty NamespaceProperty =
             DependencyProperty.RegisterAttached(
-                "Namespace", 
-                typeof(SettingsNamespace), 
-                typeof(Settings), 
+                "Namespace",
+                typeof(SettingsNamespace),
+                typeof(Settings),
                 new FrameworkPropertyMetadata(SettingsNamespace.None, InheritanceFlags));
 
         public static readonly DependencyProperty SettingsProperty =
