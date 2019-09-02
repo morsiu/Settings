@@ -19,7 +19,7 @@ namespace TheSettings
         object GetSetting(SettingsNamespace @namespace, string name);
 
         /// <summary>
-        /// Sets value of setting with givan name placed in given namespace.
+        /// Sets value of setting with given name placed in given namespace.
         /// </summary>
         /// <param name="namespace">Setting namespace.</param>
         /// <param name="name">Setting name.</param>

@@ -31,11 +31,11 @@ namespace TheSettings.Wpf.Binding
                 return Enumerable.Empty<ISettingBinding>();
             }
 
-            var targetAdatperBuilder = TargetAdapterBuilder ?? (adapter => adapter);
+            var targetAdapterBuilder = TargetAdapterBuilder ?? (adapter => adapter);
             var settingAdapter = new SettingAdapter(Settings.CurrentStoreAccessor, Store, Settings.GetNamespace(selector), Setting);
             var binding =
                 new ListBinding(
-                    targetAdatperBuilder(
+                    targetAdapterBuilder(
                         new SelectorSortDescriptionsAdapter(
                             new SelectorItemsSourceViewAdapter(selector))),
                     settingAdapter);
