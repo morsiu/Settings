@@ -15,7 +15,7 @@ namespace TheSettings
         /// </summary>
         /// <param name="namespace">Setting namespace.</param>
         /// <param name="name">Setting name.</param>
-        /// <returns>Returns value of the setting, if exists in store, otherwise SettingContants.NoValue.</returns>
+        /// <returns>Returns value of the setting, if exists in store, otherwise SettingConstants.NoValue.</returns>
         object GetSetting(SettingsNamespace @namespace, string name);
 
         /// <summary>
