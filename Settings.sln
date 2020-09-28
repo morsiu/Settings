@@ -1,18 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{4D0714B9-FB04-4DDB-BFF5-98BE2A17E371}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "Sample\Sample.csproj", "{4D0714B9-FB04-4DDB-BFF5-98BE2A17E371}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "Settings\Settings.csproj", "{CE47879D-5BAC-4557-A9B4-2A88B5415154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Settings", "Settings\Settings.csproj", "{CE47879D-5BAC-4557-A9B4-2A88B5415154}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsTests", "SettingsTests\SettingsTests.csproj", "{B5841271-0438-4787-837C-E54067459C86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingsTests", "SettingsTests\SettingsTests.csproj", "{B5841271-0438-4787-837C-E54067459C86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings.Wpf", "Settings.Wpf\Settings.Wpf.csproj", "{CA06670C-B829-4AEF-9052-35AE54195011}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B29C8293-7DBC-4B32-96C7-2423B09B20FE}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Settings.Wpf", "Settings.Wpf\Settings.Wpf.csproj", "{CA06670C-B829-4AEF-9052-35AE54195011}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F3592B9-54F6-4447-A46B-2DD468F4FD0E}
 	EndGlobalSection
 EndGlobal

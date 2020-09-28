@@ -1,186 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B5841271-0438-4787-837C-E54067459C86}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net45</TargetFramework>
     <RootNamespace>TheSettingsTests</RootNamespace>
-    <AssemblyName>SettingsTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Moq" Version="4.0.10827" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
-    <Compile Include="AccessorTests\DictionarySettingsStoreAccessorTests.cs" />
-    <Compile Include="BindingTests\DataGridColumnsBindingInitializationTest.cs" />
-    <Compile Include="BindingTests\SetBindingTests.cs" />
-    <Compile Include="BindingTests\ValueAdapterFactoryTests.cs" />
-    <Compile Include="BindingTests\ValueBindingTests.cs" />
-    <Compile Include="BindingTests\Windows\DataGridColumnsBindingInitialization.xaml.cs">
-      <DependentUpon>DataGridColumnsBindingInitialization.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Infrastructure\Collections\ListUpdaterTests.cs" />
-    <Compile Include="Infrastructure\Factories\FactoryChainTests.cs" />
-    <Compile Include="Infrastructure\Factories\KeyedFactoryContainerTests.cs" />
-    <Compile Include="Infrastructure\GuiTests.cs" />
-    <Compile Include="Infrastructure\AssertLifetime.cs" />
-    <Compile Include="MarkupTests\NamespaceExtensionTests\ControlTemplatingNamespaceExtensionTests.cs" />
-    <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlTemplating.xaml.cs">
-      <DependentUpon>ControlTemplating.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\DataTemplating.xaml.cs">
-      <DependentUpon>DataTemplating.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MarkupTests\NamespaceExtensionTests\BasicNamespaceExtensionTests.cs" />
-    <Compile Include="MarkupTests\NamespaceExtensionTests\ControlNestingNamespaceExtensionTests.cs" />
-    <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\Basic.xaml.cs">
-      <DependentUpon>Basic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlNesting.xaml.cs">
-      <DependentUpon>ControlNesting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MarkupTests\NamespaceExtensionTests\DataTemplatingNamespaceExtensionTests.cs" />
-    <Compile Include="MarkupTests\NamespaceExtensionTests\Windows\ControlNestingNestedControl.xaml.cs">
-      <DependentUpon>ControlNestingNestedControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MarkupTests\SettingExtensionTests\Windows\SettingBinding.xaml.cs">
-      <DependentUpon>SettingBinding.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MarkupTests\SettingExtensionTests\SettingExtensionTests.cs" />
-    <Compile Include="Mocks\CollectionAdapter.cs" />
-    <Compile Include="Mocks\NullValueConverter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsNamespaceTests.cs" />
-    <Compile Include="SettingsTests.cs" />
-    <Compile Include="StoreTests\DelegatingStoreTestSuite.cs" />
-    <Compile Include="StoreTests\InvalidatableSettingsStoreTests.cs" />
-    <Compile Include="StoreTests\PersistentStoreTests.cs" />
-    <Compile Include="TreeTests\TreeWalkerTests.cs" />
-    <Compile Include="Mocks\ValueAdapter.cs" />
-    <Compile Include="ValueAdapterTests\ClrPropertyAdapterTests.cs" />
-    <Compile Include="ValueAdapterTests\ConvertingAdapterTests.cs" />
-    <Compile Include="ValueAdapterTests\DataContextPropertyAdapterTests.cs" />
-    <Compile Include="ValueAdapterTests\DependencyPropertyAdapterTests.cs" />
-    <Compile Include="ValueAdapterTests\ExceptionHandlingAdapterTests.cs" />
-    <Compile Include="ValueAdapterTests\SettingAdapterTests.cs" />
-    <Compile Include="Mocks\ValueConverter.cs" />
-    <Compile Include="ValueConverterTests\TypeConverterAdapterTests.cs" />
+    <ProjectReference Include="..\Settings.Wpf\Settings.Wpf.csproj" />
+    <ProjectReference Include="..\Settings\Settings.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Settings.Wpf\Settings.Wpf.csproj">
-      <Project>{CA06670C-B829-4AEF-9052-35AE54195011}</Project>
-      <Name>Settings.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Settings\Settings.csproj">
-      <Project>{ce47879d-5bac-4557-a9b4-2a88b5415154}</Project>
-      <Name>Settings</Name>
-    </ProjectReference>
+    <Page Include="**\*.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </Page>
+    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="BindingTests\Windows\DataGridColumnsBindingInitialization.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MarkupTests\NamespaceExtensionTests\Windows\ControlTemplating.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MarkupTests\NamespaceExtensionTests\Windows\DataTemplating.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MarkupTests\NamespaceExtensionTests\Windows\Basic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MarkupTests\NamespaceExtensionTests\Windows\ControlNesting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MarkupTests\NamespaceExtensionTests\Windows\ControlNestingNestedControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MarkupTests\SettingExtensionTests\Windows\SettingBinding.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup />
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

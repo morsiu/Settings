@@ -1,91 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CA06670C-B829-4AEF-9052-35AE54195011}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net45</TargetFramework>
     <RootNamespace>TheSettings.Wpf</RootNamespace>
-    <AssemblyName>Settings.Wpf</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.11.0.0</Version>
+    <Authors>Łukasz Mrozek</Authors>
+    <Copyright>Copyright © Łukasz Mrozek 2013</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/morsiu/Settings</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/morsiu/Settings</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <AssemblyVersion>1.11.0.0</AssemblyVersion>
+    <FileVersion>1.11.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binding\Adapters\DataGridSelectedItemsAdapter.cs" />
-    <Compile Include="Binding\Adapters\DataContextPropertyAdapter.cs" />
-    <Compile Include="Binding\Adapters\MultiSelectorSelectedItemsAdapter.cs" />
-    <Compile Include="Binding\Adapters\SelectorItemsSourceViewAdapter.cs" />
-    <Compile Include="Binding\Adapters\SelectorSelectedItemsAdapter.cs" />
-    <Compile Include="Binding\Adapters\SelectorSortDescriptionsAdapter.cs" />
-    <Compile Include="Binding\DataBinding.cs" />
-    <Compile Include="Binding\SelectedItemsBinding.cs" />
-    <Compile Include="Binding\SelectorSortBinding.cs" />
-    <Compile Include="Binding\ValueConverters\TypeConverterAdapter.cs" />
-    <Compile Include="Binding\Adapters\DebugValueAdapterExceptionHandler.cs" />
-    <Compile Include="Initialization\InitializerLookup.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Infrastructure\NameLookup.cs" />
-    <Compile Include="Infrastructure\WpfLogicalTree.cs" />
-    <Compile Include="Infrastructure\WpfLogicalTreeWalker.cs" />
-    <Compile Include="Infrastructure\WpfVisualTree.cs" />
-    <Compile Include="Infrastructure\WpfVisualTreeWalker.cs" />
-    <Compile Include="Binding\Binding.cs" />
-    <Compile Include="Binding\DataGridColumnsBinding.cs" />
-    <Compile Include="Markup\NamespaceExtension.cs" />
-    <Compile Include="Markup\SettingExtension.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Initialization\NamespaceCreationInfo.cs" />
-    <Compile Include="Initialization\SettingBindingBuilder.cs" />
-    <Compile Include="Infrastructure\SettingBindingCollection.cs" />
-    <Compile Include="Initialization\SettingsInitializer.cs" />
-    <Compile Include="Markup\SettingsMarkupExtensions.cs" />
-    <Compile Include="Initialization\SettingsNamespaceBuilder.cs" />
+    <ProjectReference Include="..\Settings\Settings.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Settings\Settings.csproj">
-      <Project>{ce47879d-5bac-4557-a9b4-2a88b5415154}</Project>
-      <Name>Settings</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Settings.Wpf.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
