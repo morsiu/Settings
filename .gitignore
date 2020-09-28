@@ -1,0 +1,10 @@
+.vs
+_ReSharper.Caches
+TestResults
+packages
+bin
+obj
+*.suo
+*.user
+*.nupkg
+*.DotSettings
